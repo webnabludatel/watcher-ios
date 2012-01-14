@@ -23,6 +23,9 @@
 		5F7ADDF714C1AF9700A8E955 /* WatcherSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */; };
 		5F7ADDF814C1B0E700A8E955 /* WatcherGuideController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */; };
 		5F7ADDFA14C1B0FD00A8E955 /* ViolationsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDFB14C1B0FD00A8E955 /* ViolationsListController.xib */; };
+		5F91F20914C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F20714C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld */; };
+		5F91F20C14C1C52400446C86 /* ViolationInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F20B14C1C52400446C86 /* ViolationInfo.m */; };
+		5F91F20E14C1C59300446C86 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F91F20D14C1C59300446C86 /* CoreData.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +52,10 @@
 		5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherSettingsController.xib; sourceTree = "<group>"; };
 		5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WatcherGuideController.xib; sourceTree = "<group>"; };
 		5F7ADDFB14C1B0FD00A8E955 /* ViolationsListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViolationsListController.xib; sourceTree = "<group>"; };
+		5F91F20814C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ElectionsWatcherModel.xcdatamodel; sourceTree = "<group>"; };
+		5F91F20A14C1C52400446C86 /* ViolationInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViolationInfo.h; sourceTree = "<group>"; };
+		5F91F20B14C1C52400446C86 /* ViolationInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViolationInfo.m; sourceTree = "<group>"; };
+		5F91F20D14C1C59300446C86 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F91F20E14C1C59300446C86 /* CoreData.framework in Frameworks */,
 				5F7ADDC714C1AE4100A8E955 /* UIKit.framework in Frameworks */,
 				5F7ADDC914C1AE4100A8E955 /* Foundation.framework in Frameworks */,
 				5F7ADDCB14C1AE4100A8E955 /* CoreGraphics.framework in Frameworks */,
@@ -68,6 +76,7 @@
 		5F7ADDB714C1AE4100A8E955 = {
 			isa = PBXGroup;
 			children = (
+				5F91F20D14C1C59300446C86 /* CoreData.framework */,
 				5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */,
 				5F7ADDC514C1AE4100A8E955 /* Frameworks */,
 				5F7ADDC314C1AE4100A8E955 /* Products */,
@@ -95,6 +104,7 @@
 		5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */ = {
 			isa = PBXGroup;
 			children = (
+				5F91F20514C1C3BC00446C86 /* Model */,
 				5F7ADDF214C1AED000A8E955 /* XIB */,
 				5F7ADDF114C1AEB200A8E955 /* Assets */,
 				5F7ADDD514C1AE4100A8E955 /* AppDelegate.h */,
@@ -140,6 +150,16 @@
 				5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */,
 			);
 			name = XIB;
+			sourceTree = "<group>";
+		};
+		5F91F20514C1C3BC00446C86 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				5F91F20714C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld */,
+				5F91F20A14C1C52400446C86 /* ViolationInfo.h */,
+				5F91F20B14C1C52400446C86 /* ViolationInfo.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -215,6 +235,8 @@
 				5F7ADDDA14C1AE4100A8E955 /* ViolationsListController.m in Sources */,
 				5F7ADDE114C1AE4100A8E955 /* WatcherGuideController.m in Sources */,
 				5F7ADDF614C1AF9700A8E955 /* WatcherSettingsController.m in Sources */,
+				5F91F20914C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld in Sources */,
+				5F91F20C14C1C52400446C86 /* ViolationInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,8 +340,22 @@
 				5F7ADDF014C1AE4100A8E955 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		5F91F20714C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				5F91F20814C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodel */,
+			);
+			currentVersion = 5F91F20814C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodel */;
+			path = ElectionsWatcherModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 5F7ADDB914C1AE4100A8E955 /* Project object */;
 }
