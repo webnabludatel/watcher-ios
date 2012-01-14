@@ -32,8 +32,12 @@
     UIViewController *viewController1 = [[[ViolationsListController alloc] initWithNibName:@"ViolationsListController" bundle:nil] autorelease];
     UIViewController *viewController2 = [[[WatcherGuideController alloc] initWithNibName:@"WatcherGuideController" bundle:nil] autorelease];
     UIViewController *viewController3 = [[[WatcherSettingsController alloc] initWithNibName: @"WatcherSettingsController" bundle: nil] autorelease];
+    
+    UINavigationController *navigationController1 = [[[UINavigationController alloc] initWithRootViewController: viewController1] autorelease];
+    UINavigationController *navigationController2 = [[[UINavigationController alloc] initWithRootViewController: viewController2] autorelease];
+    
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects:viewController1, viewController2, viewController3, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects: navigationController1, navigationController2, viewController3, nil];
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     

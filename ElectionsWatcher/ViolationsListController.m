@@ -16,7 +16,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        self.title = NSLocalizedString(@"First", @"First");
+        self.title = @"Нарушения"; // NSLocalizedString(@"First", @"First");
         self.tabBarItem.image = [UIImage imageNamed:@"first"];
     }
     return self;
@@ -40,6 +40,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    self.navigationItem.leftBarButtonItem = 
+        [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemAdd target: nil action: nil] autorelease];
+    self.navigationItem.rightBarButtonItem = 
+        [[[UIBarButtonItem alloc] initWithTitle: @"Sync" style: UIBarButtonItemStylePlain target: nil action: nil] autorelease];
 }
 
 - (void)viewDidUnload
@@ -89,6 +94,10 @@
         default:
             return @"---";
     }
+}
+
+- (CGFloat) tableView: (UITableView *) tableView heightForHeaderInSection: (NSInteger) section {
+    return 32;
 }
 
 - (NSInteger) tableView: (UITableView *) tableView numberOfRowsInSection: (NSInteger) section {
