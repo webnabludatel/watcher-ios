@@ -1,0 +1,325 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		5F7ADDC714C1AE4100A8E955 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7ADDC614C1AE4100A8E955 /* UIKit.framework */; };
+		5F7ADDC914C1AE4100A8E955 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7ADDC814C1AE4100A8E955 /* Foundation.framework */; };
+		5F7ADDCB14C1AE4100A8E955 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7ADDCA14C1AE4100A8E955 /* CoreGraphics.framework */; };
+		5F7ADDD114C1AE4100A8E955 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDCF14C1AE4100A8E955 /* InfoPlist.strings */; };
+		5F7ADDD314C1AE4100A8E955 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADDD214C1AE4100A8E955 /* main.m */; };
+		5F7ADDD714C1AE4100A8E955 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADDD614C1AE4100A8E955 /* AppDelegate.m */; };
+		5F7ADDDA14C1AE4100A8E955 /* ViolationsListController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADDD914C1AE4100A8E955 /* ViolationsListController.m */; };
+		5F7ADDDC14C1AE4100A8E955 /* first.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDDB14C1AE4100A8E955 /* first.png */; };
+		5F7ADDDE14C1AE4100A8E955 /* first@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDDD14C1AE4100A8E955 /* first@2x.png */; };
+		5F7ADDE114C1AE4100A8E955 /* WatcherGuideController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADDE014C1AE4100A8E955 /* WatcherGuideController.m */; };
+		5F7ADDE314C1AE4100A8E955 /* second.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDE214C1AE4100A8E955 /* second.png */; };
+		5F7ADDE514C1AE4100A8E955 /* second@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDE414C1AE4100A8E955 /* second@2x.png */; };
+		5F7ADDF614C1AF9700A8E955 /* WatcherSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7ADDF414C1AF9700A8E955 /* WatcherSettingsController.m */; };
+		5F7ADDF714C1AF9700A8E955 /* WatcherSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */; };
+		5F7ADDF814C1B0E700A8E955 /* WatcherGuideController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */; };
+		5F7ADDFA14C1B0FD00A8E955 /* ViolationsListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDFB14C1B0FD00A8E955 /* ViolationsListController.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5F7ADDC214C1AE4100A8E955 /* ElectionsWatcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElectionsWatcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F7ADDC614C1AE4100A8E955 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		5F7ADDC814C1AE4100A8E955 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5F7ADDCA14C1AE4100A8E955 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		5F7ADDCE14C1AE4100A8E955 /* ElectionsWatcher-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ElectionsWatcher-Info.plist"; sourceTree = "<group>"; };
+		5F7ADDD014C1AE4100A8E955 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5F7ADDD214C1AE4100A8E955 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5F7ADDD414C1AE4100A8E955 /* ElectionsWatcher-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ElectionsWatcher-Prefix.pch"; sourceTree = "<group>"; };
+		5F7ADDD514C1AE4100A8E955 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		5F7ADDD614C1AE4100A8E955 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		5F7ADDD814C1AE4100A8E955 /* ViolationsListController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViolationsListController.h; sourceTree = "<group>"; };
+		5F7ADDD914C1AE4100A8E955 /* ViolationsListController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViolationsListController.m; sourceTree = "<group>"; };
+		5F7ADDDB14C1AE4100A8E955 /* first.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = first.png; sourceTree = "<group>"; };
+		5F7ADDDD14C1AE4100A8E955 /* first@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "first@2x.png"; sourceTree = "<group>"; };
+		5F7ADDDF14C1AE4100A8E955 /* WatcherGuideController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WatcherGuideController.h; sourceTree = "<group>"; };
+		5F7ADDE014C1AE4100A8E955 /* WatcherGuideController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WatcherGuideController.m; sourceTree = "<group>"; };
+		5F7ADDE214C1AE4100A8E955 /* second.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = second.png; sourceTree = "<group>"; };
+		5F7ADDE414C1AE4100A8E955 /* second@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "second@2x.png"; sourceTree = "<group>"; };
+		5F7ADDF314C1AF9700A8E955 /* WatcherSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherSettingsController.h; sourceTree = "<group>"; };
+		5F7ADDF414C1AF9700A8E955 /* WatcherSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherSettingsController.m; sourceTree = "<group>"; };
+		5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherSettingsController.xib; sourceTree = "<group>"; };
+		5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WatcherGuideController.xib; sourceTree = "<group>"; };
+		5F7ADDFB14C1B0FD00A8E955 /* ViolationsListController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViolationsListController.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5F7ADDBF14C1AE4100A8E955 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F7ADDC714C1AE4100A8E955 /* UIKit.framework in Frameworks */,
+				5F7ADDC914C1AE4100A8E955 /* Foundation.framework in Frameworks */,
+				5F7ADDCB14C1AE4100A8E955 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5F7ADDB714C1AE4100A8E955 = {
+			isa = PBXGroup;
+			children = (
+				5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */,
+				5F7ADDC514C1AE4100A8E955 /* Frameworks */,
+				5F7ADDC314C1AE4100A8E955 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		5F7ADDC314C1AE4100A8E955 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5F7ADDC214C1AE4100A8E955 /* ElectionsWatcher.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5F7ADDC514C1AE4100A8E955 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5F7ADDC614C1AE4100A8E955 /* UIKit.framework */,
+				5F7ADDC814C1AE4100A8E955 /* Foundation.framework */,
+				5F7ADDCA14C1AE4100A8E955 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */ = {
+			isa = PBXGroup;
+			children = (
+				5F7ADDF214C1AED000A8E955 /* XIB */,
+				5F7ADDF114C1AEB200A8E955 /* Assets */,
+				5F7ADDD514C1AE4100A8E955 /* AppDelegate.h */,
+				5F7ADDD614C1AE4100A8E955 /* AppDelegate.m */,
+				5F7ADDD814C1AE4100A8E955 /* ViolationsListController.h */,
+				5F7ADDD914C1AE4100A8E955 /* ViolationsListController.m */,
+				5F7ADDDF14C1AE4100A8E955 /* WatcherGuideController.h */,
+				5F7ADDE014C1AE4100A8E955 /* WatcherGuideController.m */,
+				5F7ADDF314C1AF9700A8E955 /* WatcherSettingsController.h */,
+				5F7ADDF414C1AF9700A8E955 /* WatcherSettingsController.m */,
+				5F7ADDCD14C1AE4100A8E955 /* Supporting Files */,
+			);
+			path = ElectionsWatcher;
+			sourceTree = "<group>";
+		};
+		5F7ADDCD14C1AE4100A8E955 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5F7ADDCE14C1AE4100A8E955 /* ElectionsWatcher-Info.plist */,
+				5F7ADDCF14C1AE4100A8E955 /* InfoPlist.strings */,
+				5F7ADDD214C1AE4100A8E955 /* main.m */,
+				5F7ADDD414C1AE4100A8E955 /* ElectionsWatcher-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5F7ADDF114C1AEB200A8E955 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				5F7ADDDB14C1AE4100A8E955 /* first.png */,
+				5F7ADDDD14C1AE4100A8E955 /* first@2x.png */,
+				5F7ADDE214C1AE4100A8E955 /* second.png */,
+				5F7ADDE414C1AE4100A8E955 /* second@2x.png */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		5F7ADDF214C1AED000A8E955 /* XIB */ = {
+			isa = PBXGroup;
+			children = (
+				5F7ADDFB14C1B0FD00A8E955 /* ViolationsListController.xib */,
+				5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */,
+				5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */,
+			);
+			name = XIB;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		5F7ADDC114C1AE4100A8E955 /* ElectionsWatcher */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5F7ADDEE14C1AE4100A8E955 /* Build configuration list for PBXNativeTarget "ElectionsWatcher" */;
+			buildPhases = (
+				5F7ADDBE14C1AE4100A8E955 /* Sources */,
+				5F7ADDBF14C1AE4100A8E955 /* Frameworks */,
+				5F7ADDC014C1AE4100A8E955 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ElectionsWatcher;
+			productName = ElectionsWatcher;
+			productReference = 5F7ADDC214C1AE4100A8E955 /* ElectionsWatcher.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		5F7ADDB914C1AE4100A8E955 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 5F7ADDBC14C1AE4100A8E955 /* Build configuration list for PBXProject "ElectionsWatcher" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 5F7ADDB714C1AE4100A8E955;
+			productRefGroup = 5F7ADDC314C1AE4100A8E955 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				5F7ADDC114C1AE4100A8E955 /* ElectionsWatcher */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		5F7ADDC014C1AE4100A8E955 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F7ADDD114C1AE4100A8E955 /* InfoPlist.strings in Resources */,
+				5F7ADDDC14C1AE4100A8E955 /* first.png in Resources */,
+				5F7ADDDE14C1AE4100A8E955 /* first@2x.png in Resources */,
+				5F7ADDE314C1AE4100A8E955 /* second.png in Resources */,
+				5F7ADDE514C1AE4100A8E955 /* second@2x.png in Resources */,
+				5F7ADDFA14C1B0FD00A8E955 /* ViolationsListController.xib in Resources */,
+				5F7ADDF814C1B0E700A8E955 /* WatcherGuideController.xib in Resources */,
+				5F7ADDF714C1AF9700A8E955 /* WatcherSettingsController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5F7ADDBE14C1AE4100A8E955 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F7ADDD314C1AE4100A8E955 /* main.m in Sources */,
+				5F7ADDD714C1AE4100A8E955 /* AppDelegate.m in Sources */,
+				5F7ADDDA14C1AE4100A8E955 /* ViolationsListController.m in Sources */,
+				5F7ADDE114C1AE4100A8E955 /* WatcherGuideController.m in Sources */,
+				5F7ADDF614C1AF9700A8E955 /* WatcherSettingsController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		5F7ADDCF14C1AE4100A8E955 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5F7ADDD014C1AE4100A8E955 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		5F7ADDEC14C1AE4100A8E955 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		5F7ADDED14C1AE4100A8E955 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5F7ADDEF14C1AE4100A8E955 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
+				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		5F7ADDF014C1AE4100A8E955 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
+				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		5F7ADDBC14C1AE4100A8E955 /* Build configuration list for PBXProject "ElectionsWatcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F7ADDEC14C1AE4100A8E955 /* Debug */,
+				5F7ADDED14C1AE4100A8E955 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5F7ADDEE14C1AE4100A8E955 /* Build configuration list for PBXNativeTarget "ElectionsWatcher" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F7ADDEF14C1AE4100A8E955 /* Debug */,
+				5F7ADDF014C1AE4100A8E955 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 5F7ADDB914C1AE4100A8E955 /* Project object */;
+}
