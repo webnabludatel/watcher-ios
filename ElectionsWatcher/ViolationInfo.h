@@ -12,11 +12,13 @@
 
 @interface ViolationInfo : NSManagedObject
 
-@property (nonatomic, retain) NSString * code;
-@property (nonatomic, retain) NSDate * timestamp;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSString * comments;
-@property (nonatomic, retain) NSString * message;
-@property (nonatomic, retain) NSNumber * synchronized;
+@property (nonatomic, retain) NSString *code;
+@property (nonatomic, retain) NSDate   *timestamp;
+@property (nonatomic, retain) NSString *name;
+@property (nonatomic, retain) NSString *comments;
+@property (nonatomic, retain) NSString *message;
+@property (nonatomic, retain) NSNumber *synchronized;
+@property (nonatomic, retain) NSNumber *lat;
+@property (nonatomic, retain) NSNumber *lng;
 
 @end

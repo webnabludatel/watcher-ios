@@ -17,5 +17,7 @@
 @dynamic comments;
 @dynamic message;
 @dynamic synchronized;
+@dynamic lat;
+@dynamic lng;
 
 @end
