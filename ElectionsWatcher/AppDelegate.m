@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 
-#import "ViolationsListController.h"
+#import "WatcherChecklistController.h"
 #import "WatcherGuideController.h"
 #import "WatcherSettingsController.h"
 
@@ -16,6 +16,10 @@
 
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
+@synthesize managedObjectModel;
+@synthesize managedObjectContext;
+@synthesize persistentStoreCoordinator;
+@synthesize locationManager;
 
 - (void)dealloc
 {
@@ -28,8 +32,15 @@
 {
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
-    // Override point for customization after application launch.
-    UIViewController *viewController1 = [[[ViolationsListController alloc] initWithNibName:@"ViolationsListController" bundle:nil] autorelease];
+    // location manager
+	locationManager = [[CLLocationManager alloc] init];
+	[locationManager setDelegate: self];
+	[locationManager setDesiredAccuracy: kCLLocationAccuracyHundredMeters];
+	[locationManager setDistanceFilter: 1000];
+    
+    
+    // UI Init
+    UIViewController *viewController1 = [[[WatcherChecklistController alloc] initWithNibName:@"WatcherChecklistController" bundle:nil] autorelease];
     UIViewController *viewController2 = [[[WatcherGuideController alloc] initWithNibName:@"WatcherGuideController" bundle:nil] autorelease];
     UIViewController *viewController3 = [[[WatcherSettingsController alloc] initWithNibName: @"WatcherSettingsController" bundle: nil] autorelease];
     
@@ -96,5 +107,61 @@
 {
 }
 */
+
+#pragma mark -
+#pragma mark Core Data stack
+
+- (NSManagedObjectContext *) managedObjectContext {
+    if ( managedObjectContext != nil ) {
+        return managedObjectContext;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if ( coordinator != nil ) {
+        managedObjectContext = [[NSManagedObjectContext alloc] init];
+        [managedObjectContext setPersistentStoreCoordinator: coordinator];
+    }
+    
+    return managedObjectContext;
+}
+
+- (NSManagedObjectModel *) managedObjectModel {
+    if ( managedObjectModel != nil ) {
+        return managedObjectModel;
+    }
+    
+    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles: nil] retain];
+    
+    return managedObjectModel;
+}
+
+- (NSPersistentStoreCoordinator *) persistentStoreCoordinator {
+    if ( persistentStoreCoordinator != nil ) {
+        return persistentStoreCoordinator;
+    }
+    
+    NSArray*  paths         = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
+    NSString* cachePath     = [paths lastObject];
+    NSURL* storeUrl         = [NSURL fileURLWithPath: [cachePath stringByAppendingPathComponent: @"ElectionsWatcher.sqlite"]];
+    
+    NSError *error = nil;
+    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+    NSDictionary* storeOptions = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                                  [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+    
+    if ( ![persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
+                                                   configuration: nil 
+                                                             URL: storeUrl 
+                                                         options: storeOptions 
+                                                           error: &error] ) {
+        
+        /*Error for store creation should be handled in here*/
+        NSLog ( @"Unresolved error %@, %@", error, [error userInfo] );
+        exit ( -1 );
+    }
+    
+    return persistentStoreCoordinator;
+}
 
 @end
