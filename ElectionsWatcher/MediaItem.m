@@ -7,7 +7,7 @@
 //
 
 #import "MediaItem.h"
-#import "ViolationInfo.h"
+#import "ChecklistItem.h"
 
 
 @implementation MediaItem
@@ -15,6 +15,6 @@
 @dynamic filePath;
 @dynamic mediaType;
 @dynamic serverUrl;
-@dynamic watcherMessage;
+@dynamic checklistItem;
 
 @end

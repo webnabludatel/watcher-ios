@@ -1,5 +1,5 @@
 //
-//  WatcherMessage.h
+//  ChecklistItem.h
 //  ElectionsWatcher
 //
 //  Created by xfire on 05.02.12.
@@ -11,20 +11,18 @@
 
 @class MediaItem;
 
-@interface WatcherMessage : NSManagedObject
+@interface ChecklistItem : NSManagedObject
 
-@property (nonatomic, retain) NSString * code;
-@property (nonatomic, retain) NSString * comments;
 @property (nonatomic, retain) NSNumber * lat;
 @property (nonatomic, retain) NSNumber * lng;
-@property (nonatomic, retain) NSString * message;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * synchronized;
 @property (nonatomic, retain) NSDate * timestamp;
+@property (nonatomic, retain) NSString * value;
 @property (nonatomic, retain) NSSet *mediaItems;
 @end
 
-@interface WatcherMessage (CoreDataGeneratedAccessors)
+@interface ChecklistItem (CoreDataGeneratedAccessors)
 
 - (void)addMediaItemsObject:(MediaItem *)value;
 - (void)removeMediaItemsObject:(MediaItem *)value;
