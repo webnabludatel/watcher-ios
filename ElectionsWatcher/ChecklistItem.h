@@ -19,6 +19,8 @@
 @property (nonatomic, retain) NSNumber * synchronized;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * value;
+@property (nonatomic, retain) NSNumber * sectionIndex;
+@property (nonatomic, retain) NSNumber * screenIndex;
 @property (nonatomic, retain) NSSet *mediaItems;
 @end
 

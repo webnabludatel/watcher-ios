@@ -18,6 +18,8 @@
 @dynamic synchronized;
 @dynamic timestamp;
 @dynamic value;
+@dynamic sectionIndex;
+@dynamic screenIndex;
 @dynamic mediaItems;
 
 @end
