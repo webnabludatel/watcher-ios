@@ -7,18 +7,22 @@
 //
 
 #import "WatcherChecklistScreenController.h"
-
+#import "WatcherChecklistScreenCell.h"
 
 @implementation WatcherChecklistScreenController
 
+@synthesize screenIndex;
+@synthesize sectionIndex;
 @synthesize screenInfo;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
+    
     if (self) {
-        // Custom initialization
+        self.tableView.allowsSelection = NO;
     }
+    
     return self;
 }
 
@@ -59,6 +63,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.title = [self.screenInfo objectForKey: @"title"];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -84,30 +90,44 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return [self.screenInfo objectForKey: @"title"];
+}
+
+- (NSInteger) tableView: (UITableView *) tableView numberOfRowsInSection: (NSInteger) section
 {
     return [[screenInfo objectForKey: @"items"] count];
 }
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath {
+    return 60;
+}
+
+- (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
     NSArray *items = [screenInfo objectForKey: @"items"];
     NSDictionary *itemInfo = [items objectAtIndex: indexPath.row];
     
     cell.textLabel.text = [itemInfo objectForKey: @"title"];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"inputControlCell";
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSArray *items              = [screenInfo objectForKey: @"items"];
+    NSDictionary *itemInfo      = [items objectAtIndex: indexPath.row];
+    NSString *CellIdentifier    = [@"inputCell_" stringByAppendingString: [[itemInfo objectForKey: @"control"] stringValue]];
+    UITableViewCell *cell       = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    if ( cell == nil ) {
+        cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
+                                                  reuseIdentifier: CellIdentifier 
+                                                     withItemInfo: itemInfo] autorelease];
+        
+        WatcherChecklistScreenCell *watcherCell = (WatcherChecklistScreenCell *) cell;
+        watcherCell.sectionIndex = self.sectionIndex;
+        watcherCell.screenIndex = self.screenIndex;
     }
     
     cell.textLabel.text = nil;

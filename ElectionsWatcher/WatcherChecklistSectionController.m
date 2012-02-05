@@ -8,17 +8,20 @@
 
 #import "WatcherChecklistSectionController.h"
 #import "WatcherChecklistScreenController.h"
+#import "AppDelegate.h"
 
 @implementation WatcherChecklistSectionController
 
 @synthesize sectionData;
+@synthesize sectionIndex;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
+    
     if (self) {
-        // Custom initialization
     }
+    
     return self;
 }
 
@@ -59,6 +62,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.title = [sectionData objectForKey: @"title"];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -100,7 +105,15 @@
     NSArray *screens = [self.sectionData objectForKey: @"screens"];
     NSDictionary *screenInfo = [screens objectAtIndex: indexPath.row];
     
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSDictionary *bindParams = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                [NSNumber numberWithInt: sectionIndex], @"SECTION_INDEX",
+                                [NSNumber numberWithInt: indexPath.row], @"SCREEN_INDEX", nil];
+    
+    NSArray *results = [appDelegate executeFetchRequest: @"findItemsByScreen" forEntity: @"ChecklistItem" withParameters: bindParams];
+    
     cell.textLabel.text = [screenInfo objectForKey: @"title"];
+    cell.detailTextLabel.text = [NSString stringWithFormat: @"Отмечено %d пунктов", [results count]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -127,6 +140,8 @@
     
     WatcherChecklistScreenController *screenController = [[WatcherChecklistScreenController alloc] initWithStyle: UITableViewStyleGrouped];
     screenController.screenInfo = [screens objectAtIndex: indexPath.row];
+    screenController.screenIndex = indexPath.row;
+    screenController.sectionIndex = self.sectionIndex;
     
     [self.navigationController pushViewController: screenController animated: YES];
     [screenController release];

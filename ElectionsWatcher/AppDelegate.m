@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 
 #import "WatcherChecklistController.h"
+#import "WatcherChecklistSectionController.h"
 #import "WatcherGuideController.h"
 #import "WatcherSettingsController.h"
 
@@ -20,6 +21,7 @@
 @synthesize managedObjectContext;
 @synthesize persistentStoreCoordinator;
 @synthesize locationManager;
+@synthesize currentLocation;
 
 - (void)dealloc
 {
@@ -46,6 +48,13 @@
     
     UINavigationController *navigationController1 = [[[UINavigationController alloc] initWithRootViewController: viewController1] autorelease];
     UINavigationController *navigationController2 = [[[UINavigationController alloc] initWithRootViewController: viewController2] autorelease];
+
+    // reload summary data on navigation
+    navigationController1.delegate = self;
+    
+    navigationController1.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    navigationController2.navigationBar.barStyle = UIBarStyleBlackOpaque;;
+    [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackOpaque;
     
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
     self.tabBarController.viewControllers = [NSArray arrayWithObjects: navigationController1, navigationController2, viewController3, nil];
@@ -83,6 +92,7 @@
     /*
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
+    [self.locationManager startUpdatingLocation];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -107,6 +117,41 @@
 {
 }
 */
+
+#pragma mark -
+#pragma mark Navigation controller delegate
+
+-(void)navigationController:(UINavigationController *)navigationController 
+     willShowViewController:(UIViewController *)viewController 
+                   animated:(BOOL)animated {
+    
+    if ( [viewController isKindOfClass: [WatcherChecklistController class]] ) {
+        WatcherChecklistController *checklistController = (WatcherChecklistController *) viewController;
+        [checklistController.checklistTableView reloadData];
+    }
+    
+    if ( [viewController isKindOfClass: [WatcherChecklistSectionController class]] ) {
+        WatcherChecklistSectionController *checklistSectionController = (WatcherChecklistSectionController *) viewController;
+        [checklistSectionController.tableView reloadData];
+    }
+        
+}
+
+-(void)navigationController:(UINavigationController *)navigationController 
+      didShowViewController:(UIViewController *)viewController 
+                   animated:(BOOL)animated {
+    
+}
+
+#pragma mark -
+#pragma mark Location manager
+
+-(void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation {
+    self.currentLocation = newLocation;
+    
+    [manager stopUpdatingHeading];
+    [manager stopUpdatingLocation];
+}
 
 #pragma mark -
 #pragma mark Core Data stack
@@ -162,6 +207,26 @@
     }
     
     return persistentStoreCoordinator;
+}
+
+#pragma mark -
+#pragma mark Core Data helpers
+
+- (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params {
+    NSManagedObjectContext *context = [self managedObjectContext];
+    NSManagedObjectModel *model     = [self managedObjectModel];
+    NSFetchRequest *fetchRequest    = [model fetchRequestFromTemplateWithName: request substitutionVariables: params];
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName: entity inManagedObjectContext: context];
+    
+    [fetchRequest setEntity: entityDesc];
+    
+    NSError *error   = nil;
+    NSArray *results = [context executeFetchRequest: fetchRequest error: &error];
+    
+    if ( error )
+        NSLog(@"Core Data Error: %@", error.description);
+
+    return results;
 }
 
 @end

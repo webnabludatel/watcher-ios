@@ -8,6 +8,7 @@
 
 #import "WatcherChecklistController.h"
 #import "WatcherChecklistSectionController.h"
+#import "AppDelegate.h"
 
 @implementation WatcherChecklistController
 
@@ -48,10 +49,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    self.navigationItem.leftBarButtonItem = 
-        [[[UIBarButtonItem alloc] initWithTitle: @"S.O.S." style: UIBarButtonItemStylePlain target: nil action: nil] autorelease];
     self.navigationItem.rightBarButtonItem = 
-        [[[UIBarButtonItem alloc] initWithTitle: @"Sync" style: UIBarButtonItemStylePlain target: nil action: nil] autorelease];
+        [[[UIBarButtonItem alloc] initWithTitle: @"S.O.S." style: UIBarButtonItemStylePlain target: nil action: nil] autorelease];
 }
 
 - (void)viewDidUnload
@@ -102,7 +101,13 @@
                                                                                                                          ascending: YES]]];
     NSDictionary *screenInfo = [sortedValues objectAtIndex: indexPath.row];
     
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSDictionary *bindParams = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithInt: indexPath.row], @"SECTION_INDEX", nil];
+    NSArray *results = [appDelegate executeFetchRequest: @"findItemsBySection" forEntity: @"ChecklistItem" withParameters: bindParams];
+                        
+    
     cell.textLabel.text = [screenInfo objectForKey: @"title"];
+    cell.detailTextLabel.text = [NSString stringWithFormat: @"Отмечено %d пунктов", [results count]];
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
@@ -126,6 +131,7 @@
                                                                                                                          ascending: YES]]];
     WatcherChecklistSectionController *sectionController = [[WatcherChecklistSectionController alloc] initWithStyle: UITableViewStylePlain];
     sectionController.sectionData = [sortedValues objectAtIndex: indexPath.row];
+    sectionController.sectionIndex = indexPath.row;
     
     [self.navigationController pushViewController: sectionController animated: YES];
     [sectionController release];

@@ -11,5 +11,7 @@
 @interface WatcherChecklistScreenController : UITableViewController
 
 @property (nonatomic, retain) NSDictionary *screenInfo;
+@property (nonatomic) NSInteger screenIndex;
+@property (nonatomic) NSInteger sectionIndex;
 
 @end
