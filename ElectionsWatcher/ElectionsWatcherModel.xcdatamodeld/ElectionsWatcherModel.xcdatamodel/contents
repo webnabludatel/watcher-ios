@@ -1,14 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="ViolationInfo" representedClassName="ViolationInfo" syncable="YES">
-        <attribute name="code" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="comments" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="ChecklistItem" representedClassName="ChecklistItem" syncable="YES">
+        <attribute name="lat" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lng" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="screenIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="sectionIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="synchronized" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="mediaItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaItem" inverseName="checklistItem" inverseEntity="MediaItem" syncable="YES"/>
     </entity>
+    <entity name="MediaItem" representedClassName="MediaItem" syncable="YES">
+        <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serverUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="checklistItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChecklistItem" inverseName="mediaItems" inverseEntity="ChecklistItem" syncable="YES"/>
+    </entity>
+    <fetchRequest name="findItemByName" entity="ChecklistItem" predicateString="name == $ITEM_NAME"/>
+    <fetchRequest name="findItemsByScreen" entity="ChecklistItem" predicateString="sectionIndex == $SECTION_INDEX AND screenIndex == $SCREEN_INDEX"/>
+    <fetchRequest name="findItemsBySection" entity="ChecklistItem" predicateString="sectionIndex == $SECTION_INDEX"/>
     <elements>
-        <element name="ViolationInfo" positionX="160" positionY="192" width="128" height="135"/>
+        <element name="MediaItem" positionX="232" positionY="54" width="128" height="105"/>
+        <element name="ChecklistItem" positionX="-27" positionY="42" width="128" height="180"/>
     </elements>
 </model>
