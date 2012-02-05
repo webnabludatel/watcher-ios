@@ -153,7 +153,7 @@
 }
 
 - (void)dismissPicker {
-    if (self.actionSheet && self.actionSheet.visible)
+    if (self.actionSheet && self.actionSheet.superview)
         [_actionSheet dismissWithClickedButtonIndex:0 animated:YES];
     else if (self.popOverController && self.popOverController.popoverVisible)
         [_popOverController dismissPopoverAnimated:YES];
