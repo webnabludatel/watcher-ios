@@ -1,23 +1,25 @@
 //
-//  ViolationInfo.m
+//  WatcherMessage.m
 //  ElectionsWatcher
 //
-//  Created by xfire on 14.01.12.
+//  Created by xfire on 05.02.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "ViolationInfo.h"
+#import "WatcherMessage.h"
+#import "MediaItem.h"
 
 
-@implementation ViolationInfo
+@implementation WatcherMessage
 
 @dynamic code;
-@dynamic timestamp;
-@dynamic name;
 @dynamic comments;
-@dynamic message;
-@dynamic synchronized;
 @dynamic lat;
 @dynamic lng;
+@dynamic message;
+@dynamic name;
+@dynamic synchronized;
+@dynamic timestamp;
+@dynamic mediaItems;
 
 @end
