@@ -1,4 +1,4 @@
-body{max-width:600px; margin:0 auto;}
+body{max-width:800px; margin:0 auto;}
 .menu li{list-style:none;}
 .menu > li > a{font-size:120%; font-weight:bold;}
 .menu-sectins > li > a{font-weight:bold; font-style:italic;}
@@ -11,3 +11,37 @@ body{max-width:600px; margin:0 auto;}
 .content-complaint-title{font-size:75%; font-weight:bold; line-height:1.2; text-align:center;}
 .content-complaint-{font-size:75%; line-height:1.2; font-style:italic; text-align:center;}
 .content-complaint{font-size:75%; line-height:1.2;}
+
+
+
+
+
+/*iPhone styles*/
+
+body{padding:0; font-size:90%; font-family:Tahoma, Geneva, sans-serif;}
+h1{font-size:130%;}
+h2{font-size:120%;}
+h3{font-size:110%;}
+.menu{margin:0; padding:0; border-top:1px solid #E7E7E7;}
+.menu, .submenu{margin:0; padding:0; border-top:1px solid #E7E7E7;}
+.menu .submenu{border-top:0;}
+.menu ul, .submenu ul{margin:0; padding:0;}
+.menu > li, .submenu >li{margin:0; padding:0; list-style:none;}
+.menu > li > a, .submenu a{display:block; font-size:110%;}
+.menu > li > a{font-weight:bold;}
+.menu a, .submenu a{display:block; padding:10px 30px 10px 10px; border-bottom:1px solid #E7E7E7; text-decoration:none; font-size:100%; color:#000; background:#FFF;}
+.menu a:hover, .menu a:active, .submenu a:hover, .submenu a:active{background:#F0F0F0!important;}
+.menu a:before, .submenu a:before{content:"›"; float:right; display:block; margin:0 -20px 0 10px; color:#7F7F7F; font-weight:normal; font-style:normal;}
+
+.text{padding:10px; background:#FFF;}
+
+.breadcrumb{padding:10px;}
+
+
+@media only screen and (min-width: 800px) {
+
+body{background:#EEE;}
+.content{border:1px solid #999; box-shadow:0 0 30px #000; background:#FFF;}
+
+
+}
