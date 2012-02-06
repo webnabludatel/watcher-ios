@@ -1,0 +1,13 @@
+body{max-width:600px; margin:0 auto;}
+.menu li{list-style:none;}
+.menu > li > a{font-size:120%; font-weight:bold;}
+.menu-sectins > li > a{font-weight:bold; font-style:italic;}
+.note{clear:both; float:right; width:200px; margin:0 0 5px 15px; padding:5px; background:#CCDDE7;}
+.note + p:after{content:""; display:block; /*height:4px; background:#F00; clear:both;*/}
+
+.content-complaint-header{margin:10px 0; font-size:75%; line-height:1.2; text-align:right;}
+.content-complaint-fio{margin-top:-7px; font-size:75%; font-style:italic; line-height:1.2; text-align:right;}
+.content-complaint-title-fake{font-size:75%; font-weight:bold; line-height:1.2; text-align:center;}
+.content-complaint-title{font-size:75%; font-weight:bold; line-height:1.2; text-align:center;}
+.content-complaint-{font-size:75%; line-height:1.2; font-style:italic; text-align:center;}
+.content-complaint{font-size:75%; line-height:1.2;}
