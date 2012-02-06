@@ -10,4 +10,6 @@
 
 @interface WatcherGuideController : UIViewController
 
+@property (nonatomic, retain) IBOutlet UIWebView *watcherGuideView;
+
 @end

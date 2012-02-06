@@ -10,6 +10,8 @@
 
 @implementation WatcherGuideController
 
+@synthesize watcherGuideView;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -29,10 +31,16 @@
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    
+
+    NSString *indexPath = [[NSBundle mainBundle] pathForResource: @"golos_index" 
+                                                          ofType: @"html"];
+    
+    NSURL *indexUrl = [NSURL fileURLWithPath: indexPath];
+    [self.watcherGuideView loadRequest: [NSURLRequest requestWithURL: indexUrl]];
 }
 
 - (void)viewDidUnload

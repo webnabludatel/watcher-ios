@@ -171,6 +171,7 @@
                 textField.text = self.checklistItem.value;
             }
                 break;
+                
             case INPUT_SWITCH: {
                 UISlider *slider = (UISlider *) self.control;
                 NSDictionary *switchOptions = [self.itemInfo objectForKey: @"switch_options"];
@@ -182,9 +183,22 @@
                     slider.value = 0;
             }
                 break;
-            case INPUT_PHOTO:
-            case INPUT_VIDEO:
+                
+            case INPUT_PHOTO: {
+                UIButton *button = (UIButton *) self.control;
+                [button setTitle: [NSString stringWithFormat: @"Фото (%d)", [self.checklistItem.mediaItems count]] 
+                        forState: UIControlStateNormal];
+                
+            }
                 break;
+                
+            case INPUT_VIDEO: {
+                UIButton *button = (UIButton *) self.control;
+                [button setTitle: [NSString stringWithFormat: @"Видео (%d)", [self.checklistItem.mediaItems count]] 
+                        forState: UIControlStateNormal];
+            }
+                break;
+                
             case INPUT_COMMENT:
                 break;
         }
@@ -198,15 +212,15 @@
         self.checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
                                                             inManagedObjectContext: [appDelegate managedObjectContext]];
      
-        checklistItem.name = [itemInfo objectForKey: @"name"];
-        checklistItem.sectionIndex = [NSNumber numberWithInt: self.sectionIndex];
-        checklistItem.screenIndex = [NSNumber numberWithInt: self.screenIndex];
+        self.checklistItem.name = [itemInfo objectForKey: @"name"];
+        self.checklistItem.sectionIndex = [NSNumber numberWithInt: self.sectionIndex];
+        self.checklistItem.screenIndex = [NSNumber numberWithInt: self.screenIndex];
     }
     
-    checklistItem.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
-    checklistItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
-    checklistItem.timestamp = [NSDate date];
-    checklistItem.synchronized = [NSNumber numberWithBool: NO];
+    self.checklistItem.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
+    self.checklistItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
+    self.checklistItem.timestamp = [NSDate date];
+    self.checklistItem.synchronized = [NSNumber numberWithBool: NO];
     
     switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
         case INPUT_TEXT:
@@ -240,6 +254,7 @@
     }
 
     NSError *error = nil;
+    
     if ( ! [[appDelegate managedObjectContext] save: &error] )
         NSLog(@"error saving data: %@", error);
 
@@ -276,38 +291,121 @@
 }
 
 #pragma mark -
+#pragma mark Action sheet
+
+- (void) actionSheet: (UIActionSheet *) actionSheet clickedButtonAtIndex: (NSInteger) buttonIndex {
+    if ( buttonIndex == 0 ) {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        imagePicker.allowsEditing = NO;
+        imagePicker.delegate = self;
+        imagePicker.mediaTypes = [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_PHOTO ?
+            [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil] :
+            [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil] ;
+        
+        UIViewController *parentController = [self firstAvailableUIViewController];
+        [parentController presentModalViewController: imagePicker animated: YES];
+    }
+    
+}
+
+#pragma mark -
 #pragma mark Using iPhone camera
 
 - (void) takePhoto: (id) sender {
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    imagePicker.allowsEditing = NO;
-    imagePicker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil];
-    imagePicker.delegate = self;
+    UIActionSheet *photoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Фото" 
+                                                                  delegate: self 
+                                                         cancelButtonTitle: @"Отменить" 
+                                                    destructiveButtonTitle: nil 
+                                                         otherButtonTitles: @"Снять фото", @"Посмотреть фото", nil];
     
-    UIViewController *parentController = [self firstAvailableUIViewController];
-    [parentController presentModalViewController: imagePicker animated: YES];
-    
+    UIViewController *parentViewController = [self firstAvailableUIViewController];
+    [photoActionSheet showFromTabBar: parentViewController.tabBarController.tabBar];
+    [photoActionSheet release];
 }
 
 - (void) takeVideo: (id) sender {
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    imagePicker.allowsEditing = NO;
-    imagePicker.mediaTypes = [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-    imagePicker.delegate = self;
-    
-    UIViewController *parentController = [self firstAvailableUIViewController];
-    [parentController presentModalViewController: imagePicker animated: YES];
+    UIActionSheet *videoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Видео" 
+                                                                  delegate: self 
+                                                         cancelButtonTitle: @"Отменить" 
+                                                    destructiveButtonTitle: nil 
+                                                         otherButtonTitles: @"Снять видео", @"Посмотреть видео", nil];
+    UIViewController *parentViewController = [self firstAvailableUIViewController];
+    [videoActionSheet showFromTabBar: parentViewController.tabBarController.tabBar];
+    [videoActionSheet release];
 }
 
 - (void) imagePickerController: (UIImagePickerController *) picker didFinishPickingMediaWithInfo: (NSDictionary *) info {
-    // TODO: implement saving photo/video
+    NSLog(@"media info: %@", info);
     
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSFileManager *fm = [NSFileManager defaultManager];
+    MediaItem *mediaItem = [NSEntityDescription insertNewObjectForEntityForName: @"MediaItem" 
+                                                         inManagedObjectContext: [appDelegate managedObjectContext]];
+
+    NSString *docsDirectory = [NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
+    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+    
+    // Handle a still image capture
+    if ( CFStringCompare ( (CFStringRef) mediaType, kUTTypeImage, 0 ) == kCFCompareEqualTo ) {
+        UIImage *originalImage = (UIImage *) [info objectForKey: UIImagePickerControllerOriginalImage];
+        NSString *photosDirectory = [docsDirectory stringByAppendingPathComponent: @"Photos"];
+        NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+        NSString *imageFilename = [NSString stringWithFormat: @"%d.png", fabs(currentTimestamp) * 1000]; 
+        NSString *imageFilepath = [photosDirectory stringByAppendingPathComponent: imageFilename];
+        
+        UIImageWriteToSavedPhotosAlbum (originalImage, nil, nil , nil);
+        
+        if ( ! [fm fileExistsAtPath: photosDirectory] )
+            [fm createDirectoryAtPath: photosDirectory withIntermediateDirectories: YES 
+                           attributes: nil 
+                                error: nil];
+        
+        [UIImagePNGRepresentation(originalImage) writeToFile: imageFilepath atomically: YES];
+        
+        mediaItem.mediaType = mediaType;
+        mediaItem.filePath = imageFilepath;
+    }   
+    
+    // Handle a movie capture
+    if ( CFStringCompare ( (CFStringRef) mediaType, kUTTypeMovie, 0 ) == kCFCompareEqualTo ) {
+        NSString *moviePath = [[info objectForKey: UIImagePickerControllerMediaURL] path];
+        NSString *videosDirectory = [docsDirectory stringByAppendingPathComponent: @"Videos"];
+        NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
+        NSString *videoFilename = [NSString stringWithFormat: @"%d.mov", fabs(currentTimestamp) * 1000];
+        NSString *videoFilepath = [videosDirectory stringByAppendingPathComponent: videoFilename];
+        
+        if ( ! [fm fileExistsAtPath: videosDirectory] )
+            [fm createDirectoryAtPath: videosDirectory withIntermediateDirectories: YES 
+                           attributes: nil 
+                                error: nil];
+        
+        if ( UIVideoAtPathIsCompatibleWithSavedPhotosAlbum ( moviePath ) ) {
+            UISaveVideoAtPathToSavedPhotosAlbum ( moviePath, nil, nil, nil );
+        }
+        
+        [fm copyItemAtPath: moviePath toPath: videoFilepath error: nil];
+        
+        mediaItem.mediaType = mediaType;
+        mediaItem.filePath = videoFilepath;
+    }
+    
+    [self.checklistItem addMediaItemsObject: mediaItem];
+    
+    NSError *error = nil;
+    
+    if ( ! [[appDelegate managedObjectContext] save: &error] )
+        NSLog(@"error saving data: %@", error);
+    
+    UIViewController *parentController = [self firstAvailableUIViewController];
+    [parentController dismissModalViewControllerAnimated: YES];
     [picker release];
 }
 
 - (void) imagePickerControllerDidCancel: (UIImagePickerController *) picker {
+    
+    UIViewController *parentController = [self firstAvailableUIViewController];
+    [parentController dismissModalViewControllerAnimated: YES];
     [picker release];
 }
 
