@@ -19,6 +19,7 @@
 
 @synthesize itemInfo;
 @synthesize control;
+@synthesize itemLabel;
 @synthesize checklistItem;
 @synthesize sectionIndex;
 @synthesize screenIndex;
@@ -33,9 +34,13 @@
         self.itemInfo = anItemInfo;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
-        self.textLabel.font = [UIFont systemFontOfSize: 12];
-        self.textLabel.numberOfLines = 0;
-        self.textLabel.lineBreakMode = UILineBreakModeTailTruncation;
+        self.itemLabel = [[[UILabel alloc] init] autorelease];
+        self.itemLabel.font = [UIFont boldSystemFontOfSize: 13];
+        self.itemLabel.numberOfLines = 0;
+        self.itemLabel.lineBreakMode = UILineBreakModeWordWrap;
+        self.itemLabel.backgroundColor = [UIColor clearColor];
+        self.itemLabel.textColor = [UIColor darkTextColor];
+        self.itemLabel.text = [self.itemInfo objectForKey: @"title"];
 
         switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
             case INPUT_TEXT: {
@@ -129,6 +134,7 @@
                 break;
         }
         
+        [self.contentView addSubview: self.itemLabel];
         [self.contentView addSubview: self.control];
     }
     
@@ -140,12 +146,19 @@
     [super layoutSubviews];
     
     if ( self.itemInfo ) {
-        CGRect labelFrame, controlFrame;
-        CGRectDivide(self.contentView.bounds, &labelFrame, &controlFrame, self.bounds.size.width/2.0f, CGRectMinXEdge);
+        NSString *itemTitle = [self.itemInfo objectForKey: @"title"];
+        CGSize labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
+                                 constrainedToSize: CGSizeMake(280, 120) 
+                                     lineBreakMode: UILineBreakModeWordWrap];
         
-        self.textLabel.frame = CGRectInset(labelFrame,   10, 10);
-        self.control.frame   = CGRectInset(controlFrame, 10, 10);
+        CGRect labelFrame, controlArea, controlFrame, timestampFrame;
+        CGRectDivide(CGRectInset(self.contentView.bounds, 10, 10), &labelFrame, &controlArea, labelSize.height, CGRectMinYEdge);
+        CGRectDivide(controlArea, &timestampFrame, &controlFrame, controlArea.size.width/3.0f, CGRectMinXEdge);
         
+        self.itemLabel.frame = labelFrame;
+        self.control.frame   = CGRectMake(controlFrame.origin.x, controlFrame.origin.y+10, controlFrame.size.width, controlFrame.size.height-10);
+        
+//        NSLog(@"label: %@", self.itemLabel);
         [self loadItem];
     }
 }
@@ -185,17 +198,21 @@
                 break;
                 
             case INPUT_PHOTO: {
-                UIButton *button = (UIButton *) self.control;
-                [button setTitle: [NSString stringWithFormat: @"Фото (%d)", [self.checklistItem.mediaItems count]] 
-                        forState: UIControlStateNormal];
+                if ( [[self mediaItemsOfType: (NSString *) kUTTypeImage] count] ) {
+                    UIButton *button = (UIButton *) self.control;
+                    [button setTitle: [NSString stringWithFormat: @"Фото (%d)", [[self mediaItemsOfType: (NSString *) kUTTypeImage] count]] 
+                            forState: UIControlStateNormal];
+                }
                 
             }
                 break;
                 
             case INPUT_VIDEO: {
-                UIButton *button = (UIButton *) self.control;
-                [button setTitle: [NSString stringWithFormat: @"Видео (%d)", [self.checklistItem.mediaItems count]] 
-                        forState: UIControlStateNormal];
+                if ( [[self mediaItemsOfType: (NSString *) kUTTypeMovie] count] ) {
+                    UIButton *button = (UIButton *) self.control;
+                    [button setTitle: [NSString stringWithFormat: @"Видео (%d)", [[self mediaItemsOfType: (NSString *) kUTTypeMovie] count]] 
+                            forState: UIControlStateNormal];
+                }
             }
                 break;
                 
@@ -248,6 +265,7 @@
             break;
         case INPUT_PHOTO:
         case INPUT_VIDEO:
+            self.checklistItem.value = @"check attached media files";
             break;
         case INPUT_COMMENT:
             break;
@@ -290,6 +308,12 @@
     return image;
 }
 
+- (NSArray *) mediaItemsOfType: (NSString *) mediaType {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF.mediaType LIKE %@", mediaType];
+    return [[self.checklistItem.mediaItems allObjects] filteredArrayUsingPredicate: predicate];
+}
+                                                        
+
 #pragma mark -
 #pragma mark Action sheet
 
@@ -305,6 +329,9 @@
         
         UIViewController *parentController = [self firstAvailableUIViewController];
         [parentController presentModalViewController: imagePicker animated: YES];
+    }
+    
+    if ( buttonIndex == 1 ) {
     }
     
 }
@@ -336,7 +363,8 @@
 }
 
 - (void) imagePickerController: (UIImagePickerController *) picker didFinishPickingMediaWithInfo: (NSDictionary *) info {
-    NSLog(@"media info: %@", info);
+    // save checklist item before adding media, otherwise it doesn't work
+    [self saveItem];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -391,15 +419,13 @@
     }
     
     [self.checklistItem addMediaItemsObject: mediaItem];
-    
-    NSError *error = nil;
-    
-    if ( ! [[appDelegate managedObjectContext] save: &error] )
-        NSLog(@"error saving data: %@", error);
+    [self saveItem];
     
     UIViewController *parentController = [self firstAvailableUIViewController];
     [parentController dismissModalViewControllerAnimated: YES];
     [picker release];
+    
+    [self setNeedsLayout];
 }
 
 - (void) imagePickerControllerDidCancel: (UIImagePickerController *) picker {
@@ -407,6 +433,8 @@
     UIViewController *parentController = [self firstAvailableUIViewController];
     [parentController dismissModalViewControllerAnimated: YES];
     [picker release];
+    
+    [self setNeedsLayout];
 }
 
 #pragma mark -

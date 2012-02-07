@@ -22,6 +22,7 @@
 
 @property (nonatomic, assign) NSDictionary *itemInfo;
 @property (nonatomic, assign) UIControl *control;
+@property (nonatomic, assign) UILabel *itemLabel;
 @property (nonatomic, retain) ChecklistItem *checklistItem;
 @property (nonatomic) NSInteger sectionIndex;
 @property (nonatomic) NSInteger screenIndex;
@@ -31,5 +32,6 @@
 - (UIImage *) imageFromText: (NSString *) text;
 - (void) loadItem;
 - (void) saveItem;
+- (NSArray *) mediaItemsOfType: (NSString *) mediaType;
 
 @end

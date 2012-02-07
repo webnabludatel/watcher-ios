@@ -104,20 +104,29 @@
 }
 
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath {
-    return 60;
+    NSDictionary *itemInfo = [[screenInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    NSString *itemTitle = [itemInfo objectForKey: @"title"];
+    
+    CGSize labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
+                             constrainedToSize: CGSizeMake(280, 120) 
+                                 lineBreakMode: UILineBreakModeWordWrap];
+    
+    return labelSize.height + 70;
 }
 
+/*
 - (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
-    NSArray *items = [screenInfo objectForKey: @"items"];
-    NSDictionary *itemInfo = [items objectAtIndex: indexPath.row];
-    
-    cell.textLabel.text = [itemInfo objectForKey: @"title"];
+    WatcherChecklistScreenCell *watcherCell = (WatcherChecklistScreenCell *) cell;
+    watcherCell.itemInfo = [[screenInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    [watcherCell setNeedsLayout];
 }
+ */
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *items              = [screenInfo objectForKey: @"items"];
     NSDictionary *itemInfo      = [items objectAtIndex: indexPath.row];
     NSString *CellIdentifier    = [@"inputCell_" stringByAppendingString: [[itemInfo objectForKey: @"control"] stringValue]];
+//    NSString *CellIdentifier    = [NSString stringWithFormat: @"cell_%d_%d", indexPath.section, indexPath.row];
     UITableViewCell *cell       = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if ( cell == nil ) {
