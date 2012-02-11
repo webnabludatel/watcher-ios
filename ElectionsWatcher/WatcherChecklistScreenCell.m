@@ -124,6 +124,14 @@
                 
             case INPUT_COMMENT: {
                 self.control = [[[UITextField alloc] init] autorelease];
+                
+                UITextField *textField = (UITextField *) self.control;
+                textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+                textField.keyboardType = UIKeyboardTypeDefault;
+                textField.returnKeyType = UIReturnKeyDone;
+                textField.placeholder = [self.itemInfo objectForKey: @"hint"];
+                textField.delegate = self;
+                textField.font = [UIFont systemFontOfSize: 14];
             }
                 break;
                 
@@ -156,7 +164,9 @@
         CGRectDivide(controlArea, &timestampFrame, &controlFrame, controlArea.size.width/3.0f, CGRectMinXEdge);
         
         self.itemLabel.frame = labelFrame;
-        self.control.frame   = CGRectMake(controlFrame.origin.x, controlFrame.origin.y+10, controlFrame.size.width, controlFrame.size.height-10);
+        self.control.frame   = ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_SWITCH ) ?
+            CGRectMake(controlFrame.origin.x, controlFrame.origin.y+10, controlFrame.size.width, controlFrame.size.height-10) :
+            CGRectMake(controlArea.origin.x, controlArea.origin.y+10, controlArea.size.width, controlArea.size.height-10);
         
 //        NSLog(@"label: %@", self.itemLabel);
         [self loadItem];

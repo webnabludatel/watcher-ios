@@ -15,6 +15,7 @@
 #define INPUT_PHOTO         4
 #define INPUT_VIDEO         5
 #define INPUT_COMMENT       6
+#define INPUT_CONSTANT      7
 
 @class ChecklistItem;
 

@@ -12,6 +12,8 @@
 #import "WatcherChecklistSectionController.h"
 #import "WatcherGuideController.h"
 #import "WatcherSettingsController.h"
+#import "WatcherReportController.h"
+#import "WatcherSOSController.h"
 
 @implementation AppDelegate
 
@@ -40,24 +42,47 @@
 	[locationManager setDesiredAccuracy: kCLLocationAccuracyHundredMeters];
 	[locationManager setDistanceFilter: 1000];
     
-    
     // UI Init
-    UIViewController *viewController1 = [[[WatcherChecklistController alloc] initWithNibName:@"WatcherChecklistController" bundle:nil] autorelease];
-    UIViewController *viewController2 = [[[WatcherGuideController alloc] initWithNibName:@"WatcherGuideController" bundle:nil] autorelease];
-    UIViewController *viewController3 = [[[WatcherSettingsController alloc] initWithNibName: @"WatcherSettingsController" bundle: nil] autorelease];
+    UIViewController *checklistController   = [[[WatcherChecklistController alloc] initWithNibName:@"WatcherChecklistController" 
+                                                                                            bundle:nil] autorelease];
     
-    UINavigationController *navigationController1 = [[[UINavigationController alloc] initWithRootViewController: viewController1] autorelease];
-    UINavigationController *navigationController2 = [[[UINavigationController alloc] initWithRootViewController: viewController2] autorelease];
+    UIViewController *guideController       = [[[WatcherGuideController alloc] initWithNibName:@"WatcherGuideController" 
+                                                                                        bundle:nil] autorelease];
+    
+    UIViewController *profileController     = [[[WatcherSettingsController alloc] initWithNibName: @"WatcherSettingsController" 
+                                                                                           bundle: nil] autorelease];
+    
+    UIViewController *reportController      = [[[WatcherReportController alloc] initWithNibName: @"WatcherReportController" 
+                                                                                         bundle: nil] autorelease];
+    
+    UIViewController *sosController         = [[[WatcherSOSController alloc] initWithNibName: @"WatcherSOSController" 
+                                                                                      bundle: nil] autorelease];
+    
+    UINavigationController *navigationController1 = [[[UINavigationController alloc] initWithRootViewController: profileController] autorelease];
+    UINavigationController *navigationController2 = [[[UINavigationController alloc] initWithRootViewController: checklistController] autorelease];
+    UINavigationController *navigationController3 = [[[UINavigationController alloc] initWithRootViewController: guideController] autorelease];
+    UINavigationController *navigationController4 = [[[UINavigationController alloc] initWithRootViewController: sosController] autorelease];
+    UINavigationController *navigationController5 = [[[UINavigationController alloc] initWithRootViewController: reportController] autorelease];
 
     // reload summary data on navigation
     navigationController1.delegate = self;
-    
+
+    // setup bar styles
     navigationController1.navigationBar.barStyle = UIBarStyleBlackOpaque;
-    navigationController2.navigationBar.barStyle = UIBarStyleBlackOpaque;;
+    navigationController2.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    navigationController3.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    navigationController4.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    navigationController5.navigationBar.barStyle = UIBarStyleBlackOpaque;
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackOpaque;
     
+    // init tab bar controller
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
-    self.tabBarController.viewControllers = [NSArray arrayWithObjects: navigationController1, navigationController2, viewController3, nil];
+    self.tabBarController.viewControllers = [NSArray arrayWithObjects: navigationController1, 
+                                             navigationController2, navigationController3, 
+                                             navigationController4, navigationController5, nil];
+    
+    
+    // complete initialization
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     

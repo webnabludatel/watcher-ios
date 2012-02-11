@@ -48,9 +48,6 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    
-    self.navigationItem.rightBarButtonItem = 
-        [[[UIBarButtonItem alloc] initWithTitle: @"S.O.S." style: UIBarButtonItemStylePlain target: nil action: nil] autorelease];
 }
 
 - (void)viewDidUnload

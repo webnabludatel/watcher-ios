@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WatcherSettingsController : UIViewController
+@interface WatcherSettingsController : UITableViewController
 
 @end
