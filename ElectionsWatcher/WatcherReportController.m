@@ -15,7 +15,7 @@
     
     if ( self ) {
         self.title = @"Отчет";
-        self.tabBarItem.image = [UIImage imageNamed:@"second"];
+        self.tabBarItem.image = [UIImage imageNamed:@"report"];
     }
     
     return self;

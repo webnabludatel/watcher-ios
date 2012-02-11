@@ -16,6 +16,7 @@
 #define INPUT_VIDEO         5
 #define INPUT_COMMENT       6
 #define INPUT_CONSTANT      7
+#define INPUT_EMAIL         8
 
 @class ChecklistItem;
 

@@ -21,7 +21,7 @@
     
     if ( self ) {
         self.title = @"Наблюдатель"; // NSLocalizedString(@"First", @"First");
-        self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        self.tabBarItem.image = [UIImage imageNamed:@"checklist"];
         self.watcherChecklist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"WatcherChecklist" 
                                                                                                             ofType: @"plist"]];
     }
@@ -104,7 +104,7 @@
                         
     
     cell.textLabel.text = [screenInfo objectForKey: @"title"];
-    cell.detailTextLabel.text = [NSString stringWithFormat: @"Отмечено %d пунктов", [results count]];
+    cell.detailTextLabel.text = [results count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [results count]] : @"Нарушений не отмечено";
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {

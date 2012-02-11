@@ -11,13 +11,17 @@
 
 @implementation WatcherSettingsController
 
+@synthesize settings;
+
+static NSString *settingsSections[] = { @"personal_info", @"ballot_district_info" };
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if ( self ) {
         self.title = @"Профиль"; // NSLocalizedString(@"First", @"First");
-        self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        self.tabBarItem.image = [UIImage imageNamed:@"profile"];
     }
     
     return self;
@@ -36,7 +40,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     // Do any additional setup after loading the view from its nib.
+    [self loadSettings];
 }
 
 - (void)viewDidUnload
@@ -52,17 +58,59 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-# pragma mark - UITableViewController
+#pragma mark - Settings management
+
+- (void) saveSettings {
+    if ( self.settings ) {
+        NSArray*  paths     = NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES );
+        NSString* settingsPath = [[paths lastObject] stringByAppendingPathComponent: @"WatcherSettings.plist"];
+        
+        [self.settings writeToFile: settingsPath atomically: YES];
+    }
+}
+
+- (void) loadSettings {
+    NSFileManager *fm   = [NSFileManager defaultManager];
+    NSArray*  paths     = NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES );
+    NSString* settingsPath = [[paths lastObject] stringByAppendingPathComponent: @"WatcherSettings.plist"];
+    
+    NSError *error = nil;
+    NSPropertyListFormat format = kCFPropertyListXMLFormat_v1_0;
+    
+    if ( [fm fileExistsAtPath: settingsPath] ) {
+        self.settings = [NSPropertyListSerialization propertyListWithData: [NSData dataWithContentsOfFile: settingsPath] 
+                                                                  options: NSPropertyListMutableContainersAndLeaves 
+                                                                   format: &format
+                                                                    error: &error];
+        if ( error ) 
+            NSLog ( @"error opening settings: %@", error.description );
+        
+    } else {
+        NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSettings" 
+                                                                ofType: @"plist"];
+        
+        self.settings = [NSPropertyListSerialization propertyListWithData: [NSData dataWithContentsOfFile: settingsPath] 
+                                                                  options: NSPropertyListMutableContainersAndLeaves 
+                                                                   format: &format
+                                                                    error: &error];
+        
+        if ( error ) 
+            NSLog ( @"error opening settings: %@", error.description );
+        
+        [fm copyItemAtPath: defaultPath toPath: settingsPath error: &error];
+        
+        if ( error ) 
+            NSLog ( @"error copying settings to docs path: %@", error.description );
+    }
+    
+    [self.tableView reloadData];
+}
+
+#pragma mark - UITableViewController
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    switch ( section ) {
-        case 0:
-            return @"Информация о наблюдателе";
-        case 1:
-            return @"Информация об участке";
-        default:
-            return nil;
-    }
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[section]];
+    return [sectionInfo objectForKey: @"title"];
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
@@ -90,33 +138,38 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return section == 1 ? 60 : 0;
+    return ( section == [[self.settings allKeys] count] - 1 ) ? 60 : 0;
 }
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView {
-    return 2;
+    return [[self.settings allKeys] count];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch ( section ) {
-        case 0:
-            return 3;
-        case 1:
-            return 5;
-        default:
-            return 0;
-    }
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[section]];
+    return [[sectionInfo objectForKey: @"items"] count];
 }
 
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    NSString *itemTitle = [itemInfo objectForKey: @"title"];
+    
+    CGSize labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
+                             constrainedToSize: CGSizeMake(280, 120) 
+                                 lineBreakMode: UILineBreakModeWordWrap];
+    
+    return labelSize.height + 70;
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
-    static NSString *cellId = @"SettingsCell";
+    NSString *cellId = [NSString stringWithFormat: @"SettingsCell_%d_%d", indexPath.section, indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
     if ( cell == nil ) {
-        cell = [[WatcherSettingsCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: cellId];
+        cell = [[WatcherSettingsCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: cellId withItemInfo: itemInfo];
     }
     
     return cell;

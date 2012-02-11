@@ -10,4 +10,9 @@
 
 @interface WatcherSettingsController : UITableViewController
 
+@property (nonatomic, retain) NSDictionary *settings;
+
+- (void) saveSettings;
+- (void) loadSettings;
+
 @end

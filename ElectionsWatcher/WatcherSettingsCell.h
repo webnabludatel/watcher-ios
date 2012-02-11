@@ -10,4 +10,6 @@
 
 @interface WatcherSettingsCell : WatcherChecklistScreenCell
 
+@property (nonatomic,assign) NSMutableDictionary *itemInfo;
+
 @end

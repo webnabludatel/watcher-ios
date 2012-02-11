@@ -16,7 +16,7 @@
     
     if ( self ) {
         self.title = @"S.O.S.";
-        self.tabBarItem.image = [UIImage imageNamed:@"first"];
+        self.tabBarItem.image = [UIImage imageNamed:@"sos"];
     }
     
     return self;

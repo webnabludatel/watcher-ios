@@ -18,7 +18,7 @@
     
     if ( self ) {
         self.title = @"Справочник"; // NSLocalizedString(@"Second", @"Second");
-        self.tabBarItem.image = [UIImage imageNamed:@"second"];
+        self.tabBarItem.image = [UIImage imageNamed:@"guide"];
     }
     
     return self;

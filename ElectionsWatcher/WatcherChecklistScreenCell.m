@@ -41,18 +41,27 @@
         self.itemLabel.backgroundColor = [UIColor clearColor];
         self.itemLabel.textColor = [UIColor darkTextColor];
         self.itemLabel.text = [self.itemInfo objectForKey: @"title"];
+        
+        int controlType = [[self.itemInfo objectForKey: @"control"] intValue];
 
-        switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
-            case INPUT_TEXT: {
+        switch ( controlType ) {
+            
+            case INPUT_TEXT: 
+            case INPUT_EMAIL:
+            case INPUT_CONSTANT:
+            {
                 self.control = [[[UITextField alloc] init] autorelease];
                 
                 UITextField *textField = (UITextField *) self.control;
                 textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                textField.keyboardType = UIKeyboardTypeDefault;
+                textField.keyboardType = ( controlType == INPUT_EMAIL ) ? UIKeyboardTypeEmailAddress : UIKeyboardTypeDefault;
                 textField.returnKeyType = UIReturnKeyDone;
                 textField.placeholder = [self.itemInfo objectForKey: @"hint"];
                 textField.delegate = self;
                 textField.font = [UIFont systemFontOfSize: 14];
+                
+                if ( controlType == INPUT_CONSTANT ) 
+                    textField.userInteractionEnabled = NO;
             }
                 break;
                 
@@ -239,7 +248,7 @@
         self.checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
                                                             inManagedObjectContext: [appDelegate managedObjectContext]];
      
-        self.checklistItem.name = [itemInfo objectForKey: @"name"];
+        self.checklistItem.name = [self.itemInfo objectForKey: @"name"];
         self.checklistItem.sectionIndex = [NSNumber numberWithInt: self.sectionIndex];
         self.checklistItem.screenIndex = [NSNumber numberWithInt: self.screenIndex];
     }

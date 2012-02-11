@@ -3,7 +3,59 @@
 <plist version="1.0">
 <dict>
 	<key>personal_info</key>
-	<dict/>
+	<dict>
+		<key>title</key>
+		<string>Наблюдатель</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>last_name</string>
+				<key>title</key>
+				<string>Фамилия</string>
+				<key>control</key>
+				<integer>0</integer>
+				<key>hint</key>
+				<string>фамилия</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>first_name</string>
+				<key>title</key>
+				<string>Имя</string>
+				<key>control</key>
+				<integer>0</integer>
+				<key>hint</key>
+				<string>имя</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>email</string>
+				<key>title</key>
+				<string>E-mail</string>
+				<key>control</key>
+				<integer>8</integer>
+				<key>hint</key>
+				<string>e-mail</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>user_id</string>
+				<key>title</key>
+				<string>ID пользователя</string>
+				<key>control</key>
+				<integer>7</integer>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>official_observer</string>
+				<key>title</key>
+				<string>Вы официальный наблюдатель?</string>
+				<key>control</key>
+				<integer>4</integer>
+			</dict>
+		</array>
+	</dict>
 	<key>ballot_district_info</key>
 	<dict>
 		<key>title</key>
