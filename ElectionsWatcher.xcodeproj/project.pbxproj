@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		320AF8492C47A4D819F7C451 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 320AF8492C47A4D819F7C450 /* QuartzCore.framework */; };
+		5F2062C614E876D50031BA22 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2062C514E876D50031BA22 /* RegexKitLite.m */; };
+		5F2062C814E876FC0031BA22 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2062C714E876FC0031BA22 /* libicucore.dylib */; };
 		5F689CBA14DF128D00223832 /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F689CB914DF128D00223832 /* ChecklistItem.m */; };
 		5F689CBD14DF128E00223832 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F689CBC14DF128E00223832 /* MediaItem.m */; };
 		5F689D1A14DFB96900223832 /* golos.css in Resources */ = {isa = PBXBuildFile; fileRef = 5F689CC314DFB96900223832 /* golos.css */; };
@@ -129,6 +131,15 @@
 		5F8892CB14E6AE7F0067F2DD /* election_watcher_appstore.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892C814E6AE7F0067F2DD /* election_watcher_appstore.png */; };
 		5F8892CC14E6AE7F0067F2DD /* election_watcher.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892C914E6AE7F0067F2DD /* election_watcher.png */; };
 		5F8892CD14E6AE7F0067F2DD /* election_watcher@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892CA14E6AE7F0067F2DD /* election_watcher@2x.png */; };
+		5F8892D314E7CD810067F2DD /* WatcherSOS.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892D214E7CD800067F2DD /* WatcherSOS.plist */; };
+		5F8892D714E7DA520067F2DD /* slider_bad.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892D414E7DA520067F2DD /* slider_bad.png */; };
+		5F8892D814E7DA520067F2DD /* slider_good.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892D514E7DA520067F2DD /* slider_good.png */; };
+		5F8892D914E7DA520067F2DD /* slider_neutral.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892D614E7DA520067F2DD /* slider_neutral.png */; };
+		5F8892DB14E7DB130067F2DD /* slider_thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DA14E7DB130067F2DD /* slider_thumb.png */; };
+		5F8892E014E7DFF00067F2DD /* slider_bad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DC14E7DFF00067F2DD /* slider_bad@2x.png */; };
+		5F8892E114E7DFF00067F2DD /* slider_good@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DD14E7DFF00067F2DD /* slider_good@2x.png */; };
+		5F8892E214E7DFF00067F2DD /* slider_neutral@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DE14E7DFF00067F2DD /* slider_neutral@2x.png */; };
+		5F8892E314E7DFF00067F2DD /* slider_thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DF14E7DFF00067F2DD /* slider_thumb@2x.png */; };
 		5F91F20914C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F20714C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld */; };
 		5F91F20E14C1C59300446C86 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F91F20D14C1C59300446C86 /* CoreData.framework */; };
 		5F91F22C14C2EFB200446C86 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21414C2EFB200446C86 /* NSObject+SBJson.m */; };
@@ -171,6 +182,9 @@
 
 /* Begin PBXFileReference section */
 		320AF8492C47A4D819F7C450 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.frameworks; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		5F2062C414E876D50031BA22 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
+		5F2062C514E876D50031BA22 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
+		5F2062C714E876FC0031BA22 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		5F689CB814DF128D00223832 /* ChecklistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistItem.h; sourceTree = "<group>"; };
 		5F689CB914DF128D00223832 /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
 		5F689CBB14DF128E00223832 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
@@ -304,6 +318,15 @@
 		5F8892C814E6AE7F0067F2DD /* election_watcher_appstore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = election_watcher_appstore.png; sourceTree = "<group>"; };
 		5F8892C914E6AE7F0067F2DD /* election_watcher.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = election_watcher.png; sourceTree = "<group>"; };
 		5F8892CA14E6AE7F0067F2DD /* election_watcher@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "election_watcher@2x.png"; sourceTree = "<group>"; };
+		5F8892D214E7CD800067F2DD /* WatcherSOS.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherSOS.plist; sourceTree = "<group>"; };
+		5F8892D414E7DA520067F2DD /* slider_bad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_bad.png; sourceTree = "<group>"; };
+		5F8892D514E7DA520067F2DD /* slider_good.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_good.png; sourceTree = "<group>"; };
+		5F8892D614E7DA520067F2DD /* slider_neutral.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_neutral.png; sourceTree = "<group>"; };
+		5F8892DA14E7DB130067F2DD /* slider_thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_thumb.png; sourceTree = "<group>"; };
+		5F8892DC14E7DFF00067F2DD /* slider_bad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_bad@2x.png"; sourceTree = "<group>"; };
+		5F8892DD14E7DFF00067F2DD /* slider_good@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_good@2x.png"; sourceTree = "<group>"; };
+		5F8892DE14E7DFF00067F2DD /* slider_neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_neutral@2x.png"; sourceTree = "<group>"; };
+		5F8892DF14E7DFF00067F2DD /* slider_thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_thumb@2x.png"; sourceTree = "<group>"; };
 		5F91F20814C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ElectionsWatcherModel.xcdatamodel; sourceTree = "<group>"; };
 		5F91F20D14C1C59300446C86 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		5F91F21214C2EFB200446C86 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
@@ -386,6 +409,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F2062C814E876FC0031BA22 /* libicucore.dylib in Frameworks */,
 				320AF8492C47A4D819F7C451 /* QuartzCore.framework in Frameworks */,
 				5F91F26314C2F47B00446C86 /* MobileCoreServices.framework in Frameworks */,
 				5F91F26114C2F3FB00446C86 /* SystemConfiguration.framework in Frameworks */,
@@ -402,6 +426,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F2062C214E876950031BA22 /* RegexKitLite */ = {
+			isa = PBXGroup;
+			children = (
+				5F2062C414E876D50031BA22 /* RegexKitLite.h */,
+				5F2062C514E876D50031BA22 /* RegexKitLite.m */,
+			);
+			path = RegexKitLite;
+			sourceTree = "<group>";
+		};
 		5F689CC214DFB96900223832 /* WatcherGuide */ = {
 			isa = PBXGroup;
 			children = (
@@ -526,6 +559,7 @@
 				5F7ADDC814C1AE4100A8E955 /* Foundation.framework */,
 				5F7ADDCA14C1AE4100A8E955 /* CoreGraphics.framework */,
 				5F91F25E14C2F3DA00446C86 /* libz.dylib */,
+				5F2062C714E876FC0031BA22 /* libicucore.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -533,6 +567,7 @@
 		5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */ = {
 			isa = PBXGroup;
 			children = (
+				5F2062C214E876950031BA22 /* RegexKitLite */,
 				5F689CC214DFB96900223832 /* WatcherGuide */,
 				5F974CFE14CED77A00598945 /* ActionSheetPicker */,
 				5F91F21114C2EF3500446C86 /* MBProgressHUD */,
@@ -567,6 +602,7 @@
 				5F7ADDCD14C1AE4100A8E955 /* Supporting Files */,
 				5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */,
 				5F8892B214E68C5F0067F2DD /* WatcherSettings.plist */,
+				5F8892D214E7CD800067F2DD /* WatcherSOS.plist */,
 			);
 			path = ElectionsWatcher;
 			sourceTree = "<group>";
@@ -598,6 +634,14 @@
 				5F8892BB14E6AD6A0067F2DD /* report@2x.png */,
 				5F8892BC14E6AD6A0067F2DD /* sos.png */,
 				5F8892BD14E6AD6A0067F2DD /* sos@2x.png */,
+				5F8892DA14E7DB130067F2DD /* slider_thumb.png */,
+				5F8892D414E7DA520067F2DD /* slider_bad.png */,
+				5F8892D514E7DA520067F2DD /* slider_good.png */,
+				5F8892D614E7DA520067F2DD /* slider_neutral.png */,
+				5F8892DC14E7DFF00067F2DD /* slider_bad@2x.png */,
+				5F8892DD14E7DFF00067F2DD /* slider_good@2x.png */,
+				5F8892DE14E7DFF00067F2DD /* slider_neutral@2x.png */,
+				5F8892DF14E7DFF00067F2DD /* slider_thumb@2x.png */,
 			);
 			name = Assets;
 			sourceTree = "<group>";
@@ -879,6 +923,15 @@
 				5F8892CB14E6AE7F0067F2DD /* election_watcher_appstore.png in Resources */,
 				5F8892CC14E6AE7F0067F2DD /* election_watcher.png in Resources */,
 				5F8892CD14E6AE7F0067F2DD /* election_watcher@2x.png in Resources */,
+				5F8892D314E7CD810067F2DD /* WatcherSOS.plist in Resources */,
+				5F8892D714E7DA520067F2DD /* slider_bad.png in Resources */,
+				5F8892D814E7DA520067F2DD /* slider_good.png in Resources */,
+				5F8892D914E7DA520067F2DD /* slider_neutral.png in Resources */,
+				5F8892DB14E7DB130067F2DD /* slider_thumb.png in Resources */,
+				5F8892E014E7DFF00067F2DD /* slider_bad@2x.png in Resources */,
+				5F8892E114E7DFF00067F2DD /* slider_good@2x.png in Resources */,
+				5F8892E214E7DFF00067F2DD /* slider_neutral@2x.png in Resources */,
+				5F8892E314E7DFF00067F2DD /* slider_thumb@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -931,6 +984,7 @@
 				5F8892A714E65F120067F2DD /* WatcherReportController.m in Sources */,
 				5F8892AD14E65F890067F2DD /* WatcherSOSController.m in Sources */,
 				5F8892B114E68B910067F2DD /* WatcherSettingsCell.m in Sources */,
+				5F2062C614E876D50031BA22 /* RegexKitLite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,6 +1060,10 @@
 		5F7ADDEF14C1AE4100A8E955 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
@@ -1018,6 +1076,10 @@
 		5F7ADDF014C1AE4100A8E955 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv6,
+					"$(ARCHS_STANDARD_32_BIT)",
+				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XMPSoft Ltd.";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
