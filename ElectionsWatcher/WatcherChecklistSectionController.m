@@ -113,7 +113,7 @@
     NSArray *results = [appDelegate executeFetchRequest: @"findItemsByScreen" forEntity: @"ChecklistItem" withParameters: bindParams];
     
     cell.textLabel.text = [screenInfo objectForKey: @"title"];
-    cell.detailTextLabel.text = [results count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [results count]] : @"Нарушений не отмечено";
+    cell.detailTextLabel.text = [results count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [results count]] : @"Отметок нет";
     
 }
 

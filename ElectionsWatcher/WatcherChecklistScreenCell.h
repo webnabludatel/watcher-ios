@@ -20,10 +20,10 @@
 
 @class ChecklistItem;
 
-@interface WatcherChecklistScreenCell : UITableViewCell <UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+@interface WatcherChecklistScreenCell : UITableViewCell <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, assign) NSDictionary *itemInfo;
-@property (nonatomic, assign) UIControl *control;
+@property (nonatomic, assign) UIView *control;
 @property (nonatomic, assign) UILabel *itemLabel;
 @property (nonatomic, retain) ChecklistItem *checklistItem;
 @property (nonatomic) NSInteger sectionIndex;

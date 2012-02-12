@@ -106,12 +106,13 @@
 - (CGFloat) tableView: (UITableView *) tableView heightForRowAtIndexPath: (NSIndexPath *) indexPath {
     NSDictionary *itemInfo = [[screenInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     NSString *itemTitle = [itemInfo objectForKey: @"title"];
+    int controlType = [[itemInfo objectForKey: @"control"] intValue];
     
     CGSize labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
                              constrainedToSize: CGSizeMake(280, 120) 
                                  lineBreakMode: UILineBreakModeWordWrap];
     
-    return labelSize.height + 70;
+    return controlType == INPUT_COMMENT ? labelSize.height + 140 : labelSize.height + 70;
 }
 
 /*

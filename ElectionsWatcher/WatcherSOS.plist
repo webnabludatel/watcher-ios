@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>sos_report</key>
+	<dict>
+		<key>title</key>
+		<string>Сообщение</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>sos_report_text</string>
+				<key>title</key>
+				<string>Сообщение</string>
+				<key>hint</key>
+				<string>введите сообщение</string>
+				<key>control</key>
+				<integer>6</integer>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>sos_report_photo</string>
+				<key>title</key>
+				<string>Сфотографируйте ситуацию</string>
+				<key>control</key>
+				<integer>4</integer>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>sos_report_video</string>
+				<key>title</key>
+				<string>Снимите видео</string>
+				<key>control</key>
+				<integer>5</integer>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>

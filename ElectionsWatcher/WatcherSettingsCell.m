@@ -8,7 +8,6 @@
 
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "WatcherSettingsCell.h"
-#import "WatcherSettingsController.h"
 #import "traverseresponderchain.m"
 
 @implementation WatcherSettingsCell
@@ -48,8 +47,9 @@
             break;
     }
     
-    WatcherSettingsController *parentController = (WatcherSettingsController *) [self firstAvailableUIViewController];
-    [parentController saveSettings];
+    UIViewController *parentController = [self firstAvailableUIViewController];
+    if ( [parentController respondsToSelector: @selector(saveSettings)] )
+        [parentController performSelector: @selector(saveSettings)];
 }
 
 - (void) loadItem {

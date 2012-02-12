@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WatcherSOSController : UIViewController
+@interface WatcherSOSController : UITableViewController
+
+@property (nonatomic, retain) NSDictionary *sosReport;
+
+- (void) saveSettings;
+- (void) loadSettings;
 
 @end

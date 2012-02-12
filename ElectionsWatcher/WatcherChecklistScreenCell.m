@@ -89,8 +89,6 @@
                 textField.placeholder = [self.itemInfo objectForKey: @"hint"];
                 textField.delegate = self;
                 textField.font = [UIFont systemFontOfSize: 14];
-                
-//                [textField addTarget: self action: @selector(popupPicker:) forControlEvents: UIControlEventTouchDown];
             }
                 break;
                 
@@ -106,6 +104,10 @@
                 NSDictionary *switchOptions = [self.itemInfo objectForKey: @"switch_options"];
                 slider.minimumValueImage = [self imageFromText: [switchOptions objectForKey: @"lo_text"]];
                 slider.maximumValueImage = [self imageFromText: [switchOptions objectForKey: @"hi_text"]];
+                
+                [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"] forState: UIControlStateNormal];
+                [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"] forState: UIControlStateNormal];
+                [slider setThumbImage: [UIImage imageNamed: @"slider_thumb"] forState: UIControlStateNormal];
                 
                 [slider addTarget: self 
                            action: @selector(snapSliderToValue:) 
@@ -132,15 +134,23 @@
                 break;
                 
             case INPUT_COMMENT: {
-                self.control = [[[UITextField alloc] init] autorelease];
+                self.control = [[[UITextView alloc] init] autorelease];
                 
-                UITextField *textField = (UITextField *) self.control;
-                textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                textField.keyboardType = UIKeyboardTypeDefault;
-                textField.returnKeyType = UIReturnKeyDone;
-                textField.placeholder = [self.itemInfo objectForKey: @"hint"];
-                textField.delegate = self;
-                textField.font = [UIFont systemFontOfSize: 14];
+                UITextView *textView = (UITextView *) self.control;
+                textView.keyboardType = UIKeyboardTypeDefault;
+                textView.backgroundColor = [UIColor clearColor];
+                textView.delegate = self;
+                
+                UIView *saveTextToolbar = [[UIView alloc] initWithFrame: CGRectMake(0, 0, self.frame.size.width, 50)];
+                UIButton *saveTextButton = [UIButton buttonWithType: UIButtonTypeRoundedRect];
+                [saveTextButton setFrame: CGRectInset(saveTextToolbar.bounds, 10, 10)];
+                [saveTextButton setTitle: @"Сохранить" forState: UIControlStateNormal];
+                [saveTextButton addTarget: textView action: @selector(resignFirstResponder) forControlEvents: UIControlEventTouchUpInside];
+                
+                [saveTextToolbar addSubview: saveTextButton];
+                [saveTextToolbar setBackgroundColor: [UIColor groupTableViewBackgroundColor]];
+                
+                textView.inputAccessoryView = saveTextToolbar;
             }
                 break;
                 
@@ -177,7 +187,6 @@
             CGRectMake(controlFrame.origin.x, controlFrame.origin.y+10, controlFrame.size.width, controlFrame.size.height-10) :
             CGRectMake(controlArea.origin.x, controlArea.origin.y+10, controlArea.size.width, controlArea.size.height-10);
         
-//        NSLog(@"label: %@", self.itemLabel);
         [self loadItem];
     }
 }
@@ -485,6 +494,10 @@
     [self saveItem];
 }
 
+
+- (void) pickerCancelled: (id) sender {
+}
+
 #pragma mark -
 #pragma mark Text field events
 
@@ -507,8 +520,20 @@
     }
 }
 
+#pragma mark -
+#pragma mark UITextView events
 
-- (void) pickerCancelled: (id) sender {
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    return YES;
+}
+
+-(BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    [textView resignFirstResponder];
+    [self saveItem];
 }
 
 #pragma mark -
@@ -517,14 +542,23 @@
 - (void) snapSliderToValue: (id) sender {
     UISlider *slider = (UISlider *) sender;
     
-    if ( slider.value >= -1 && slider.value < -0.5 )
+    if ( slider.value >= -1 && slider.value < -0.5 ) {
         slider.value = -1;
+        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"] forState: UIControlStateNormal];
+        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"] forState: UIControlStateNormal];
+    }
     
-    if ( slider.value >= -0.5 && slider.value < 0.5 )
+    if ( slider.value >= -0.5 && slider.value < 0.5 ) {
         slider.value = 0;
+        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"] forState: UIControlStateNormal];
+        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"] forState: UIControlStateNormal];
+    }
     
-    if ( slider.value >= 0.5 && slider.value <= 1 )
+    if ( slider.value >= 0.5 && slider.value <= 1 ) {
         slider.value = 1;
+        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"] forState: UIControlStateNormal];
+        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"] forState: UIControlStateNormal];
+    }
     
     [self saveItem];
 }

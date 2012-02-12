@@ -60,9 +60,9 @@
     
     UINavigationController *navigationController1 = [[[UINavigationController alloc] initWithRootViewController: profileController] autorelease];
     UINavigationController *navigationController2 = [[[UINavigationController alloc] initWithRootViewController: checklistController] autorelease];
-    UINavigationController *navigationController3 = [[[UINavigationController alloc] initWithRootViewController: guideController] autorelease];
-    UINavigationController *navigationController4 = [[[UINavigationController alloc] initWithRootViewController: sosController] autorelease];
-    UINavigationController *navigationController5 = [[[UINavigationController alloc] initWithRootViewController: reportController] autorelease];
+    UINavigationController *navigationController3 = [[[UINavigationController alloc] initWithRootViewController: reportController] autorelease];
+    UINavigationController *navigationController4 = [[[UINavigationController alloc] initWithRootViewController: guideController] autorelease];
+    UINavigationController *navigationController5 = [[[UINavigationController alloc] initWithRootViewController: sosController] autorelease];
 
     // reload summary data on navigation
     navigationController1.delegate = self;

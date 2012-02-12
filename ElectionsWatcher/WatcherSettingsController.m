@@ -35,6 +35,13 @@ static NSString *settingsSections[] = { @"personal_info", @"ballot_district_info
     // Release any cached data, images, etc that aren't in use.
 }
 
+
+-(void)dealloc {
+    [settings release];
+    
+    [super dealloc];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -89,7 +96,7 @@ static NSString *settingsSections[] = { @"personal_info", @"ballot_district_info
         NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSettings" 
                                                                 ofType: @"plist"];
         
-        self.settings = [NSPropertyListSerialization propertyListWithData: [NSData dataWithContentsOfFile: settingsPath] 
+        self.settings = [NSPropertyListSerialization propertyListWithData: [NSData dataWithContentsOfFile: defaultPath] 
                                                                   options: NSPropertyListMutableContainersAndLeaves 
                                                                    format: &format
                                                                     error: &error];
@@ -114,7 +121,7 @@ static NSString *settingsSections[] = { @"personal_info", @"ballot_district_info
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if ( section == 1 ) {
+    if ( section == [[self.settings allKeys] count] - 1 ) {
         UIView *footerView      = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 60)] autorelease];
         UIButton *saveButton    = [UIButton buttonWithType: UIButtonTypeRoundedRect];
         UIButton *resetButton   = [UIButton buttonWithType: UIButtonTypeRoundedRect];
