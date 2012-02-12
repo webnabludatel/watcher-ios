@@ -17,6 +17,8 @@
 
 @implementation WatcherChecklistScreenCell
 
+static UIView *currentlySelectedInputView = nil;
+
 @synthesize itemInfo;
 @synthesize control;
 @synthesize itemLabel;
@@ -105,8 +107,12 @@
                 slider.minimumValueImage = [self imageFromText: [switchOptions objectForKey: @"lo_text"]];
                 slider.maximumValueImage = [self imageFromText: [switchOptions objectForKey: @"hi_text"]];
                 
-                [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"] forState: UIControlStateNormal];
-                [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"] forState: UIControlStateNormal];
+                [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                                    forState: UIControlStateNormal];
+                
+                [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                                    forState: UIControlStateNormal];
+                
                 [slider setThumbImage: [UIImage imageNamed: @"slider_thumb"] forState: UIControlStateNormal];
                 
                 [slider addTarget: self 
@@ -216,12 +222,28 @@
             case INPUT_SWITCH: {
                 UISlider *slider = (UISlider *) self.control;
                 NSDictionary *switchOptions = [self.itemInfo objectForKey: @"switch_options"];
-                if ( [[switchOptions objectForKey: @"lo_value"] isEqualToString: self.checklistItem.value] )
+                if ( [[switchOptions objectForKey: @"lo_value"] isEqualToString: self.checklistItem.value] ) {
                     slider.value = -1;
-                else if ( [[switchOptions objectForKey: @"hi_value"] isEqualToString: self.checklistItem.value] )
+                    
+                    [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"]
+                                        forState: UIControlStateNormal];
+                    [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"]
+                                        forState: UIControlStateNormal];
+                } else if ( [[switchOptions objectForKey: @"hi_value"] isEqualToString: self.checklistItem.value] ) {
                     slider.value = +1;
-                else
+                    
+                    [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"]
+                                        forState: UIControlStateNormal];
+                    [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"]
+                                        forState: UIControlStateNormal];
+                } else {
                     slider.value = 0;
+                    
+                    [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                                        forState: UIControlStateNormal];
+                    [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                                        forState: UIControlStateNormal];
+                }
             }
                 break;
                 
@@ -368,6 +390,11 @@
 #pragma mark Using iPhone camera
 
 - (void) takePhoto: (id) sender {
+    if ( currentlySelectedInputView != sender ) {
+        [currentlySelectedInputView resignFirstResponder];
+        currentlySelectedInputView = sender;
+    }
+    
     UIActionSheet *photoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Фото" 
                                                                   delegate: self 
                                                          cancelButtonTitle: @"Отменить" 
@@ -380,6 +407,11 @@
 }
 
 - (void) takeVideo: (id) sender {
+    if ( currentlySelectedInputView != sender ) {
+        [currentlySelectedInputView resignFirstResponder];
+        currentlySelectedInputView = sender;
+    }
+    
     UIActionSheet *videoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Видео" 
                                                                   delegate: self 
                                                          cancelButtonTitle: @"Отменить" 
@@ -499,7 +531,7 @@
 }
 
 #pragma mark -
-#pragma mark Text field events
+#pragma mark UITextField events
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
@@ -512,6 +544,11 @@
 }
 
 - (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
+    if ( currentlySelectedInputView != textField ) {
+        [currentlySelectedInputView resignFirstResponder];
+        currentlySelectedInputView = textField;
+    }
+    
     if ( [self.itemInfo objectForKey: @"possible_values"] == nil ) {
         return YES;
     } else {
@@ -528,6 +565,11 @@
 }
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    if ( currentlySelectedInputView != textView ) {
+        [currentlySelectedInputView resignFirstResponder];
+        currentlySelectedInputView = textView;
+    }
+    
     return YES;
 }
 
@@ -544,20 +586,26 @@
     
     if ( slider.value >= -1 && slider.value < -0.5 ) {
         slider.value = -1;
-        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"] forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"] forState: UIControlStateNormal];
+        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"]
+                            forState: UIControlStateNormal];
+        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"]
+                            forState: UIControlStateNormal];
     }
     
     if ( slider.value >= -0.5 && slider.value < 0.5 ) {
         slider.value = 0;
-        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"] forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"] forState: UIControlStateNormal];
+        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                            forState: UIControlStateNormal];
+        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                            forState: UIControlStateNormal];
     }
     
     if ( slider.value >= 0.5 && slider.value <= 1 ) {
         slider.value = 1;
-        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"] forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"] forState: UIControlStateNormal];
+        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"]
+                            forState: UIControlStateNormal];
+        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"]
+                            forState: UIControlStateNormal];
     }
     
     [self saveItem];

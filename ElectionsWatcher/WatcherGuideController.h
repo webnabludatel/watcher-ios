@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface WatcherGuideController : UIViewController
+@interface WatcherGuideController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, retain) IBOutlet UIWebView *watcherGuideView;
+@property (nonatomic, retain) NSMutableArray *searchResults;
 
 @end
