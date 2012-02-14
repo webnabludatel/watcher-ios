@@ -20,7 +20,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if ( self ) {
-        self.title = @"Наблюдатель"; // NSLocalizedString(@"First", @"First");
+        self.title = @"Наблюдение"; // NSLocalizedString(@"First", @"First");
         self.tabBarItem.image = [UIImage imageNamed:@"checklist"];
         self.watcherChecklist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"WatcherChecklist" 
                                                                                                             ofType: @"plist"]];

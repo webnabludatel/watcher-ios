@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MWPhotoBrowser.h"
 
 #define INPUT_TEXT          0
 #define INPUT_NUMBER        1
@@ -20,7 +21,7 @@
 
 @class ChecklistItem;
 
-@interface WatcherChecklistScreenCell : UITableViewCell <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+@interface WatcherChecklistScreenCell : UITableViewCell <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, MWPhotoBrowserDelegate>
 
 @property (nonatomic, assign) NSDictionary *itemInfo;
 @property (nonatomic, assign) UIView *control;
@@ -28,6 +29,7 @@
 @property (nonatomic, retain) ChecklistItem *checklistItem;
 @property (nonatomic) NSInteger sectionIndex;
 @property (nonatomic) NSInteger screenIndex;
+@property (nonatomic, retain) NSMutableArray *mwBrowserItems;
 
 - (id) initWithStyle: (UITableViewCellStyle) style reuseIdentifier: (NSString *) reuseIdentifier withItemInfo: (NSDictionary *) anItemInfo;
 

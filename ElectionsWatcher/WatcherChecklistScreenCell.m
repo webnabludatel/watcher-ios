@@ -14,6 +14,9 @@
 #import "AppDelegate.h"
 #import "ChecklistItem.h"
 #import "MediaItem.h"
+#import "MWPhotoBrowser.h"
+#import "MWMoviePreview.h"
+#import "MWMovieBrowser.h"
 
 @implementation WatcherChecklistScreenCell
 
@@ -25,6 +28,7 @@ static UIView *currentlySelectedInputView = nil;
 @synthesize checklistItem;
 @synthesize sectionIndex;
 @synthesize screenIndex;
+@synthesize mwBrowserItems;
 
 #pragma mark -
 #pragma mark Cell implementation
@@ -107,10 +111,10 @@ static UIView *currentlySelectedInputView = nil;
                 slider.minimumValueImage = [self imageFromText: [switchOptions objectForKey: @"lo_text"]];
                 slider.maximumValueImage = [self imageFromText: [switchOptions objectForKey: @"hi_text"]];
                 
-                [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
                                     forState: UIControlStateNormal];
                 
-                [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
                                     forState: UIControlStateNormal];
                 
                 [slider setThumbImage: [UIImage imageNamed: @"slider_thumb"] forState: UIControlStateNormal];
@@ -122,6 +126,7 @@ static UIView *currentlySelectedInputView = nil;
                 break;
                 
             case INPUT_PHOTO: {
+                // TODO: use hint attribute
                 self.control = [UIButton buttonWithType: UIButtonTypeRoundedRect];
                 
                 UIButton *button = (UIButton *) self.control;
@@ -225,23 +230,23 @@ static UIView *currentlySelectedInputView = nil;
                 if ( [[switchOptions objectForKey: @"lo_value"] isEqualToString: self.checklistItem.value] ) {
                     slider.value = -1;
                     
-                    [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"]
+                    [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
                                         forState: UIControlStateNormal];
-                    [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"]
+                    [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
                                         forState: UIControlStateNormal];
                 } else if ( [[switchOptions objectForKey: @"hi_value"] isEqualToString: self.checklistItem.value] ) {
                     slider.value = +1;
                     
-                    [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"]
+                    [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
                                         forState: UIControlStateNormal];
-                    [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"]
+                    [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
                                         forState: UIControlStateNormal];
                 } else {
                     slider.value = 0;
                     
-                    [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                    [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
                                         forState: UIControlStateNormal];
-                    [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+                    [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
                                         forState: UIControlStateNormal];
                 }
             }
@@ -382,24 +387,87 @@ static UIView *currentlySelectedInputView = nil;
     }
     
     if ( buttonIndex == 1 ) {
+        int controlType = [[self.itemInfo objectForKey: @"control"] intValue];
+        
+        NSArray *mediaItems = 
+            controlType == INPUT_PHOTO ?
+                [self mediaItemsOfType: (NSString *) kUTTypeImage] : 
+            controlType == INPUT_VIDEO ?
+                [self mediaItemsOfType: (NSString *) kUTTypeMovie] : nil;
+        
+        if ( mediaItems ) {
+            self.mwBrowserItems = [NSMutableArray array];
+            for ( MediaItem *mediaItem in mediaItems ) {
+                if ( controlType == INPUT_PHOTO )
+                    [self.mwBrowserItems addObject: [MWPhoto photoWithFilePath: mediaItem.filePath]];
+                
+                if ( controlType == INPUT_VIDEO ) 
+                    [self.mwBrowserItems addObject: [MWMoviePreview movieWithFilePath: mediaItem.filePath]];
+            }
+            
+            MWPhotoBrowser *browser = nil;
+            
+            if ( controlType == INPUT_PHOTO )
+                browser = [[MWPhotoBrowser alloc] initWithDelegate: self];
+            
+            if ( controlType == INPUT_VIDEO ) 
+                browser = [[MWMovieBrowser alloc] initWithDelegate: self];
+            
+            browser.displayActionButton = YES;
+
+            UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: browser];
+            nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            UIViewController *parentViewController = [self firstAvailableUIViewController];
+            [parentViewController presentModalViewController: nc animated: YES];
+            [nc release];
+            [browser release];
+        }
     }
     
+}
+
+#pragma mark -
+#pragma mark MWPhotoBrowserDelegate
+
+- (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
+    return self.mwBrowserItems.count;
+}
+
+- (MWPhoto *)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index {
+    if (index < self.mwBrowserItems.count )
+        return [self.mwBrowserItems objectAtIndex: index];
+    return nil;
 }
 
 #pragma mark -
 #pragma mark Using iPhone camera
 
 - (void) takePhoto: (id) sender {
+    // TODO: check camera availability and media types
     if ( currentlySelectedInputView != sender ) {
         [currentlySelectedInputView resignFirstResponder];
         currentlySelectedInputView = sender;
     }
     
-    UIActionSheet *photoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Фото" 
-                                                                  delegate: self 
-                                                         cancelButtonTitle: @"Отменить" 
-                                                    destructiveButtonTitle: nil 
-                                                         otherButtonTitles: @"Снять фото", @"Посмотреть фото", nil];
+    NSArray *mediaItems = [self mediaItemsOfType: (NSString *) kUTTypeImage];
+    
+    UIActionSheet *photoActionSheet = nil;
+    
+    if ( mediaItems.count ) {   
+        photoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Фото" 
+                                                       delegate: self 
+                                              cancelButtonTitle: @"Отменить" 
+                                         destructiveButtonTitle: nil 
+                                              otherButtonTitles: @"Снять фото", @"Посмотреть фото", nil];
+        
+    } else {
+        photoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Фото" 
+                                                       delegate: self 
+                                              cancelButtonTitle: @"Отменить" 
+                                         destructiveButtonTitle: nil 
+                                              otherButtonTitles: @"Снять фото", nil];
+    }
+    
     
     UIViewController *parentViewController = [self firstAvailableUIViewController];
     [photoActionSheet showFromTabBar: parentViewController.tabBarController.tabBar];
@@ -407,16 +475,31 @@ static UIView *currentlySelectedInputView = nil;
 }
 
 - (void) takeVideo: (id) sender {
+    // TODO: check camera availability and media types
     if ( currentlySelectedInputView != sender ) {
         [currentlySelectedInputView resignFirstResponder];
         currentlySelectedInputView = sender;
     }
     
-    UIActionSheet *videoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Видео" 
-                                                                  delegate: self 
-                                                         cancelButtonTitle: @"Отменить" 
-                                                    destructiveButtonTitle: nil 
-                                                         otherButtonTitles: @"Снять видео", @"Посмотреть видео", nil];
+    NSArray *mediaItems = [self mediaItemsOfType: (NSString *) kUTTypeMovie];
+    
+    UIActionSheet *videoActionSheet = nil;
+    
+    if ( mediaItems.count ) {
+        videoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Видео" 
+                                                        delegate: self 
+                                               cancelButtonTitle: @"Отменить" 
+                                          destructiveButtonTitle: nil 
+                                               otherButtonTitles: @"Снять видео", @"Посмотреть видео", nil];
+        
+    } else {
+        videoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Видео" 
+                                                       delegate: self 
+                                              cancelButtonTitle: @"Отменить" 
+                                         destructiveButtonTitle: nil 
+                                              otherButtonTitles: @"Снять видео", nil];
+    }
+    
     UIViewController *parentViewController = [self firstAvailableUIViewController];
     [videoActionSheet showFromTabBar: parentViewController.tabBarController.tabBar];
     [videoActionSheet release];
@@ -586,25 +669,25 @@ static UIView *currentlySelectedInputView = nil;
     
     if ( slider.value >= -1 && slider.value < -0.5 ) {
         slider.value = -1;
-        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"]
+        [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
                             forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"]
+        [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
                             forState: UIControlStateNormal];
     }
     
     if ( slider.value >= -0.5 && slider.value < 0.5 ) {
         slider.value = 0;
-        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+        [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
                             forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_neutral"]
+        [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
                             forState: UIControlStateNormal];
     }
     
     if ( slider.value >= 0.5 && slider.value <= 1 ) {
         slider.value = 1;
-        [slider setMinimumTrackImage: [UIImage imageNamed: @"slider_bad"]
+        [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
                             forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [UIImage imageNamed: @"slider_good"]
+        [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
                             forState: UIControlStateNormal];
     }
     

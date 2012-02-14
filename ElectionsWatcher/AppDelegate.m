@@ -65,7 +65,8 @@
     UINavigationController *navigationController5 = [[[UINavigationController alloc] initWithRootViewController: sosController] autorelease];
 
     // reload summary data on navigation
-    navigationController1.delegate = self;
+    navigationController2.delegate = self;
+    navigationController3.delegate = self;
 
     // setup bar styles
     navigationController1.navigationBar.barStyle = UIBarStyleBlackOpaque;
