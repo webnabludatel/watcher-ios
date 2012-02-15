@@ -1,27 +1,28 @@
 //
-//  ChecklistItem.m
+//  PollingPlace.m
 //  ElectionsWatcher
 //
 //  Created by xfire on 15.02.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
+#import "PollingPlace.h"
 #import "ChecklistItem.h"
 #import "MediaItem.h"
-#import "PollingPlace.h"
 
 
-@implementation ChecklistItem
+@implementation PollingPlace
 
+@dynamic chairman;
 @dynamic lat;
 @dynamic lng;
 @dynamic name;
-@dynamic screenIndex;
-@dynamic sectionIndex;
-@dynamic synchronized;
+@dynamic number;
+@dynamic secretary;
 @dynamic timestamp;
-@dynamic value;
+@dynamic totalObservers;
+@dynamic type;
+@dynamic checklistItems;
 @dynamic mediaItems;
-@dynamic pollingPlace;
 
 @end
