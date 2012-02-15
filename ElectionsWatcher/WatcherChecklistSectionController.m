@@ -9,6 +9,7 @@
 #import "WatcherChecklistSectionController.h"
 #import "WatcherChecklistScreenController.h"
 #import "AppDelegate.h"
+#import "PollingPlace.h"
 
 @implementation WatcherChecklistSectionController
 
@@ -106,15 +107,13 @@
     NSDictionary *screenInfo = [screens objectAtIndex: indexPath.row];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSDictionary *bindParams = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                [NSNumber numberWithInt: sectionIndex], @"SECTION_INDEX",
-                                [NSNumber numberWithInt: indexPath.row], @"SCREEN_INDEX", nil];
-    
-    NSArray *results = [appDelegate executeFetchRequest: @"findItemsByScreen" forEntity: @"ChecklistItem" withParameters: bindParams];
+    NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
+    NSPredicate *screenPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d && SELF.screenIndex == %d", 
+                                    self.sectionIndex, indexPath.row];
+    NSArray *screenItems = [checklistItems filteredArrayUsingPredicate: screenPredicate];
     
     cell.textLabel.text = [screenInfo objectForKey: @"title"];
-    cell.detailTextLabel.text = [results count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [results count]] : @"Отметок нет";
-    
+    cell.detailTextLabel.text = [screenItems count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [screenItems count]] : @"Отметок нет";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

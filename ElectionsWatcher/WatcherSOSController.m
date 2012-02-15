@@ -7,7 +7,9 @@
 //
 
 #import "WatcherSOSController.h"
-#import "WatcherSettingsCell.h"
+#import "WatcherChecklistScreenCell.h"
+#import "AppDelegate.h"
+#import "PollingPlace.h"
 
 @implementation WatcherSOSController
 
@@ -43,28 +45,15 @@ static NSString *sosReportSections[] = { @"sos_report" };
 
 #pragma mark - Settings management
 
-- (void) saveSettings {
-    if ( self.sosReport ) {
-        NSArray*  paths     = NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES );
-        NSString* settingsPath = [[paths lastObject] stringByAppendingPathComponent: @"WatcherSOS.plist"];
-        
-        [self.sosReport writeToFile: settingsPath atomically: YES];
-    }
-}
-
 - (void) loadSettings {
     NSFileManager *fm   = [NSFileManager defaultManager];
     NSArray*  paths     = NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES );
     NSString* settingsPath = [[paths lastObject] stringByAppendingPathComponent: @"WatcherSOS.plist"];
     
     NSError *error = nil;
-    NSPropertyListFormat format = kCFPropertyListXMLFormat_v1_0;
     
     if ( [fm fileExistsAtPath: settingsPath] ) {
-        self.sosReport = [NSPropertyListSerialization propertyListWithData: [NSData dataWithContentsOfFile: settingsPath] 
-                                                                  options: NSPropertyListMutableContainersAndLeaves 
-                                                                   format: &format
-                                                                    error: &error];
+        self.sosReport = [NSDictionary dictionaryWithContentsOfFile: settingsPath];
         if ( error ) 
             NSLog ( @"error opening settings: %@", error.description );
         
@@ -72,10 +61,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
         NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSOS" 
                                                                 ofType: @"plist"];
         
-        self.sosReport = [NSPropertyListSerialization propertyListWithData: [NSData dataWithContentsOfFile: defaultPath] 
-                                                                  options: NSPropertyListMutableContainersAndLeaves 
-                                                                   format: &format
-                                                                    error: &error];
+        self.sosReport = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
         
         if ( error ) 
             NSLog ( @"error opening settings: %@", error.description );
@@ -174,10 +160,36 @@ static NSString *sosReportSections[] = { @"sos_report" };
     NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
     if ( cell == 0 ) {
-        cell = [[WatcherSettingsCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: cellId withItemInfo: itemInfo];
+        cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
+                                                  reuseIdentifier: cellId 
+                                                     withItemInfo: itemInfo] autorelease];
+    }
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
+    NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", [itemInfo objectForKey: @"name"]];
+    NSArray *existingItems = [checklistItems filteredArrayUsingPredicate: itemPredicate];
+    
+    if ( existingItems.count ) {
+        [(WatcherChecklistScreenCell *) cell setChecklistItem: [existingItems lastObject]];
+    } else {
+        ChecklistItem *checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                                     inManagedObjectContext: appDelegate.managedObjectContext];
+        
+        [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
+        [appDelegate.managedObjectContext save: nil];
     }
     
     return cell;
+}
+
+#pragma mark - Save delegate
+
+-(void)didSaveAttributeItem:(ChecklistItem *)item {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    if ( ! [appDelegate.currentPollingPlace.checklistItems containsObject: item] )
+        [appDelegate.currentPollingPlace addChecklistItemsObject: item];
+    [appDelegate.managedObjectContext save: nil];
 }
 
 @end

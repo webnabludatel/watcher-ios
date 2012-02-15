@@ -5,7 +5,7 @@
 	<key>sos_report</key>
 	<dict>
 		<key>title</key>
-		<string>Сообщение</string>
+		<string>Экстренная ситуация</string>
 		<key>items</key>
 		<array>
 			<dict>
@@ -25,6 +25,8 @@
 				<string>Сфотографируйте ситуацию</string>
 				<key>control</key>
 				<integer>4</integer>
+				<key>hint</key>
+				<string>Фото</string>
 			</dict>
 			<dict>
 				<key>name</key>
@@ -33,6 +35,8 @@
 				<string>Снимите видео</string>
 				<key>control</key>
 				<integer>5</integer>
+				<key>hint</key>
+				<string>Видео</string>
 			</dict>
 		</array>
 	</dict>

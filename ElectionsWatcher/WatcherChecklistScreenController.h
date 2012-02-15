@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WatcherSaveAttributeDelegate.h"
 
-@interface WatcherChecklistScreenController : UITableViewController
+@interface WatcherChecklistScreenController : UITableViewController <WatcherSaveAttributeDelegate>
 
 @property (nonatomic, retain) NSDictionary *screenInfo;
 @property (nonatomic) NSInteger screenIndex;

@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WatcherSaveAttributeDelegate.h"
 
-@interface WatcherSOSController : UITableViewController
+@interface WatcherSOSController : UITableViewController <WatcherSaveAttributeDelegate>
 
 @property (nonatomic, retain) NSDictionary *sosReport;
 
-- (void) saveSettings;
 - (void) loadSettings;
 
 @end

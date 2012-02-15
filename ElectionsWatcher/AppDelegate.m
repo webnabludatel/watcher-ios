@@ -14,6 +14,7 @@
 #import "WatcherSettingsController.h"
 #import "WatcherReportController.h"
 #import "WatcherSOSController.h"
+#import "PollingPlace.h"
 
 @implementation AppDelegate
 
@@ -24,6 +25,7 @@
 @synthesize persistentStoreCoordinator;
 @synthesize locationManager;
 @synthesize currentLocation;
+@synthesize currentPollingPlace;
 
 - (void)dealloc
 {
@@ -41,6 +43,19 @@
 	[locationManager setDelegate: self];
 	[locationManager setDesiredAccuracy: kCLLocationAccuracyHundredMeters];
 	[locationManager setDistanceFilter: 1000];
+    
+    // last active polling place
+    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSArray *paths    = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
+    NSString *path    = [[paths lastObject] stringByAppendingPathComponent: @"current_number.txt"];
+    NSString *number  = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: nil];
+    if ( number ) {
+        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: number, @"NUMBER", nil];
+        NSArray *results  = [self executeFetchRequest: @"findPollingPlace" forEntity: @"PollingPlace" withParameters: params];
+        currentPollingPlace = [results lastObject];
+    }
+    
     
     // UI Init
     UIViewController *checklistController   = [[[WatcherChecklistController alloc] initWithNibName:@"WatcherChecklistController" 
@@ -169,6 +184,21 @@
     
 }
 
+-(PollingPlace *)currentPollingPlace {
+    return currentPollingPlace;
+}
+
+-(void)setCurrentPollingPlace:(PollingPlace *)aCurrentPollingPlace {
+    [currentPollingPlace release]; currentPollingPlace = [aCurrentPollingPlace retain];
+    
+    NSArray *paths    = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
+    NSString *path    = [[paths lastObject] stringByAppendingPathComponent: @"current_number.txt"];
+    [[NSString stringWithFormat: @"%@", currentPollingPlace.number] writeToFile: path
+                                                                     atomically: YES 
+                                                                       encoding: NSUTF8StringEncoding 
+                                                                          error: nil];
+}
+
 #pragma mark -
 #pragma mark Location manager
 
@@ -241,8 +271,9 @@
 - (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params {
     NSManagedObjectContext *context = [self managedObjectContext];
     NSManagedObjectModel *model     = [self managedObjectModel];
-    NSFetchRequest *fetchRequest    = [model fetchRequestFromTemplateWithName: request substitutionVariables: params];
     NSEntityDescription *entityDesc = [NSEntityDescription entityForName: entity inManagedObjectContext: context];
+    
+    NSFetchRequest *fetchRequest    = [model fetchRequestFromTemplateWithName: request substitutionVariables: params];
     
     [fetchRequest setEntity: entityDesc];
     

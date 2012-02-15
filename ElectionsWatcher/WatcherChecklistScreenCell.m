@@ -20,8 +20,6 @@
 
 @implementation WatcherChecklistScreenCell
 
-static UIView *currentlySelectedInputView = nil;
-
 @synthesize itemInfo;
 @synthesize control;
 @synthesize itemLabel;
@@ -29,6 +27,7 @@ static UIView *currentlySelectedInputView = nil;
 @synthesize sectionIndex;
 @synthesize screenIndex;
 @synthesize mwBrowserItems;
+@synthesize saveDelegate;
 
 #pragma mark -
 #pragma mark Cell implementation
@@ -47,6 +46,9 @@ static UIView *currentlySelectedInputView = nil;
         self.itemLabel.backgroundColor = [UIColor clearColor];
         self.itemLabel.textColor = [UIColor darkTextColor];
         self.itemLabel.text = [self.itemInfo objectForKey: @"title"];
+        
+        self.sectionIndex   = -1;
+        self.screenIndex    = -1;
         
         int controlType = [[self.itemInfo objectForKey: @"control"] intValue];
 
@@ -130,7 +132,7 @@ static UIView *currentlySelectedInputView = nil;
                 self.control = [UIButton buttonWithType: UIButtonTypeRoundedRect];
                 
                 UIButton *button = (UIButton *) self.control;
-                [button setTitle: @"Фото" forState: UIControlStateNormal];
+                [button setTitle: [self.itemInfo objectForKey: @"hint"] forState: UIControlStateNormal];
                 [button addTarget: self action: @selector(takePhoto:) forControlEvents: UIControlEventTouchUpInside];
             }
                 break;
@@ -139,7 +141,7 @@ static UIView *currentlySelectedInputView = nil;
                 self.control = [UIButton buttonWithType: UIButtonTypeRoundedRect];
                 
                 UIButton *button = (UIButton *) self.control;
-                [button setTitle: @"Видео" forState: UIControlStateNormal];
+                [button setTitle: [self.itemInfo objectForKey: @"hint"] forState: UIControlStateNormal];
                 [button addTarget: self action: @selector(takeVideo:) forControlEvents: UIControlEventTouchUpInside];
             }
                 break;
@@ -206,88 +208,75 @@ static UIView *currentlySelectedInputView = nil;
 #pragma mark Handling item save/restore
 
 - (void) loadItem {
-    NSString *itemName = [self.itemInfo objectForKey: @"name"];
-    
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSDictionary *bindParams = [NSDictionary dictionaryWithObjectsAndKeys: itemName, @"ITEM_NAME", nil];
-    NSArray *results = [appDelegate executeFetchRequest: @"findItemByName" forEntity: @"ChecklistItem" withParameters: bindParams];
-    
-    if ( [results count] ) {
-        self.checklistItem = [results lastObject];
-        
-        switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
-            case INPUT_TEXT:
-            case INPUT_NUMBER:
-            case INPUT_DROPDOWN: {
-                UITextField *textField = (UITextField *) self.control;
-                textField.text = self.checklistItem.value;
-            }
-                break;
-                
-            case INPUT_SWITCH: {
-                UISlider *slider = (UISlider *) self.control;
-                NSDictionary *switchOptions = [self.itemInfo objectForKey: @"switch_options"];
-                if ( [[switchOptions objectForKey: @"lo_value"] isEqualToString: self.checklistItem.value] ) {
-                    slider.value = -1;
-                    
-                    [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                                        forState: UIControlStateNormal];
-                    [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                                        forState: UIControlStateNormal];
-                } else if ( [[switchOptions objectForKey: @"hi_value"] isEqualToString: self.checklistItem.value] ) {
-                    slider.value = +1;
-                    
-                    [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                                        forState: UIControlStateNormal];
-                    [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                                        forState: UIControlStateNormal];
-                } else {
-                    slider.value = 0;
-                    
-                    [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                                        forState: UIControlStateNormal];
-                    [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                                        forState: UIControlStateNormal];
-                }
-            }
-                break;
-                
-            case INPUT_PHOTO: {
-                if ( [[self mediaItemsOfType: (NSString *) kUTTypeImage] count] ) {
-                    UIButton *button = (UIButton *) self.control;
-                    [button setTitle: [NSString stringWithFormat: @"Фото (%d)", [[self mediaItemsOfType: (NSString *) kUTTypeImage] count]] 
-                            forState: UIControlStateNormal];
-                }
-                
-            }
-                break;
-                
-            case INPUT_VIDEO: {
-                if ( [[self mediaItemsOfType: (NSString *) kUTTypeMovie] count] ) {
-                    UIButton *button = (UIButton *) self.control;
-                    [button setTitle: [NSString stringWithFormat: @"Видео (%d)", [[self mediaItemsOfType: (NSString *) kUTTypeMovie] count]] 
-                            forState: UIControlStateNormal];
-                }
-            }
-                break;
-                
-            case INPUT_COMMENT:
-                break;
+    switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
+        case INPUT_TEXT:
+        case INPUT_NUMBER:
+        case INPUT_DROPDOWN: {
+            UITextField *textField = (UITextField *) self.control;
+            textField.text = self.checklistItem.value;
         }
+            break;
+            
+        case INPUT_SWITCH: {
+            UISlider *slider = (UISlider *) self.control;
+            NSDictionary *switchOptions = [self.itemInfo objectForKey: @"switch_options"];
+            if ( [[switchOptions objectForKey: @"lo_value"] isEqualToString: self.checklistItem.value] ) {
+                slider.value = -1;
+                
+                [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
+                                    forState: UIControlStateNormal];
+                [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
+                                    forState: UIControlStateNormal];
+            } else if ( [[switchOptions objectForKey: @"hi_value"] isEqualToString: self.checklistItem.value] ) {
+                slider.value = +1;
+                
+                [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
+                                    forState: UIControlStateNormal];
+                [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
+                                    forState: UIControlStateNormal];
+            } else {
+                slider.value = 0;
+                
+                [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
+                                    forState: UIControlStateNormal];
+                [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
+                                    forState: UIControlStateNormal];
+            }
+        }
+            break;
+            
+        case INPUT_PHOTO: {
+            if ( [[self mediaItemsOfType: (NSString *) kUTTypeImage] count] ) {
+                UIButton *button = (UIButton *) self.control;
+                [button setTitle: [NSString stringWithFormat: @"%@ (%d)", [self.itemInfo objectForKey: @"hint"], 
+                                   [[self mediaItemsOfType: (NSString *) kUTTypeImage] count]] 
+                        forState: UIControlStateNormal];
+            }
+            
+        }
+            break;
+            
+        case INPUT_VIDEO: {
+            if ( [[self mediaItemsOfType: (NSString *) kUTTypeMovie] count] ) {
+                UIButton *button = (UIButton *) self.control;
+                [button setTitle: [NSString stringWithFormat: @"%@ (%d)", [self.itemInfo objectForKey: @"hint"], 
+                                   [[self mediaItemsOfType: (NSString *) kUTTypeMovie] count]] 
+                        forState: UIControlStateNormal];
+            }
+        }
+            break;
+            
+        case INPUT_COMMENT:
+            break;
     }
 }
 
 - (void) saveItem {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    if ( self.checklistItem == nil ) {
-        self.checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
-                                                            inManagedObjectContext: [appDelegate managedObjectContext]];
-     
-        self.checklistItem.name = [self.itemInfo objectForKey: @"name"];
-        self.checklistItem.sectionIndex = [NSNumber numberWithInt: self.sectionIndex];
-        self.checklistItem.screenIndex = [NSNumber numberWithInt: self.screenIndex];
-    }
+    self.checklistItem.name = [self.itemInfo objectForKey: @"name"];
+    self.checklistItem.sectionIndex = [NSNumber numberWithInt: self.sectionIndex];
+    self.checklistItem.screenIndex = [NSNumber numberWithInt: self.screenIndex];
     
     self.checklistItem.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
     self.checklistItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
@@ -326,11 +315,7 @@ static UIView *currentlySelectedInputView = nil;
             break;
     }
 
-    NSError *error = nil;
-    
-    if ( ! [[appDelegate managedObjectContext] save: &error] )
-        NSLog(@"error saving data: %@", error);
-
+    [self.saveDelegate didSaveAttributeItem: self.checklistItem];
 }
 
 #pragma mark -
@@ -444,24 +429,20 @@ static UIView *currentlySelectedInputView = nil;
 
 - (void) takePhoto: (id) sender {
     // TODO: check camera availability and media types
-    if ( currentlySelectedInputView != sender ) {
-        [currentlySelectedInputView resignFirstResponder];
-        currentlySelectedInputView = sender;
-    }
     
     NSArray *mediaItems = [self mediaItemsOfType: (NSString *) kUTTypeImage];
     
     UIActionSheet *photoActionSheet = nil;
     
     if ( mediaItems.count ) {   
-        photoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Фото" 
+        photoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"title"] 
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
                                               otherButtonTitles: @"Снять фото", @"Посмотреть фото", nil];
         
     } else {
-        photoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Фото" 
+        photoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"title"]
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
@@ -470,30 +451,30 @@ static UIView *currentlySelectedInputView = nil;
     
     
     UIViewController *parentViewController = [self firstAvailableUIViewController];
-    [photoActionSheet showFromTabBar: parentViewController.tabBarController.tabBar];
+    if ( parentViewController.tabBarController )
+        [photoActionSheet showFromTabBar: parentViewController.tabBarController.tabBar];
+    else
+        [photoActionSheet showInView: self.superview];
+    
     [photoActionSheet release];
 }
 
 - (void) takeVideo: (id) sender {
     // TODO: check camera availability and media types
-    if ( currentlySelectedInputView != sender ) {
-        [currentlySelectedInputView resignFirstResponder];
-        currentlySelectedInputView = sender;
-    }
     
     NSArray *mediaItems = [self mediaItemsOfType: (NSString *) kUTTypeMovie];
     
     UIActionSheet *videoActionSheet = nil;
     
     if ( mediaItems.count ) {
-        videoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Видео" 
-                                                        delegate: self 
-                                               cancelButtonTitle: @"Отменить" 
-                                          destructiveButtonTitle: nil 
-                                               otherButtonTitles: @"Снять видео", @"Посмотреть видео", nil];
+        videoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"title"]
+                                                       delegate: self 
+                                              cancelButtonTitle: @"Отменить" 
+                                         destructiveButtonTitle: nil 
+                                              otherButtonTitles: @"Снять видео", @"Посмотреть видео", nil];
         
     } else {
-        videoActionSheet = [[UIActionSheet alloc] initWithTitle: @"Видео" 
+        videoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"title"]
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
@@ -561,6 +542,8 @@ static UIView *currentlySelectedInputView = nil;
         mediaItem.filePath = videoFilepath;
     }
     
+    mediaItem.timestamp = [NSDate date];
+    
     [self.checklistItem addMediaItemsObject: mediaItem];
     [self saveItem];
     
@@ -605,7 +588,7 @@ static UIView *currentlySelectedInputView = nil;
     NSDictionary *selectedValue = [possibleValues objectAtIndex: [selectedIndex intValue]];
     
     field.text = [selectedValue objectForKey: @"title"];
-    
+    [field resignFirstResponder];
     [self saveItem];
 }
 
@@ -615,6 +598,26 @@ static UIView *currentlySelectedInputView = nil;
 
 #pragma mark -
 #pragma mark UITextField events
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    if ( [[self.itemInfo objectForKey: @"required"] boolValue] ) {
+        if ( textField.text.length ) {
+            return YES;
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
+                                                                message: @"Не заполнено обязательное поле" 
+                                                               delegate: nil 
+                                                      cancelButtonTitle: @"OK" 
+                                                      otherButtonTitles: nil];
+            
+            [alertView show];
+            [alertView release];
+            return NO;
+        }
+    } else {
+        return YES;
+    }
+}
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
@@ -627,11 +630,6 @@ static UIView *currentlySelectedInputView = nil;
 }
 
 - (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
-    if ( currentlySelectedInputView != textField ) {
-        [currentlySelectedInputView resignFirstResponder];
-        currentlySelectedInputView = textField;
-    }
-    
     if ( [self.itemInfo objectForKey: @"possible_values"] == nil ) {
         return YES;
     } else {
@@ -648,11 +646,6 @@ static UIView *currentlySelectedInputView = nil;
 }
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView {
-    if ( currentlySelectedInputView != textView ) {
-        [currentlySelectedInputView resignFirstResponder];
-        currentlySelectedInputView = textView;
-    }
-    
     return YES;
 }
 

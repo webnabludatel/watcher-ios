@@ -17,6 +17,8 @@
 				<integer>0</integer>
 				<key>hint</key>
 				<string>фамилия</string>
+				<key>required</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>name</key>
@@ -27,6 +29,8 @@
 				<integer>0</integer>
 				<key>hint</key>
 				<string>имя</string>
+				<key>required</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>name</key>
@@ -37,6 +41,8 @@
 				<integer>8</integer>
 				<key>hint</key>
 				<string>e-mail</string>
+				<key>required</key>
+				<true/>
 			</dict>
 			<dict>
 				<key>name</key>
@@ -53,95 +59,8 @@
 				<string>Вы официальный наблюдатель?</string>
 				<key>control</key>
 				<integer>4</integer>
-			</dict>
-		</array>
-	</dict>
-	<key>ballot_district_info</key>
-	<dict>
-		<key>title</key>
-		<string>Избирательный участок</string>
-		<key>items</key>
-		<array>
-			<dict>
-				<key>name</key>
-				<string>district_number</string>
-				<key>title</key>
-				<string>Номер избирательного участка</string>
-				<key>control</key>
-				<integer>1</integer>
 				<key>hint</key>
-				<string>введите номер</string>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>district_type</string>
-				<key>title</key>
-				<string>Тип участка</string>
-				<key>control</key>
-				<integer>2</integer>
-				<key>hint</key>
-				<string>выберите</string>
-				<key>possible_values</key>
-				<array>
-					<dict>
-						<key>value</key>
-						<string>uik</string>
-						<key>title</key>
-						<string>УИК</string>
-					</dict>
-					<dict>
-						<key>value</key>
-						<string>tik</string>
-						<key>title</key>
-						<string>ТИК</string>
-					</dict>
-					<dict>
-						<key>value</key>
-						<string>ikmo</string>
-						<key>title</key>
-						<string>ИКМО</string>
-					</dict>
-				</array>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>district_chairman</string>
-				<key>title</key>
-				<string>Председатель</string>
-				<key>control</key>
-				<integer>0</integer>
-				<key>hint</key>
-				<string>ФИО</string>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>district_secretary</string>
-				<key>title</key>
-				<string>Секретарь</string>
-				<key>control</key>
-				<integer>0</integer>
-				<key>hint</key>
-				<string>ФИО</string>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>district_watchers_count</string>
-				<key>title</key>
-				<string>Всего наблюдателей</string>
-				<key>control</key>
-				<integer>1</integer>
-				<key>hint</key>
-				<string>число</string>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>district_banner_photo</string>
-				<key>title</key>
-				<string>Вывеска на участке</string>
-				<key>control</key>
-				<integer>4</integer>
-				<key>hint</key>
-				<string>фото</string>
+				<string>Фото удостоверения</string>
 			</dict>
 		</array>
 	</dict>

@@ -126,6 +126,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 				</array>
 			</dict>
@@ -179,6 +181,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 				</array>
 			</dict>
@@ -289,6 +293,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 				</array>
 			</dict>
@@ -555,6 +561,8 @@
 						<string>Видео нарушений</string>
 						<key>control</key>
 						<integer>5</integer>
+						<key>hint</key>
+						<string>Снять видео</string>
 					</dict>
 				</array>
 			</dict>
@@ -684,6 +692,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -692,6 +702,8 @@
 						<string>Видео нарушений</string>
 						<key>control</key>
 						<integer>5</integer>
+						<key>hint</key>
+						<string>Снять видео</string>
 					</dict>
 				</array>
 			</dict>
@@ -726,6 +738,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -734,6 +748,8 @@
 						<string>Видео нарушений</string>
 						<key>control</key>
 						<integer>5</integer>
+						<key>hint</key>
+						<string>Снять видео</string>
 					</dict>
 				</array>
 			</dict>
@@ -863,6 +879,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 				</array>
 			</dict>
@@ -885,7 +903,7 @@
 						<key>name</key>
 						<string>unused_ballots_counted_after_vote_finish</string>
 						<key>title</key>
-						<string>Неиспользованые бюллетени подсчитаны сразу же после окончания голосвания?</string>
+						<string>Неиспользованные бюллетени подсчитаны сразу же после окончания голосования?</string>
 						<key>control</key>
 						<integer>3</integer>
 						<key>switch_options</key>
@@ -945,6 +963,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 				</array>
 			</dict>
@@ -998,6 +1018,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 				</array>
 			</dict>
@@ -1013,6 +1035,8 @@
 						<string>Видео вскрытия урн</string>
 						<key>control</key>
 						<integer>5</integer>
+						<key>hint</key>
+						<string>Снять видео</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -1047,6 +1071,8 @@
 						<string>Видео вскрытия переносных ящиков</string>
 						<key>control</key>
 						<integer>5</integer>
+						<key>hint</key>
+						<string>Снять видео</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -1214,6 +1240,8 @@
 						<string>Видео нарушений</string>
 						<key>control</key>
 						<integer>5</integer>
+						<key>hint</key>
+						<string>Снять видео</string>
 					</dict>
 				</array>
 			</dict>
@@ -1339,6 +1367,8 @@
 						<string>Фото упаковок</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1403,6 +1433,8 @@
 						<string>Фото протокола</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -1411,6 +1443,8 @@
 						<string>Фото копии</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -1592,6 +1626,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 				</array>
 			</dict>
@@ -1788,6 +1824,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 				</array>
 			</dict>
@@ -1948,6 +1986,8 @@
 						<string>Фото нарушений</string>
 						<key>control</key>
 						<integer>4</integer>
+						<key>hint</key>
+						<string>Сфотографировать</string>
 					</dict>
 					<dict>
 						<key>name</key>
@@ -1956,6 +1996,8 @@
 						<string>Видео нарушений</string>
 						<key>control</key>
 						<integer>5</integer>
+						<key>hint</key>
+						<string>Снять видео</string>
 					</dict>
 				</array>
 			</dict>

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
+#import "WatcherSaveAttributeDelegate.h"
 
 #define INPUT_TEXT          0
 #define INPUT_NUMBER        1
@@ -30,6 +31,8 @@
 @property (nonatomic) NSInteger sectionIndex;
 @property (nonatomic) NSInteger screenIndex;
 @property (nonatomic, retain) NSMutableArray *mwBrowserItems;
+@property (nonatomic, assign) id<WatcherSaveAttributeDelegate> saveDelegate;
+
 
 - (id) initWithStyle: (UITableViewCellStyle) style reuseIdentifier: (NSString *) reuseIdentifier withItemInfo: (NSDictionary *) anItemInfo;
 

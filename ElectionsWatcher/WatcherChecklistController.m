@@ -9,6 +9,7 @@
 #import "WatcherChecklistController.h"
 #import "WatcherChecklistSectionController.h"
 #import "AppDelegate.h"
+#import "PollingPlace.h"
 
 @implementation WatcherChecklistController
 
@@ -99,12 +100,12 @@
     NSDictionary *screenInfo = [sortedValues objectAtIndex: indexPath.row];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSDictionary *bindParams = [NSDictionary dictionaryWithObjectsAndKeys: [NSNumber numberWithInt: indexPath.row], @"SECTION_INDEX", nil];
-    NSArray *results = [appDelegate executeFetchRequest: @"findItemsBySection" forEntity: @"ChecklistItem" withParameters: bindParams];
-                        
+    NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
+    NSPredicate *sectionPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d", indexPath.row];
+    NSArray *sectionItems = [checklistItems filteredArrayUsingPredicate: sectionPredicate];
     
     cell.textLabel.text = [screenInfo objectForKey: @"title"];
-    cell.detailTextLabel.text = [results count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [results count]] : @"Отметок нет";
+    cell.detailTextLabel.text = [sectionItems count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [sectionItems count]] : @"Отметок нет";
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {

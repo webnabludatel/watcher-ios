@@ -10,6 +10,8 @@
 #import <CoreData/CoreData.h>
 #import <CoreLocation/CoreLocation.h>
 
+@class PollingPlace;
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
@@ -20,6 +22,7 @@
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, readonly) CLLocationManager *locationManager;
 @property (nonatomic, retain) CLLocation *currentLocation;
+@property (nonatomic, retain) PollingPlace *currentPollingPlace;
 
 - (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params;
 
