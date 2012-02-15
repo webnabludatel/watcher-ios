@@ -163,6 +163,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
         cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
                                                   reuseIdentifier: cellId 
                                                      withItemInfo: itemInfo] autorelease];
+        [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
     }
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
