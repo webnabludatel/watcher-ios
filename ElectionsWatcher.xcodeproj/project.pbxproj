@@ -1280,7 +1280,7 @@
 					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D920F8C3-1415-47AE-91A9-EED6CABFFB3A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "17F71057-C7F0-42E0-A69F-74F1EA1623B0";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
