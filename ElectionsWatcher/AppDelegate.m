@@ -15,6 +15,7 @@
 #import "WatcherReportController.h"
 #import "WatcherSOSController.h"
 #import "PollingPlace.h"
+#import "TestFlight.h"
 
 @implementation AppDelegate
 
@@ -45,15 +46,13 @@
 	[locationManager setDistanceFilter: 1000];
     
     // last active polling place
-    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
     NSArray *paths    = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
     NSString *path    = [[paths lastObject] stringByAppendingPathComponent: @"current_number.txt"];
     NSString *number  = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: nil];
     if ( number ) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: number, @"NUMBER", nil];
         NSArray *results  = [self executeFetchRequest: @"findPollingPlace" forEntity: @"PollingPlace" withParameters: params];
-        currentPollingPlace = [results lastObject];
+        currentPollingPlace = [[results lastObject] retain];
     }
     
     
@@ -101,6 +100,9 @@
     // complete initialization
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
+    
+    // TestFlight
+    [TestFlight takeOff: @"3e01d5e6faba63f16c5fa20704571f7a_NjI1NTIyMDEyLTAyLTE0IDE1OjA5OjIxLjE3NzczMw"];
     
     return YES;
 }
@@ -165,17 +167,6 @@
 -(void)navigationController:(UINavigationController *)navigationController 
      willShowViewController:(UIViewController *)viewController 
                    animated:(BOOL)animated {
-    
-    if ( [viewController isKindOfClass: [WatcherChecklistController class]] ) {
-        WatcherChecklistController *checklistController = (WatcherChecklistController *) viewController;
-        [checklistController.checklistTableView reloadData];
-    }
-    
-    if ( [viewController isKindOfClass: [WatcherChecklistSectionController class]] ) {
-        WatcherChecklistSectionController *checklistSectionController = (WatcherChecklistSectionController *) viewController;
-        [checklistSectionController.tableView reloadData];
-    }
-        
 }
 
 -(void)navigationController:(UINavigationController *)navigationController 
@@ -188,15 +179,20 @@
     return currentPollingPlace;
 }
 
--(void)setCurrentPollingPlace:(PollingPlace *)aCurrentPollingPlace {
-    [currentPollingPlace release]; currentPollingPlace = [aCurrentPollingPlace retain];
+-(void)setCurrentPollingPlace:(PollingPlace *) aCurrentPollingPlace {
+    [currentPollingPlace release]; currentPollingPlace = nil;
+    currentPollingPlace = [aCurrentPollingPlace retain];
     
+    NSError *error    = nil;
     NSArray *paths    = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
     NSString *path    = [[paths lastObject] stringByAppendingPathComponent: @"current_number.txt"];
     [[NSString stringWithFormat: @"%@", currentPollingPlace.number] writeToFile: path
                                                                      atomically: YES 
                                                                        encoding: NSUTF8StringEncoding 
-                                                                          error: nil];
+                                                                          error: &error];
+    
+    if ( error ) 
+        NSLog(@"error saving current polling place: %@", error.description);
 }
 
 #pragma mark -

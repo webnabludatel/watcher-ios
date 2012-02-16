@@ -107,7 +107,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
     
     if ( cell == nil ) {
-        cell = [[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: cellId];
+        cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: cellId] autorelease];
         cell.textLabel.font = [UIFont systemFontOfSize: 12];
         cell.textLabel.numberOfLines = 3;
         cell.textLabel.lineBreakMode = UILineBreakModeTailTruncation;

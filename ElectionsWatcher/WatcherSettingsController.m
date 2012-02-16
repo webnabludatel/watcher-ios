@@ -15,7 +15,6 @@
 @implementation WatcherSettingsController
 
 @synthesize settings;
-@synthesize activePollingPlace;
 
 static NSString *settingsSections[] = { @"personal_info" };
 
@@ -42,19 +41,24 @@ static NSString *settingsSections[] = { @"personal_info" };
 
 -(void)dealloc {
     [settings release];
-    [activePollingPlace release];
     
     [super dealloc];
 }
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 
-    // Do any additional setup after loading the view from its nib.
-    [self loadSettings];
+    NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSettings" 
+                                                            ofType: @"plist"];
+    self.settings = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear: animated];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewDidUnload
@@ -70,77 +74,12 @@ static NSString *settingsSections[] = { @"personal_info" };
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - Settings management
-
-- (void) loadSettings {
-    NSFileManager *fm   = [NSFileManager defaultManager];
-    NSArray*  paths     = NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES );
-    NSString* settingsPath = [[paths lastObject] stringByAppendingPathComponent: @"WatcherSettings.plist"];
-    
-    NSError *error = nil;
-    
-    if ( [fm fileExistsAtPath: settingsPath] ) {
-        self.settings = [NSDictionary dictionaryWithContentsOfFile: settingsPath];
-        if ( error ) 
-            NSLog ( @"error opening settings: %@", error.description );
-        
-    } else {
-        NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSettings" 
-                                                                ofType: @"plist"];
-        
-        self.settings = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
-        
-        if ( error ) 
-            NSLog ( @"error opening settings: %@", error.description );
-        
-        [fm copyItemAtPath: defaultPath toPath: settingsPath error: &error];
-        
-        if ( error ) 
-            NSLog ( @"error copying settings to docs path: %@", error.description );
-    }
-    
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    self.activePollingPlace = appDelegate.currentPollingPlace;
-    
-    [self.tableView reloadData];
-}
-
 #pragma mark - UITableViewController
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[section]];
     return [sectionInfo objectForKey: @"title"];
 }
-
-/*
--(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if ( section == [[self.settings allKeys] count] - 1 ) {
-        UIView *footerView      = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 60)] autorelease];
-        UIButton *saveButton    = [UIButton buttonWithType: UIButtonTypeRoundedRect];
-        UIButton *resetButton   = [UIButton buttonWithType: UIButtonTypeRoundedRect];
-        
-        CGRect saveButtonFrame, resetButtonFrame;
-        CGRectDivide(footerView.bounds, &saveButtonFrame, &resetButtonFrame, footerView.bounds.size.width/2, CGRectMinXEdge);
-        
-        saveButton.frame = CGRectInset(saveButtonFrame, 10, 10);
-        resetButton.frame = CGRectInset(resetButtonFrame, 10, 10);
-        
-        [saveButton setTitle: @"Сохранить" forState: UIControlStateNormal];
-        [resetButton setTitle: @"Сменить участок" forState: UIControlStateNormal];
-        
-        [footerView addSubview: saveButton];
-        [footerView addSubview: resetButton];
-        
-        return footerView;
-    } else {
-        return nil;
-    }
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return ( section == [[self.settings allKeys] count] - 1 ) ? 60 : 0;
-}
-*/
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView {
     return [[self.settings allKeys] count]+1;
@@ -219,13 +158,14 @@ static NSString *settingsSections[] = { @"personal_info" };
         
         if ( indexPath.row < pollingPlaces.count ) {
             PollingPlace *pollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
-            cell.textLabel.text = [NSString stringWithFormat: @"%@ № %d", pollingPlace.type, [pollingPlace.number intValue]];
+            cell.textLabel.text = [NSString stringWithFormat: @"%@ № %@", pollingPlace.type, pollingPlace.number];
             cell.textLabel.textAlignment = UITextAlignmentLeft;
             
-            if ( pollingPlace == self.activePollingPlace ) 
+            if ( pollingPlace == appDelegate.currentPollingPlace ) 
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             else
                 cell.accessoryType = UITableViewCellAccessoryNone;
+            
         } else {
             cell.textLabel.text = @"Добавить участок...";
             cell.textLabel.textAlignment = UITextAlignmentCenter;
@@ -244,21 +184,13 @@ static NSString *settingsSections[] = { @"personal_info" };
     if ( indexPath.section == 1 ) {
         if ( indexPath.row < pollingPlaces.count ) {
             AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-            NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                            forEntity: @"PollingPlace" 
-                                                       withParameters: nil];
-            self.activePollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
-            appDelegate.currentPollingPlace = self.activePollingPlace;
+            appDelegate.currentPollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
             [self.tableView reloadData];
         } else {
-            // create new polling place
-            self.activePollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
-                                                                    inManagedObjectContext: [appDelegate managedObjectContext]];
-            [appDelegate.managedObjectContext save: nil];
-            
             WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
-            pollingPlaceController.saveDelegate = self;
-            pollingPlaceController.pollingPlace = self.activePollingPlace;
+            pollingPlaceController.pollingPlaceControllerDelegate = self;
+            pollingPlaceController.pollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
+                                                                                inManagedObjectContext: [appDelegate managedObjectContext]];
             
             UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: pollingPlaceController];
             nc.navigationBar.tintColor = [UIColor blackColor];
@@ -270,35 +202,34 @@ static NSString *settingsSections[] = { @"personal_info" };
     
 }
 
-#pragma mark - Own event handlers
+#pragma mark - Polling place controller delegate
 
-- (void) selectActivePollingPlace: (id) sender {
-    UIButton *button = sender;
-    [button setSelected: ! button.selected];
+-(void)watcherPollingPlaceController:(WatcherPollingPlaceController *)controller didSavePollingPlace:(PollingPlace *)pollinngPlace {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext save: nil];
+    
+    appDelegate.currentPollingPlace = controller.pollingPlace;
+    
+    [self dismissModalViewControllerAnimated: YES];
+    [self.tableView reloadData];
 }
 
-- (void) didFinishEditingPollingPlace: (id) sender {
-    if ( self.activePollingPlace.type.length && self.activePollingPlace.number.intValue ) {
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        [appDelegate.managedObjectContext save: nil];
-        appDelegate.currentPollingPlace = self.activePollingPlace;
-        [self dismissModalViewControllerAnimated: YES];
-        [self.tableView reloadData];
-    } else {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
-                                                            message: @"Не заполнено обязательное поле" 
-                                                           delegate: nil 
-                                                  cancelButtonTitle: @"OK" 
-                                                  otherButtonTitles: nil];
-        
-        [alertView show];
-        [alertView release];
-    }
+-(void)watcherPollingPlaceControllerDidCancel:(WatcherPollingPlaceController *)controller {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext deleteObject: controller.pollingPlace];
+    [self dismissModalViewControllerAnimated: YES];
+    [self.tableView reloadData];
 }
+
+#pragma mark - Attribute save delegate
 
 - (void) didSaveAttributeItem:(ChecklistItem *)item {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [appDelegate.managedObjectContext save: nil];
+}
+
+-(BOOL)isCancelling {
+    return NO;
 }
 
 @end

@@ -12,6 +12,8 @@
 @protocol WatcherSaveAttributeDelegate <NSObject>
 
 @required
+
 - (void) didSaveAttributeItem: (ChecklistItem *) item;
+- (BOOL) isCancelling;
 
 @end

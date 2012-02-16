@@ -61,6 +61,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.checklistTableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated

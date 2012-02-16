@@ -65,6 +65,7 @@
     [super viewWillAppear:animated];
     
     self.title = [sectionData objectForKey: @"title"];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated

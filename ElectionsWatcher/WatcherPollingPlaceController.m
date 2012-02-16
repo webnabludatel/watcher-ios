@@ -15,9 +15,10 @@
 
 static NSString *settingsSections[] = { @"ballot_district_info" };
 
-@synthesize saveDelegate;
+@synthesize pollingPlaceControllerDelegate;
 @synthesize pollingPlace;
 @synthesize settings;
+@synthesize isCancelling;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -48,12 +49,21 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone 
-                                                                                            target: self.saveDelegate 
-                                                                                            action: @selector(didFinishEditingPollingPlace:)] autorelease];
+                                                                                            target: self
+                                                                                            action: @selector(handleDoneButton:)] autorelease];
+    self.navigationItem.rightBarButtonItem.tag = 12;
+    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
+                                                                                           target: self
+                                                                                           action: @selector(handleCancelButton:)] autorelease];
+    self.navigationItem.leftBarButtonItem.tag = 13;
     
     self.title = @"Участок";
     
-    [self loadSettings];
+    NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherPollingPlace" 
+                                                            ofType: @"plist"];
+    self.settings = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
+    self.isCancelling = NO;
 }
 
 - (void)viewDidUnload
@@ -63,9 +73,9 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     // e.g. self.myOutlet = nil;
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -89,38 +99,30 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-#pragma mark - Settings management
+#pragma mark - Save/cancel handlers
 
-- (void) loadSettings {
-    NSFileManager *fm   = [NSFileManager defaultManager];
-    NSArray*  paths     = NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES );
-    NSString* settingsPath = [[paths lastObject] stringByAppendingPathComponent: @"WatcherPollingPlace.plist"];
-    
-    NSError *error = nil;
-    
-    if ( [fm fileExistsAtPath: settingsPath] ) {
-        self.settings = [NSDictionary dictionaryWithContentsOfFile: settingsPath];
-        if ( error ) 
-            NSLog ( @"error opening settings: %@", error.description );
+- (void) handleDoneButton: (id) sender {
+    if ( self.pollingPlace.type.length && self.pollingPlace.number.intValue ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        [appDelegate.managedObjectContext save: nil];
         
+        [pollingPlaceControllerDelegate watcherPollingPlaceController: self didSavePollingPlace: self.pollingPlace];
     } else {
-        NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherPollingPlace" 
-                                                                ofType: @"plist"];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
+                                                            message: @"Не заполнено обязательное поле" 
+                                                           delegate: nil 
+                                                  cancelButtonTitle: @"OK" 
+                                                  otherButtonTitles: nil];
         
-        self.settings = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
-        
-        if ( error ) 
-            NSLog ( @"error opening settings: %@", error.description );
-        
-        [fm copyItemAtPath: defaultPath toPath: settingsPath error: &error];
-        
-        if ( error ) 
-            NSLog ( @"error copying settings to docs path: %@", error.description );
+        [alertView show];
+        [alertView release];
     }
-    
-    [self.tableView reloadData];
 }
 
+- (void) handleCancelButton: (id) sender {
+    self.isCancelling = YES;
+    [pollingPlaceControllerDelegate watcherPollingPlaceControllerDidCancel: self];
+}
 
 #pragma mark - Table view data source
 
@@ -157,14 +159,11 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", [itemInfo objectForKey: @"name"]];
     NSArray *existingItems = [[self.pollingPlace.checklistItems allObjects] filteredArrayUsingPredicate: predicate];
     
-    if ( existingItems.count ) {
+    if ( existingItems.count )
         return [existingItems lastObject];
-    } else {
-        ChecklistItem *item = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
-                                                            inManagedObjectContext: appDelegate.managedObjectContext];
-        [appDelegate.managedObjectContext save: nil];
-        return item;
-    }
+    else
+        return [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                             inManagedObjectContext: appDelegate.managedObjectContext];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -214,8 +213,7 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     if ( [@"district_banner_photo" isEqualToString: item.name] )
         pollingPlace.mediaItems = item.mediaItems;
     
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate.managedObjectContext save: nil];
+    [nf release];
 }
 
 @end

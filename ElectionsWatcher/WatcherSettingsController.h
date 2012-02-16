@@ -8,14 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "WatcherSaveAttributeDelegate.h"
+#import "WatcherPollingPlaceControllerDelegate.h"
 
 @class PollingPlace;
 
-@interface WatcherSettingsController : UITableViewController <WatcherSaveAttributeDelegate>
+@interface WatcherSettingsController : UITableViewController <WatcherSaveAttributeDelegate, WatcherPollingPlaceControllerDelegate>
 
-@property (nonatomic, retain) PollingPlace *activePollingPlace;
 @property (nonatomic, retain) NSDictionary *settings;
-
-- (void) loadSettings;
 
 @end

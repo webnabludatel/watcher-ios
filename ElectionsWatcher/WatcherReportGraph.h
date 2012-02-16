@@ -10,4 +10,7 @@
 
 @interface WatcherReportGraph : UIView
 
+@property (nonatomic) NSUInteger goodCount;
+@property (nonatomic) NSUInteger badCount;
+
 @end

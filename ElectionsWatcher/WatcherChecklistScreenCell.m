@@ -45,7 +45,9 @@
         self.itemLabel.lineBreakMode = UILineBreakModeWordWrap;
         self.itemLabel.backgroundColor = [UIColor clearColor];
         self.itemLabel.textColor = [UIColor darkTextColor];
-        self.itemLabel.text = [self.itemInfo objectForKey: @"title"];
+        self.itemLabel.text = [[self.itemInfo objectForKey: @"required"] boolValue] ?
+            [[self.itemInfo objectForKey: @"title"] stringByAppendingString: @" (*)"] :
+            [self.itemInfo objectForKey: @"title"] ;
         
         self.sectionIndex   = -1;
         self.screenIndex    = -1;
@@ -164,6 +166,7 @@
                 [saveTextToolbar setBackgroundColor: [UIColor groupTableViewBackgroundColor]];
                 
                 textView.inputAccessoryView = saveTextToolbar;
+                [saveTextToolbar release];
             }
                 break;
                 
@@ -364,8 +367,8 @@
         imagePicker.allowsEditing = NO;
         imagePicker.delegate = self;
         imagePicker.mediaTypes = [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_PHOTO ?
-            [[NSArray alloc] initWithObjects: (NSString *) kUTTypeImage, nil] :
-            [[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil] ;
+            [NSArray arrayWithObjects: (NSString *) kUTTypeImage, nil] :
+            [NSArray arrayWithObjects: (NSString *) kUTTypeMovie, nil] ;
         
         UIViewController *parentController = [self firstAvailableUIViewController];
         [parentController presentModalViewController: imagePicker animated: YES];
@@ -600,6 +603,9 @@
 #pragma mark UITextField events
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    if ( [self.saveDelegate isCancelling] )
+        return YES;
+    
     if ( [[self.itemInfo objectForKey: @"required"] boolValue] ) {
         if ( textField.text.length ) {
             return YES;

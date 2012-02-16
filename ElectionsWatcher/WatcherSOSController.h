@@ -13,6 +13,4 @@
 
 @property (nonatomic, retain) NSDictionary *sosReport;
 
-- (void) loadSettings;
-
 @end

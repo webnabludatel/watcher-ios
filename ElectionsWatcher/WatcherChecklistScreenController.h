@@ -14,5 +14,6 @@
 @property (nonatomic, retain) NSDictionary *screenInfo;
 @property (nonatomic) NSInteger screenIndex;
 @property (nonatomic) NSInteger sectionIndex;
+@property (nonatomic) BOOL isCancelling;
 
 @end

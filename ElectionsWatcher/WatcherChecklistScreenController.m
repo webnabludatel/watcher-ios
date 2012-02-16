@@ -16,6 +16,7 @@
 @synthesize screenIndex;
 @synthesize sectionIndex;
 @synthesize screenInfo;
+@synthesize isCancelling;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -67,6 +68,8 @@
     [super viewWillAppear:animated];
     
     self.title = [self.screenInfo objectForKey: @"title"];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated

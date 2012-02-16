@@ -43,45 +43,19 @@ static NSString *sosReportSections[] = { @"sos_report" };
     [super dealloc];
 }
 
-#pragma mark - Settings management
-
-- (void) loadSettings {
-    NSFileManager *fm   = [NSFileManager defaultManager];
-    NSArray*  paths     = NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES );
-    NSString* settingsPath = [[paths lastObject] stringByAppendingPathComponent: @"WatcherSOS.plist"];
-    
-    NSError *error = nil;
-    
-    if ( [fm fileExistsAtPath: settingsPath] ) {
-        self.sosReport = [NSDictionary dictionaryWithContentsOfFile: settingsPath];
-        if ( error ) 
-            NSLog ( @"error opening settings: %@", error.description );
-        
-    } else {
-        NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSOS" 
-                                                                ofType: @"plist"];
-        
-        self.sosReport = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
-        
-        if ( error ) 
-            NSLog ( @"error opening settings: %@", error.description );
-        
-        [fm copyItemAtPath: defaultPath toPath: settingsPath error: &error];
-        
-        if ( error ) 
-            NSLog ( @"error copying settings to docs path: %@", error.description );
-    }
-    
-    [self.tableView reloadData];
-}
-
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self loadSettings];
+    
+    NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSOS" ofType: @"plist"];
+    self.sosReport = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear: animated];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidUnload
@@ -191,6 +165,10 @@ static NSString *sosReportSections[] = { @"sos_report" };
     if ( ! [appDelegate.currentPollingPlace.checklistItems containsObject: item] )
         [appDelegate.currentPollingPlace addChecklistItemsObject: item];
     [appDelegate.managedObjectContext save: nil];
+}
+
+-(BOOL)isCancelling {
+    return NO;
 }
 
 @end

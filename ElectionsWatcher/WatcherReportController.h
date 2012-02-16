@@ -10,4 +10,8 @@
 
 @interface WatcherReportController : UITableViewController
 
+@property (nonatomic, retain) NSArray *goodItems;
+@property (nonatomic, retain) NSArray *badItems;
+@property (nonatomic, retain) NSDictionary *watcherChecklist;
+
 @end

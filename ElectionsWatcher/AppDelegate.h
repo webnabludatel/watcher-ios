@@ -22,7 +22,7 @@
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, readonly) CLLocationManager *locationManager;
 @property (nonatomic, retain) CLLocation *currentLocation;
-@property (nonatomic, retain) PollingPlace *currentPollingPlace;
+@property (nonatomic, assign) PollingPlace *currentPollingPlace;
 
 - (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params;
 
