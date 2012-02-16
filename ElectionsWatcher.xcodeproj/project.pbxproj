@@ -9,9 +9,12 @@
 /* Begin PBXBuildFile section */
 		320AF8492C47A4D819F7C451 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 320AF8492C47A4D819F7C450 /* QuartzCore.framework */; };
 		5F12BAC114EA9C1900000471 /* MWMovieBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F12BAC014EA9C1900000471 /* MWMovieBrowser.m */; };
+		5F12BAC414EAFFFF00000471 /* WatcherReportGraph.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F12BAC314EAFFFF00000471 /* WatcherReportGraph.m */; };
 		5F2062C614E876D50031BA22 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2062C514E876D50031BA22 /* RegexKitLite.m */; };
 		5F2062C814E876FC0031BA22 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2062C714E876FC0031BA22 /* libicucore.dylib */; };
 		5F2062CA14E8FB470031BA22 /* transparent.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5F2062C914E8FB470031BA22 /* transparent.gif */; };
+		5F624CAE14EBB323009149AF /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F624CAD14EBB323009149AF /* ChecklistItem.m */; };
+		5F624CB114EBB323009149AF /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F624CB014EBB323009149AF /* MediaItem.m */; };
 		5F65581A14EA5E0300135422 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65580E14EA5E0300135422 /* MWCaptionView.m */; };
 		5F65581B14EA5E0300135422 /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65581014EA5E0300135422 /* MWPhoto.m */; };
 		5F65581C14EA5E0300135422 /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65581214EA5E0300135422 /* MWPhotoBrowser.m */; };
@@ -31,8 +34,6 @@
 		5F65584014EA65ED00135422 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F65583F14EA65ED00135422 /* MediaPlayer.framework */; };
 		5F65584314EA667200135422 /* MWMoviePreview.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65584214EA667200135422 /* MWMoviePreview.m */; };
 		5F65584A14EA6E4500135422 /* play_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F65584914EA6E4500135422 /* play_button.png */; };
-		5F689CBA14DF128D00223832 /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F689CB914DF128D00223832 /* ChecklistItem.m */; };
-		5F689CBD14DF128E00223832 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F689CBC14DF128E00223832 /* MediaItem.m */; };
 		5F689D1A14DFB96900223832 /* golos.css in Resources */ = {isa = PBXBuildFile; fileRef = 5F689CC314DFB96900223832 /* golos.css */; };
 		5F689D1B14DFB96900223832 /* golos_1.html in Resources */ = {isa = PBXBuildFile; fileRef = 5F689CC414DFB96900223832 /* golos_1.html */; };
 		5F689D1C14DFB96900223832 /* golos_1_1.html in Resources */ = {isa = PBXBuildFile; fileRef = 5F689CC514DFB96900223832 /* golos_1_1.html */; };
@@ -121,6 +122,9 @@
 		5F689D6F14DFB96900223832 /* golos_pr_2_8.html in Resources */ = {isa = PBXBuildFile; fileRef = 5F689D1814DFB96900223832 /* golos_pr_2_8.html */; };
 		5F689D7014DFB96900223832 /* golos_pr_2_9.html in Resources */ = {isa = PBXBuildFile; fileRef = 5F689D1914DFB96900223832 /* golos_pr_2_9.html */; };
 		5F73515D14DEF89F00C8D5F1 /* traverseresponderchain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */; };
+		5F7AD6C014EB8F950099FE53 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */; };
+		5F7AD6C114EB8F950099FE53 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5F7AD6BD14EB8F950099FE53 /* README.txt */; };
+		5F7AD6C214EB8F950099FE53 /* release_notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5F7AD6BE14EB8F950099FE53 /* release_notes.txt */; };
 		5F7ADDC714C1AE4100A8E955 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7ADDC614C1AE4100A8E955 /* UIKit.framework */; };
 		5F7ADDC914C1AE4100A8E955 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7ADDC814C1AE4100A8E955 /* Foundation.framework */; };
 		5F7ADDCB14C1AE4100A8E955 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7ADDCA14C1AE4100A8E955 /* CoreGraphics.framework */; };
@@ -133,11 +137,15 @@
 		5F7ADDF714C1AF9700A8E955 /* WatcherSettingsController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */; };
 		5F7ADDF814C1B0E700A8E955 /* WatcherGuideController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */; };
 		5F7ADDFA14C1B0FD00A8E955 /* WatcherChecklistController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDFB14C1B0FD00A8E955 /* WatcherChecklistController.xib */; };
+		5F7DDA2F14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5F7DDA2D14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld */; };
+		5F7DDA3214EBC114005857D3 /* PollingPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7DDA3114EBC114005857D3 /* PollingPlace.m */; };
+		5F7DDA3614EBC42B005857D3 /* WatcherPollingPlaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7DDA3414EBC42B005857D3 /* WatcherPollingPlaceController.m */; };
+		5F7DDA3714EBC42B005857D3 /* WatcherPollingPlaceController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7DDA3514EBC42B005857D3 /* WatcherPollingPlaceController.xib */; };
+		5F7DDA3914EBCDCA005857D3 /* WatcherPollingPlace.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F7DDA3814EBCDCA005857D3 /* WatcherPollingPlace.plist */; };
 		5F8892A714E65F120067F2DD /* WatcherReportController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8892A514E65F120067F2DD /* WatcherReportController.m */; };
 		5F8892A814E65F120067F2DD /* WatcherReportController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892A614E65F120067F2DD /* WatcherReportController.xib */; };
 		5F8892AD14E65F890067F2DD /* WatcherSOSController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8892AB14E65F890067F2DD /* WatcherSOSController.m */; };
 		5F8892AE14E65F890067F2DD /* WatcherSOSController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892AC14E65F890067F2DD /* WatcherSOSController.xib */; };
-		5F8892B114E68B910067F2DD /* WatcherSettingsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F8892B014E68B910067F2DD /* WatcherSettingsCell.m */; };
 		5F8892B314E68C5F0067F2DD /* WatcherSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892B214E68C5F0067F2DD /* WatcherSettings.plist */; };
 		5F8892BE14E6AD6A0067F2DD /* checklist.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892B414E6AD6A0067F2DD /* checklist.png */; };
 		5F8892BF14E6AD6A0067F2DD /* checklist@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892B514E6AD6A0067F2DD /* checklist@2x.png */; };
@@ -161,7 +169,6 @@
 		5F8892E114E7DFF00067F2DD /* slider_good@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DD14E7DFF00067F2DD /* slider_good@2x.png */; };
 		5F8892E214E7DFF00067F2DD /* slider_neutral@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DE14E7DFF00067F2DD /* slider_neutral@2x.png */; };
 		5F8892E314E7DFF00067F2DD /* slider_thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DF14E7DFF00067F2DD /* slider_thumb@2x.png */; };
-		5F91F20914C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F20714C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld */; };
 		5F91F20E14C1C59300446C86 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F91F20D14C1C59300446C86 /* CoreData.framework */; };
 		5F91F22C14C2EFB200446C86 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21414C2EFB200446C86 /* NSObject+SBJson.m */; };
 		5F91F22D14C2EFB200446C86 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21714C2EFB200446C86 /* SBJsonParser.m */; };
@@ -205,10 +212,17 @@
 		320AF8492C47A4D819F7C450 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.frameworks; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		5F12BABF14EA9C1900000471 /* MWMovieBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWMovieBrowser.h; sourceTree = "<group>"; };
 		5F12BAC014EA9C1900000471 /* MWMovieBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWMovieBrowser.m; sourceTree = "<group>"; };
+		5F12BAC214EAFFFF00000471 /* WatcherReportGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherReportGraph.h; sourceTree = "<group>"; };
+		5F12BAC314EAFFFF00000471 /* WatcherReportGraph.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherReportGraph.m; sourceTree = "<group>"; };
+		5F1E382A14ED037C004E9EAC /* WatcherPollingPlaceControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherPollingPlaceControllerDelegate.h; sourceTree = "<group>"; };
 		5F2062C414E876D50031BA22 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		5F2062C514E876D50031BA22 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		5F2062C714E876FC0031BA22 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		5F2062C914E8FB470031BA22 /* transparent.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = transparent.gif; sourceTree = "<group>"; };
+		5F624CAC14EBB323009149AF /* ChecklistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistItem.h; sourceTree = "<group>"; };
+		5F624CAD14EBB323009149AF /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
+		5F624CAF14EBB323009149AF /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
+		5F624CB014EBB323009149AF /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
 		5F65580D14EA5E0300135422 /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
 		5F65580E14EA5E0300135422 /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
 		5F65580F14EA5E0300135422 /* MWPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhoto.h; sourceTree = "<group>"; };
@@ -247,10 +261,6 @@
 		5F65584114EA667200135422 /* MWMoviePreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWMoviePreview.h; sourceTree = "<group>"; };
 		5F65584214EA667200135422 /* MWMoviePreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWMoviePreview.m; sourceTree = "<group>"; };
 		5F65584914EA6E4500135422 /* play_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play_button.png; sourceTree = "<group>"; };
-		5F689CB814DF128D00223832 /* ChecklistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistItem.h; sourceTree = "<group>"; };
-		5F689CB914DF128D00223832 /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
-		5F689CBB14DF128E00223832 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
-		5F689CBC14DF128E00223832 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
 		5F689CC314DFB96900223832 /* golos.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = golos.css; sourceTree = "<group>"; };
 		5F689CC414DFB96900223832 /* golos_1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = golos_1.html; sourceTree = "<group>"; };
 		5F689CC514DFB96900223832 /* golos_1_1.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = golos_1_1.html; sourceTree = "<group>"; };
@@ -339,6 +349,10 @@
 		5F689D1814DFB96900223832 /* golos_pr_2_8.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = golos_pr_2_8.html; sourceTree = "<group>"; };
 		5F689D1914DFB96900223832 /* golos_pr_2_9.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = golos_pr_2_9.html; sourceTree = "<group>"; };
 		5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = traverseresponderchain.m; sourceTree = "<group>"; };
+		5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		5F7AD6BD14EB8F950099FE53 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		5F7AD6BE14EB8F950099FE53 /* release_notes.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
+		5F7AD6BF14EB8F950099FE53 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		5F7ADDC214C1AE4100A8E955 /* ElectionsWatcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElectionsWatcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F7ADDC614C1AE4100A8E955 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5F7ADDC814C1AE4100A8E955 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -358,14 +372,20 @@
 		5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherSettingsController.xib; sourceTree = "<group>"; };
 		5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WatcherGuideController.xib; sourceTree = "<group>"; };
 		5F7ADDFB14C1B0FD00A8E955 /* WatcherChecklistController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WatcherChecklistController.xib; sourceTree = "<group>"; };
+		5F7DDA2E14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ElectionsWatcherDataModel.xcdatamodel; sourceTree = "<group>"; };
+		5F7DDA3014EBC114005857D3 /* PollingPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingPlace.h; sourceTree = "<group>"; };
+		5F7DDA3114EBC114005857D3 /* PollingPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingPlace.m; sourceTree = "<group>"; };
+		5F7DDA3314EBC42B005857D3 /* WatcherPollingPlaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherPollingPlaceController.h; sourceTree = "<group>"; };
+		5F7DDA3414EBC42B005857D3 /* WatcherPollingPlaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherPollingPlaceController.m; sourceTree = "<group>"; };
+		5F7DDA3514EBC42B005857D3 /* WatcherPollingPlaceController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherPollingPlaceController.xib; sourceTree = "<group>"; };
+		5F7DDA3814EBCDCA005857D3 /* WatcherPollingPlace.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherPollingPlace.plist; sourceTree = "<group>"; };
+		5F7DDA3A14EBD2BA005857D3 /* WatcherSaveAttributeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherSaveAttributeDelegate.h; sourceTree = "<group>"; };
 		5F8892A414E65F120067F2DD /* WatcherReportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherReportController.h; sourceTree = "<group>"; };
 		5F8892A514E65F120067F2DD /* WatcherReportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherReportController.m; sourceTree = "<group>"; };
 		5F8892A614E65F120067F2DD /* WatcherReportController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherReportController.xib; sourceTree = "<group>"; };
 		5F8892AA14E65F890067F2DD /* WatcherSOSController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherSOSController.h; sourceTree = "<group>"; };
 		5F8892AB14E65F890067F2DD /* WatcherSOSController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherSOSController.m; sourceTree = "<group>"; };
 		5F8892AC14E65F890067F2DD /* WatcherSOSController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherSOSController.xib; sourceTree = "<group>"; };
-		5F8892AF14E68B910067F2DD /* WatcherSettingsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherSettingsCell.h; sourceTree = "<group>"; };
-		5F8892B014E68B910067F2DD /* WatcherSettingsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherSettingsCell.m; sourceTree = "<group>"; };
 		5F8892B214E68C5F0067F2DD /* WatcherSettings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherSettings.plist; sourceTree = "<group>"; };
 		5F8892B414E6AD6A0067F2DD /* checklist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checklist.png; sourceTree = "<group>"; };
 		5F8892B514E6AD6A0067F2DD /* checklist@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checklist@2x.png"; sourceTree = "<group>"; };
@@ -389,7 +409,6 @@
 		5F8892DD14E7DFF00067F2DD /* slider_good@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_good@2x.png"; sourceTree = "<group>"; };
 		5F8892DE14E7DFF00067F2DD /* slider_neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_neutral@2x.png"; sourceTree = "<group>"; };
 		5F8892DF14E7DFF00067F2DD /* slider_thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_thumb@2x.png"; sourceTree = "<group>"; };
-		5F91F20814C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ElectionsWatcherModel.xcdatamodel; sourceTree = "<group>"; };
 		5F91F20D14C1C59300446C86 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		5F91F21214C2EFB200446C86 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
 		5F91F21314C2EFB200446C86 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
@@ -484,6 +503,7 @@
 				5F7ADDC714C1AE4100A8E955 /* UIKit.framework in Frameworks */,
 				5F7ADDC914C1AE4100A8E955 /* Foundation.framework in Frameworks */,
 				5F7ADDCB14C1AE4100A8E955 /* CoreGraphics.framework in Frameworks */,
+				5F7AD6C014EB8F950099FE53 /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,6 +660,17 @@
 			path = WatcherGuide;
 			sourceTree = "<group>";
 		};
+		5F7AD6BB14EB8F950099FE53 /* TestFlightSDK0.8.3 */ = {
+			isa = PBXGroup;
+			children = (
+				5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */,
+				5F7AD6BD14EB8F950099FE53 /* README.txt */,
+				5F7AD6BE14EB8F950099FE53 /* release_notes.txt */,
+				5F7AD6BF14EB8F950099FE53 /* TestFlight.h */,
+			);
+			path = TestFlightSDK0.8.3;
+			sourceTree = "<group>";
+		};
 		5F7ADDB714C1AE4100A8E955 = {
 			isa = PBXGroup;
 			children = (
@@ -680,6 +711,7 @@
 		5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */ = {
 			isa = PBXGroup;
 			children = (
+				5F7AD6BB14EB8F950099FE53 /* TestFlightSDK0.8.3 */,
 				5F65580C14EA5DC900135422 /* SDWebImage */,
 				5F65580B14EA5D6300135422 /* MWPhotoBrowser */,
 				5F2062C214E876950031BA22 /* RegexKitLite */,
@@ -708,12 +740,16 @@
 				5F7ADDE014C1AE4100A8E955 /* WatcherGuideController.m */,
 				5F7ADDF314C1AF9700A8E955 /* WatcherSettingsController.h */,
 				5F7ADDF414C1AF9700A8E955 /* WatcherSettingsController.m */,
-				5F8892AF14E68B910067F2DD /* WatcherSettingsCell.h */,
-				5F8892B014E68B910067F2DD /* WatcherSettingsCell.m */,
+				5F7DDA3314EBC42B005857D3 /* WatcherPollingPlaceController.h */,
+				5F7DDA3414EBC42B005857D3 /* WatcherPollingPlaceController.m */,
+				5F1E382A14ED037C004E9EAC /* WatcherPollingPlaceControllerDelegate.h */,
 				5F8892A414E65F120067F2DD /* WatcherReportController.h */,
 				5F8892A514E65F120067F2DD /* WatcherReportController.m */,
+				5F12BAC214EAFFFF00000471 /* WatcherReportGraph.h */,
+				5F12BAC314EAFFFF00000471 /* WatcherReportGraph.m */,
 				5F8892AA14E65F890067F2DD /* WatcherSOSController.h */,
 				5F8892AB14E65F890067F2DD /* WatcherSOSController.m */,
+				5F7DDA3A14EBD2BA005857D3 /* WatcherSaveAttributeDelegate.h */,
 				5F65584114EA667200135422 /* MWMoviePreview.h */,
 				5F65584214EA667200135422 /* MWMoviePreview.m */,
 				5F12BABF14EA9C1900000471 /* MWMovieBrowser.h */,
@@ -721,6 +757,7 @@
 				5F7ADDCD14C1AE4100A8E955 /* Supporting Files */,
 				5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */,
 				5F8892B214E68C5F0067F2DD /* WatcherSettings.plist */,
+				5F7DDA3814EBCDCA005857D3 /* WatcherPollingPlace.plist */,
 				5F8892D214E7CD800067F2DD /* WatcherSOS.plist */,
 			);
 			path = ElectionsWatcher;
@@ -775,6 +812,7 @@
 				5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */,
 				5F8892A614E65F120067F2DD /* WatcherReportController.xib */,
 				5F8892AC14E65F890067F2DD /* WatcherSOSController.xib */,
+				5F7DDA3514EBC42B005857D3 /* WatcherPollingPlaceController.xib */,
 			);
 			name = XIB;
 			sourceTree = "<group>";
@@ -782,11 +820,13 @@
 		5F91F20514C1C3BC00446C86 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5F91F20714C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld */,
-				5F689CB814DF128D00223832 /* ChecklistItem.h */,
-				5F689CB914DF128D00223832 /* ChecklistItem.m */,
-				5F689CBB14DF128E00223832 /* MediaItem.h */,
-				5F689CBC14DF128E00223832 /* MediaItem.m */,
+				5F624CAF14EBB323009149AF /* MediaItem.h */,
+				5F624CB014EBB323009149AF /* MediaItem.m */,
+				5F624CAC14EBB323009149AF /* ChecklistItem.h */,
+				5F624CAD14EBB323009149AF /* ChecklistItem.m */,
+				5F7DDA3014EBC114005857D3 /* PollingPlace.h */,
+				5F7DDA3114EBC114005857D3 /* PollingPlace.m */,
+				5F7DDA2D14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1057,6 +1097,10 @@
 				5F65583414EA5E1A00135422 /* LICENSE in Resources */,
 				5F65583514EA5E1A00135422 /* README.md in Resources */,
 				5F65584A14EA6E4500135422 /* play_button.png in Resources */,
+				5F7AD6C114EB8F950099FE53 /* README.txt in Resources */,
+				5F7AD6C214EB8F950099FE53 /* release_notes.txt in Resources */,
+				5F7DDA3714EBC42B005857D3 /* WatcherPollingPlaceController.xib in Resources */,
+				5F7DDA3914EBCDCA005857D3 /* WatcherPollingPlace.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1072,7 +1116,6 @@
 				5F7ADDDA14C1AE4100A8E955 /* WatcherChecklistController.m in Sources */,
 				5F7ADDE114C1AE4100A8E955 /* WatcherGuideController.m in Sources */,
 				5F7ADDF614C1AF9700A8E955 /* WatcherSettingsController.m in Sources */,
-				5F91F20914C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld in Sources */,
 				5F91F22C14C2EFB200446C86 /* NSObject+SBJson.m in Sources */,
 				5F91F22D14C2EFB200446C86 /* SBJsonParser.m in Sources */,
 				5F91F22E14C2EFB200446C86 /* SBJsonStreamParser.m in Sources */,
@@ -1104,11 +1147,8 @@
 				5F974D0E14CED7B400598945 /* ActionSheetStringPicker.m in Sources */,
 				5F974D0F14CED7B400598945 /* DistancePickerView.m in Sources */,
 				5F73515D14DEF89F00C8D5F1 /* traverseresponderchain.m in Sources */,
-				5F689CBA14DF128D00223832 /* ChecklistItem.m in Sources */,
-				5F689CBD14DF128E00223832 /* MediaItem.m in Sources */,
 				5F8892A714E65F120067F2DD /* WatcherReportController.m in Sources */,
 				5F8892AD14E65F890067F2DD /* WatcherSOSController.m in Sources */,
-				5F8892B114E68B910067F2DD /* WatcherSettingsCell.m in Sources */,
 				5F2062C614E876D50031BA22 /* RegexKitLite.m in Sources */,
 				5F65581A14EA5E0300135422 /* MWCaptionView.m in Sources */,
 				5F65581B14EA5E0300135422 /* MWPhoto.m in Sources */,
@@ -1125,6 +1165,12 @@
 				5F65583C14EA5E1A00135422 /* UIImageView+WebCache.m in Sources */,
 				5F65584314EA667200135422 /* MWMoviePreview.m in Sources */,
 				5F12BAC114EA9C1900000471 /* MWMovieBrowser.m in Sources */,
+				5F12BAC414EAFFFF00000471 /* WatcherReportGraph.m in Sources */,
+				5F624CAE14EBB323009149AF /* ChecklistItem.m in Sources */,
+				5F624CB114EBB323009149AF /* MediaItem.m in Sources */,
+				5F7DDA2F14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld in Sources */,
+				5F7DDA3214EBC114005857D3 /* PollingPlace.m in Sources */,
+				5F7DDA3614EBC42B005857D3 /* WatcherPollingPlaceController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1208,6 +1254,10 @@
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1225,8 +1275,12 @@
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "95AC951E-A792-4E18-AA2A-ABC0F5A664AA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "D920F8C3-1415-47AE-91A9-EED6CABFFB3A";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1255,13 +1309,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		5F91F20714C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodeld */ = {
+		5F7DDA2D14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				5F91F20814C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodel */,
+				5F7DDA2E14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodel */,
 			);
-			currentVersion = 5F91F20814C1C43C00446C86 /* ElectionsWatcherModel.xcdatamodel */;
-			path = ElectionsWatcherModel.xcdatamodeld;
+			currentVersion = 5F7DDA2E14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodel */;
+			path = ElectionsWatcherDataModel.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
