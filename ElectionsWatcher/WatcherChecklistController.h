@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "WatcherPollingPlaceControllerDelegate.h"
 
-@interface WatcherChecklistController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface WatcherChecklistController : UITableViewController <WatcherPollingPlaceControllerDelegate>
 
-@property (nonatomic, retain) IBOutlet UITableView *checklistTableView;
 @property (nonatomic, retain) NSDictionary *watcherChecklist;
 
 @end

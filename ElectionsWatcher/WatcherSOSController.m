@@ -22,8 +22,8 @@ static NSString *sosReportSections[] = { @"sos_report" };
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if ( self ) {
-        self.title = @"S.O.S.";
         self.tabBarItem.image = [UIImage imageNamed:@"sos"];
+        self.tabBarItem.title = @"S.O.S.";
     }
     
     return self;
@@ -56,6 +56,12 @@ static NSString *sosReportSections[] = { @"sos_report" };
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
     [self.tableView reloadData];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    self.navigationItem.title = appDelegate.currentPollingPlace ?
+        [NSString stringWithFormat: @"S.O.S.: %@ № %@", 
+         appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
+        @"S.O.S";
 }
 
 - (void)viewDidUnload

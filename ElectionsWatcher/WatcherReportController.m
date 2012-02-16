@@ -21,8 +21,8 @@
     self = [super initWithNibName: nibNameOrNil bundle: nibBundleOrNil];
     
     if ( self ) {
-        self.title = @"Отчет";
         self.tabBarItem.image = [UIImage imageNamed:@"report"];
+        self.tabBarItem.title = @"Отчет";
     }
     
     return self;
@@ -75,6 +75,11 @@
     self.badItems = [checklistItems filteredArrayUsingPredicate: badPredicate];
     
     [self.tableView reloadData];
+    
+    self.navigationItem.title = appDelegate.currentPollingPlace ?
+        [NSString stringWithFormat: @"Отчет по %@ № %@", 
+         appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
+        @"Отчет";
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -104,11 +109,47 @@
     if ( section == 1 ) {
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
-        return self.badItems.count ?
-            [NSString stringWithFormat: @"Нарушения на %@ № %@", 
-             appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
-            [NSString stringWithFormat: @"На %@ № %@ не отмечено нарушений", 
-             appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] ;
+        if ( appDelegate.currentPollingPlace )
+            return self.badItems.count ?
+                [NSString stringWithFormat: @"Нарушения на %@ № %@", 
+                 appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
+                [NSString stringWithFormat: @"На %@ № %@ не отмечено нарушений", 
+                 appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] ;
+        else
+            return @"Нет данных";
+    } else {
+        return nil;
+    }
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return ( section == 1 && self.badItems.count ) ? 80 : 0;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if ( section == 1 && self.badItems.count ) {
+        UIView *footerView = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 80)] autorelease];
+        
+        CGRect labelFrame = CGRectMake(15, 0, footerView.bounds.size.width-30, 20);
+        UILabel *label1 = [[[UILabel alloc] initWithFrame: labelFrame] autorelease];
+        UILabel *label2 = [[[UILabel alloc] initWithFrame: CGRectOffset(labelFrame, 0, 20)] autorelease];
+        UILabel *label3 = [[[UILabel alloc] initWithFrame: CGRectOffset(labelFrame, 0, 40)] autorelease];
+        UILabel *label4 = [[[UILabel alloc] initWithFrame: CGRectOffset(labelFrame, 0, 60)] autorelease];
+        
+        NSArray *labels = [NSArray arrayWithObjects: label1, label2, label3, label4, nil];
+        for ( UILabel *label in labels ) {
+            label.backgroundColor = [UIColor clearColor];
+            label.font = [UIFont boldSystemFontOfSize: 15];
+            label.textColor = [UIColor darkTextColor];
+            [footerView addSubview: label];
+        }
+        
+        label1.text = @"Чтобы подать жалобу по нарушениям:";
+        label2.text = @"1. Заполните жалобу.";
+        label3.text = @"2. Передайте её председателю.";
+        label4.text = @"3. Оставьте один экземпляр у себя.";
+        
+        return footerView;
     } else {
         return nil;
     }
@@ -192,7 +233,7 @@
             [graphHolder release];
             
             UILabel *goodCountLabel = [[UILabel alloc] init];
-            goodCountLabel.textColor = [UIColor blueColor];
+            goodCountLabel.textColor = [UIColor colorWithRed: 0 green: 0x77/255.0f blue: 0xcb/255.0f alpha: 1];
             goodCountLabel.font = [UIFont boldSystemFontOfSize: 16];
             goodCountLabel.backgroundColor = [UIColor clearColor];
             goodCountLabel.tag = 12;
@@ -201,7 +242,7 @@
             [goodCountLabel release];
             
             UILabel *badCountLabel = [[UILabel alloc] init];
-            badCountLabel.textColor = [UIColor redColor];
+            badCountLabel.textColor = [UIColor colorWithRed: 0xdf/255.0f green: 0x2a/255.0f blue: 0 alpha: 1];
             badCountLabel.font = [UIFont boldSystemFontOfSize: 16];
             badCountLabel.backgroundColor = [UIColor clearColor];
             badCountLabel.tag = 13;
@@ -218,59 +259,6 @@
     cell.textLabel.text = nil;
 
     return cell;
-}
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
 }
 
 @end

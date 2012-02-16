@@ -22,6 +22,8 @@
 						<string>Были ли Вы допущены на участок до 8:00?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -48,6 +50,8 @@
 						<string>Вам разрешили осмотреть урны?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -67,6 +71,8 @@
 						<string>Урны пусты?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -86,6 +92,8 @@
 						<string>Урны опечатали при вас?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -105,6 +113,8 @@
 						<string>Урны соответствуют требованиям?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -143,6 +153,8 @@
 						<string>Счетчик на нуле?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -162,6 +174,8 @@
 						<string>Есть ли сбои при тестировании?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -198,6 +212,8 @@
 						<string>Правильно ли оформлены сведения о кандидатах?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -217,6 +233,8 @@
 						<string>Есть ли образец заполнения бюллетеня?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -236,6 +254,8 @@
 						<string>Есть ли увеличенная форма протокола?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -255,6 +275,8 @@
 						<string>Есть ли агитационные материалы ближе 50 м?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -274,6 +296,8 @@
 						<string>Кабинки обеспечивают тайну голосвания?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -310,6 +334,8 @@
 						<string>Вам разрешили осмотреть альбомы?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -329,6 +355,8 @@
 						<string>Альбомы соответствуют требованиям?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -404,6 +432,8 @@
 						<string>По состоянию на 10:00 ваши данные о явке совпадают с данными ИК?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -423,6 +453,8 @@
 						<string>По состоянию на 12:00 ваши данные о явке совпадают с данными ИК?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -442,6 +474,8 @@
 						<string>По состоянию на 15:00 ваши данные о явке совпадают с данными ИК?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -461,6 +495,8 @@
 						<string>По состоянию на 18:00 ваши данные о явке совпадают с данными ИК?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -497,6 +533,8 @@
 						<string>Вам позволили беспрепятственно наблюдать за ходом голосования?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -516,6 +554,8 @@
 						<string>Вам позволили наблюдать за урнами?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -542,6 +582,8 @@
 						<string>Оказывалось ли давление на голосующих?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -578,6 +620,8 @@
 						<string>Присутствовали ли избиратели, голосовавшие без предъявления паспорта?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -597,6 +641,8 @@
 						<string>Присутствовали ли избиратели, голосовавшие без открепительных удостоверений?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -616,6 +662,8 @@
 						<string>Присутствовали ли избиратели, голосовавшие по чужим открепительным удостоверениям?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -635,6 +683,8 @@
 						<string>Осуществлялся ли возврат либо замена открепительных удостоверений после голосвания?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -654,6 +704,8 @@
 						<string>Осуществлялся ли подвоз групп голосующих транспортом?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -673,6 +725,8 @@
 						<string>Осущестлялось ли голосование за отустствующих избирателей?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -719,6 +773,8 @@
 						<string>Осуществлялось ли голосование пачкой бюллетеней (вброс)?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -765,6 +821,8 @@
 						<string>Вам дали своевременно ознакомиться с выпиской из реестра и количеством выданных бюллетеней?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -784,6 +842,8 @@
 						<string>Предъявлена ли корректная выписка из реестра?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -803,6 +863,8 @@
 						<string>Имеется ли расхождение между количеством выданных бюллетеней и избирателей в выписке?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -822,6 +884,8 @@
 						<string>Правильно ли заполнен реестр для голосования вне помещения?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -841,6 +905,8 @@
 						<string>Осуществлялось ли голосование лицами, не внесенными в реестр?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -860,6 +926,8 @@
 						<string>Составлен ли своевременно акт о голосовании вне участка?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -906,6 +974,8 @@
 						<string>Неиспользованные бюллетени подсчитаны сразу же после окончания голосования?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -925,6 +995,8 @@
 						<string>Бюллетени подсчитаны и погашены до других подсчетов?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -944,6 +1016,8 @@
 						<string>Данные сразу внесены в увеличенную форму протокола?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -980,6 +1054,8 @@
 						<string>Оглашение было по каждой книге?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -999,6 +1075,8 @@
 						<string>Данные сразу внесены в увеличенную форму протокола?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1045,6 +1123,8 @@
 						<string>Были ли замечены сложенные пачки бюллетеней?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1081,6 +1161,8 @@
 						<string>Объявлено ли число заявлений перед вскрытием каждого ящика?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1100,6 +1182,8 @@
 						<string>Были ли замечены сложенные пачки бюллетеней?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1126,6 +1210,8 @@
 						<string>Предъявляются или оглашаются ли бюллетени при сортировке?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1145,6 +1231,8 @@
 						<string>Перекладываются ли бюллетени отдельно в каждой рассортированной пачке на глазах у наблюдателей?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1164,6 +1252,8 @@
 						<string>Видели ли Вы отметки в бюллетенях?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1183,6 +1273,8 @@
 						<string>Возникли ли у Вас сомнения в правильности подчета?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1202,6 +1294,8 @@
 						<string>Дали ли Вам ознакомиться с бюллетенями?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1221,6 +1315,8 @@
 						<string>Данные сразу внесены в увеличенную форму протокола?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1257,6 +1353,8 @@
 						<string>Выполнены ли контрольные соотношения?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1276,6 +1374,8 @@
 						<string>Произведен ли пересчет?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1312,6 +1412,8 @@
 						<string>Итговое заседание проводилось?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1341,6 +1443,8 @@
 						<string>Все ли письменные жалобы рассмотрены?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1388,6 +1492,8 @@
 						<string>Бюллетени упакованы правильно?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1407,6 +1513,8 @@
 						<string>Вам и другим наблюдателям разрешили расписаться на упаковках?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1453,6 +1561,8 @@
 						<string>Протокол окончательно оформлен до отправки в ТИК?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1474,6 +1584,8 @@
 						<string>reference://qqqqq</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1493,6 +1605,8 @@
 						<string>Комиссия предоставила копию протокола?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1512,6 +1626,8 @@
 						<string>Копия протокола заверена до отправки протокола в ТИК?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1531,6 +1647,8 @@
 						<string>Копия протокола подписана председателем, его заместителем и секретарем?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1550,6 +1668,8 @@
 						<string>Все подписи расшифрованы?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1569,6 +1689,8 @@
 						<string>На копии есть надпись &quot;верно&quot;?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1588,6 +1710,8 @@
 						<string>На копии есть дата и время заверения?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1607,6 +1731,8 @@
 						<string>На копии стоит печать комиссии?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1653,6 +1779,8 @@
 						<string>ТИК в здании местной администрации?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1672,6 +1800,8 @@
 						<string>Вы допущены в здание?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1691,6 +1821,8 @@
 						<string>Другие наблюдатели допущены в здание?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1710,6 +1842,8 @@
 						<string>Вы можете наблюдать за всей процедурой приема?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1729,6 +1863,8 @@
 						<string>Другие наблюдатели могут наблюдать за всей процедурой приема?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1748,6 +1884,8 @@
 						<string>Прием протоколов в едином помещении?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1767,6 +1905,8 @@
 						<string>Увеличенная форма таблицы в том же помещении?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1786,6 +1926,8 @@
 						<string>Сотрудники администрации участвуют в приеме протоколов?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1805,6 +1947,8 @@
 						<string>Вы можете наблюдать за всей процедурой приема?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1841,6 +1985,8 @@
 						<string>ТИК принял протокол УИК</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1860,6 +2006,8 @@
 						<string>В протоколы УИК внесены правки</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1879,6 +2027,8 @@
 						<string>Данные занесены в увеличенную форму сразу по прибытии</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1900,6 +2050,8 @@
 						<string>reference://</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1919,6 +2071,8 @@
 						<string>Данные из УФСТ сразу переносятся в ГАС &quot;Выборы&quot;</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1948,6 +2102,8 @@
 						<string>ТИК объявил об отказе в приеме протокола</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -1967,6 +2123,8 @@
 						<string>Первый экземпляр протокола остался в ТИК</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>
@@ -2023,6 +2181,8 @@
 						<string>Все ли письменные жалобы рассмотрены?</string>
 						<key>control</key>
 						<integer>3</integer>
+						<key>violation_text</key>
+						<string></string>
 						<key>switch_options</key>
 						<dict>
 							<key>lo_value</key>

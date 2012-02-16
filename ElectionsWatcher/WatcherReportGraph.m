@@ -31,12 +31,14 @@
         CGContextSetRGBFillColor(ctx, 0.7, 0.7, 0.7, 1);
         CGContextFillPath(ctx);
     } else if ( self.goodCount == 0 && self.badCount > 0) {
+        // #df2a00
         CGContextAddArc(ctx, rect.size.width/2, rect.size.height/2, rect.size.height/2, 0, 2*M_PI, 1);
-        CGContextSetRGBFillColor(ctx, 1, 0, 0, 1);
+        CGContextSetRGBFillColor(ctx, 0xdf/255.0f, 0x2a/255.0f, 0, 1);
         CGContextFillPath(ctx);
     } else if ( self.goodCount > 0 && self.badCount == 0 ) {
+        // #0077cb
         CGContextAddArc(ctx, rect.size.width/2, rect.size.height/2, rect.size.height/2, 0, 2*M_PI, 1);
-        CGContextSetRGBFillColor(ctx, 0, 0, 1, 1);
+        CGContextSetRGBFillColor(ctx, 0, 0x77/255.0f, 0xcb/255.0f, 1);
         CGContextFillPath(ctx);
     } else {
         double n = sqrt((double)self.goodCount);
@@ -68,7 +70,7 @@
         CGPathAddCurveToPoint(path1, NULL, p3.x, p3.y, p4.x+n*11/20, p4.y, p4.x, p4.y);
         CGPathAddCurveToPoint(path1, NULL, p4.x-n*11/20, p4.y, p1.x, p1.y-n*11/20, p1.x, p1.y);
         CGPathCloseSubpath(path1);
-        CGContextSetRGBFillColor(ctx, 0, 0, 1, 1);
+        CGContextSetRGBFillColor(ctx, 0, 0x77/255.0f, 0xcb/255.0f, 1);
         CGContextAddPath(ctx, path1);
         CGContextFillPath(ctx);
         
@@ -79,7 +81,7 @@
         CGPathAddCurveToPoint(path2, NULL, p7.x, p7.y-m*11/20, p8.x+m*11/20, p8.y, p8.x, p8.y);
         CGPathAddCurveToPoint(path2, NULL, p8.x-m*11/20, p8.y, p5.x, p5.y, p5.x, p5.y);
         CGPathCloseSubpath(path2);
-        CGContextSetRGBFillColor(ctx, 1, 0, 0, 1);
+        CGContextSetRGBFillColor(ctx, 0xdf/255.0f, 0x2a/255.0f, 0, 1);
         CGContextAddPath(ctx, path2);
         CGContextFillPath(ctx);
         

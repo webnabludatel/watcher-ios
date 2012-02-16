@@ -8,12 +8,12 @@
 
 #import "WatcherChecklistController.h"
 #import "WatcherChecklistSectionController.h"
+#import "WatcherPollingPlaceController.h"
 #import "AppDelegate.h"
 #import "PollingPlace.h"
 
 @implementation WatcherChecklistController
 
-@synthesize checklistTableView;
 @synthesize watcherChecklist;
 
 - (id) initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -21,8 +21,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     if ( self ) {
-        self.title = @"Наблюдение"; // NSLocalizedString(@"First", @"First");
         self.tabBarItem.image = [UIImage imageNamed:@"checklist"];
+        self.tabBarItem.title = @"Наблюдение";
         self.watcherChecklist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"WatcherChecklist" 
                                                                                                             ofType: @"plist"]];
     }
@@ -37,7 +37,6 @@
 }
 
 - (void) dealloc {
-    [checklistTableView release];
     [watcherChecklist release];
     
     [super dealloc];
@@ -62,7 +61,13 @@
 {
     [super viewWillAppear:animated];
     
-    [self.checklistTableView reloadData];
+    [self.tableView reloadData];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    self.navigationItem.title = appDelegate.currentPollingPlace ?
+        [NSString stringWithFormat: @"Наблюдение на %@ № %@", 
+         appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] : 
+        @"Наблюдение";
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -86,56 +91,147 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+#pragma mark - UITableView
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView {
-    return 1;
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    return appDelegate.currentPollingPlace ? 2 : 1;
 }
 
 - (NSInteger) tableView: (UITableView *) tableView numberOfRowsInSection: (NSInteger) section {
-    return [watcherChecklist count];
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    if ( section == 0 ) {
+        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                        forEntity: @"PollingPlace" 
+                                                   withParameters: nil];
+        return [pollingPlaces count]+1;
+    } else {
+        return appDelegate.currentPollingPlace ? [watcherChecklist count] : 0;
+    }
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return section == 0 ? @"Избирательные участки" : @"Наблюдение";
 }
 
 - (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
-    NSArray *values = [watcherChecklist allValues];
-    NSArray *sortedValues = [values sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" 
-                                                                                                                         ascending: YES]]];
-    NSDictionary *screenInfo = [sortedValues objectAtIndex: indexPath.row];
-    
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
-    NSPredicate *sectionPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d", indexPath.row];
-    NSArray *sectionItems = [checklistItems filteredArrayUsingPredicate: sectionPredicate];
-    
-    cell.textLabel.text = [screenInfo objectForKey: @"title"];
-    cell.detailTextLabel.text = [sectionItems count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [sectionItems count]] : @"Отметок нет";
+    if ( indexPath.section == 1 && appDelegate.currentPollingPlace ) {
+        NSArray *values = [watcherChecklist allValues];
+        NSArray *sortedValues = [values sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" 
+                                                                                                                             ascending: YES]]];
+        NSDictionary *screenInfo = [sortedValues objectAtIndex: indexPath.row];
+        
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
+        NSPredicate *sectionPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d", indexPath.row];
+        NSArray *sectionItems = [checklistItems filteredArrayUsingPredicate: sectionPredicate];
+        
+        cell.textLabel.text = [screenInfo objectForKey: @"title"];
+        cell.detailTextLabel.text = [sectionItems count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [sectionItems count]] : @"Отметок нет";
+    }
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
-    static NSString *cellId = @"sectionCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
-    
-    if ( cell == nil ) {
-        cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleSubtitle reuseIdentifier: cellId] autorelease];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if ( indexPath.section == 0 ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                        forEntity: @"PollingPlace" 
+                                                   withParameters: nil];
+        
+        NSString *cellId = [NSString stringWithFormat: @"PollingPlaceCell_%d_%d", indexPath.section, indexPath.row];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
+        
+        if ( cell == nil ) {
+            cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: cellId] autorelease];
+        }
+        
+        if ( indexPath.row < pollingPlaces.count ) {
+            PollingPlace *pollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
+            cell.textLabel.text = [NSString stringWithFormat: @"%@ № %@", pollingPlace.type, pollingPlace.number];
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
+            
+            if ( pollingPlace == appDelegate.currentPollingPlace ) 
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            else
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            
+        } else {
+            cell.textLabel.text = @"Добавить участок...";
+            cell.textLabel.textAlignment = UITextAlignmentCenter;
+        }
+        
+        return cell;
+    } else {
+        static NSString *cellId = @"sectionCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
+        
+        if ( cell == nil ) {
+            cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleSubtitle reuseIdentifier: cellId] autorelease];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        
+        cell.textLabel.text = nil;
+        cell.detailTextLabel.text = nil;
+        
+        return cell;
     }
-    
-    cell.textLabel.text = nil;
-    cell.detailTextLabel.text = nil;
-    
-    return cell;
 }
 
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
-    NSArray *values = [watcherChecklist allValues];
-    NSArray *sortedValues = [values sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" 
-                                                                                                                         ascending: YES]]];
-    WatcherChecklistSectionController *sectionController = [[WatcherChecklistSectionController alloc] initWithStyle: UITableViewStylePlain];
-    sectionController.sectionData = [sortedValues objectAtIndex: indexPath.row];
-    sectionController.sectionIndex = indexPath.row;
-    
-    [self.navigationController pushViewController: sectionController animated: YES];
-    [sectionController release];
+    if ( indexPath.section == 0 ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                        forEntity: @"PollingPlace" 
+                                                   withParameters: nil];
+        if ( indexPath.row < pollingPlaces.count ) {
+            appDelegate.currentPollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
+            [self.tableView reloadData];
+        } else {
+            WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
+            pollingPlaceController.pollingPlaceControllerDelegate = self;
+            pollingPlaceController.pollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
+                                                                                inManagedObjectContext: [appDelegate managedObjectContext]];
+            
+            UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: pollingPlaceController];
+            nc.navigationBar.tintColor = [UIColor blackColor];
+            [self presentModalViewController: nc animated: YES];
+            [pollingPlaceController release];
+            [nc release];
+        }
+    } else {
+        NSArray *values = [watcherChecklist allValues];
+        NSArray *sortedValues = [values sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" 
+                                                                                                                             ascending: YES]]];
+        WatcherChecklistSectionController *sectionController = [[WatcherChecklistSectionController alloc] initWithStyle: UITableViewStyleGrouped];
+        sectionController.sectionData = [sortedValues objectAtIndex: indexPath.row];
+        sectionController.sectionIndex = indexPath.row;
+        
+        [self.navigationController pushViewController: sectionController animated: YES];
+        [sectionController release];
+    }
 }
+
+#pragma mark - Polling place controller delegate
+
+-(void)watcherPollingPlaceController:(WatcherPollingPlaceController *)controller didSavePollingPlace:(PollingPlace *)pollinngPlace {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext save: nil];
+    
+    appDelegate.currentPollingPlace = controller.pollingPlace;
+    
+    [self dismissModalViewControllerAnimated: YES];
+    [self.tableView reloadData];
+}
+
+-(void)watcherPollingPlaceControllerDidCancel:(WatcherPollingPlaceController *)controller {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext deleteObject: controller.pollingPlace];
+    [self dismissModalViewControllerAnimated: YES];
+    [self.tableView reloadData];
+}
+
 
 
 @end
