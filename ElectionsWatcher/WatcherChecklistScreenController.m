@@ -113,9 +113,14 @@
     NSString *itemTitle = [itemInfo objectForKey: @"title"];
     int controlType = [[itemInfo objectForKey: @"control"] intValue];
     
-    CGSize labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
-                             constrainedToSize: CGSizeMake(280, 120) 
-                                 lineBreakMode: UILineBreakModeWordWrap];
+    CGSize labelSize;
+    
+    if ( [itemTitle length] )
+        labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
+                          constrainedToSize: CGSizeMake(280, 120) 
+                              lineBreakMode: UILineBreakModeWordWrap];
+    else
+        labelSize = CGSizeZero;
     
     return controlType == INPUT_COMMENT ? labelSize.height + 140 : labelSize.height + 70;
 }

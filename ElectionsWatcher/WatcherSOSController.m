@@ -133,18 +133,9 @@ static NSString *sosReportSections[] = { @"sos_report" };
     return controlType == INPUT_COMMENT ? labelSize.height + 140 : labelSize.height + 70;
 }
 
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellId = [NSString stringWithFormat: @"SosCell_%d_%d", indexPath.section, indexPath.row];
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *sectionInfo = [self.sosReport objectForKey: sosReportSections[indexPath.section]];
     NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
-    
-    if ( cell == 0 ) {
-        cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
-                                                  reuseIdentifier: cellId 
-                                                     withItemInfo: itemInfo] autorelease];
-        [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
-    }
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
@@ -158,6 +149,22 @@ static NSString *sosReportSections[] = { @"sos_report" };
                                                                      inManagedObjectContext: appDelegate.managedObjectContext];
         
         [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
+    }
+    
+    [cell setNeedsLayout];
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *cellId = [NSString stringWithFormat: @"SosCell_%d_%d", indexPath.section, indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
+    NSDictionary *sectionInfo = [self.sosReport objectForKey: sosReportSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    
+    if ( cell == 0 ) {
+        cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
+                                                  reuseIdentifier: cellId 
+                                                     withItemInfo: itemInfo] autorelease];
+        [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
     }
     
     return cell;

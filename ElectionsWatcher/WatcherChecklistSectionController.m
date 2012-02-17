@@ -103,6 +103,10 @@
     return [[self.sectionData objectForKey: @"screens"] count];
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 60;
+}
+
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *screens = [self.sectionData objectForKey: @"screens"];
     NSDictionary *screenInfo = [screens objectAtIndex: indexPath.row];

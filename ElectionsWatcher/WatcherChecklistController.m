@@ -115,6 +115,10 @@
     return section == 0 ? @"Избирательные участки" : @"Наблюдение";
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == 0 ? 40 : 60;
+}
+
 - (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     if ( indexPath.section == 1 && appDelegate.currentPollingPlace ) {

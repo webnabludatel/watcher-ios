@@ -189,19 +189,24 @@
     [super layoutSubviews];
     
     if ( self.itemInfo ) {
-        NSString *itemTitle = [self.itemInfo objectForKey: @"title"];
-        CGSize labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
-                                 constrainedToSize: CGSizeMake(280, 120) 
-                                     lineBreakMode: UILineBreakModeWordWrap];
-        
         CGRect labelFrame, controlArea, controlFrame, timestampFrame;
-        CGRectDivide(CGRectInset(self.contentView.bounds, 10, 10), &labelFrame, &controlArea, labelSize.height, CGRectMinYEdge);
-        CGRectDivide(controlArea, &timestampFrame, &controlFrame, controlArea.size.width/3.0f, CGRectMinXEdge);
+        NSString *itemTitle = [self.itemInfo objectForKey: @"title"];
         
-        self.itemLabel.frame = labelFrame;
-        self.control.frame   = ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_SWITCH ) ?
-            CGRectMake(controlFrame.origin.x, controlFrame.origin.y+10, controlFrame.size.width, controlFrame.size.height-10) :
-            CGRectMake(controlArea.origin.x, controlArea.origin.y+10, controlArea.size.width, controlArea.size.height-10);
+        if ( itemTitle.length ) {
+            CGSize labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
+                                     constrainedToSize: CGSizeMake(280, 120) 
+                                         lineBreakMode: UILineBreakModeWordWrap];
+            CGRectDivide(CGRectInset(self.contentView.bounds, 10, 10), &labelFrame, &controlArea, labelSize.height, CGRectMinYEdge);
+            CGRectDivide(controlArea, &timestampFrame, &controlFrame, controlArea.size.width/3.0f, CGRectMinXEdge);
+            
+            self.itemLabel.frame = labelFrame;
+            self.control.frame   = ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_SWITCH ) ?
+                CGRectMake(controlFrame.origin.x, controlFrame.origin.y+10, controlFrame.size.width, controlFrame.size.height-10) :
+                CGRectMake(controlArea.origin.x, controlArea.origin.y+10, controlArea.size.width, controlArea.size.height-10);
+        } else {
+            self.control.frame = CGRectInset(self.contentView.bounds, 10, 10);
+        }
+        
         
         [self loadItem];
     }
@@ -254,22 +259,26 @@
             break;
             
         case INPUT_PHOTO: {
+            UIButton *button = (UIButton *) self.control;
             if ( [[self mediaItemsOfType: (NSString *) kUTTypeImage] count] ) {
-                UIButton *button = (UIButton *) self.control;
                 [button setTitle: [NSString stringWithFormat: @"%@ (%d)", [self.itemInfo objectForKey: @"hint"], 
                                    [[self mediaItemsOfType: (NSString *) kUTTypeImage] count]] 
                         forState: UIControlStateNormal];
+            } else {
+                [button setTitle: [self.itemInfo objectForKey: @"hint"] forState: UIControlStateNormal];
             }
             
         }
             break;
             
         case INPUT_VIDEO: {
+            UIButton *button = (UIButton *) self.control;
             if ( [[self mediaItemsOfType: (NSString *) kUTTypeMovie] count] ) {
-                UIButton *button = (UIButton *) self.control;
                 [button setTitle: [NSString stringWithFormat: @"%@ (%d)", [self.itemInfo objectForKey: @"hint"], 
                                    [[self mediaItemsOfType: (NSString *) kUTTypeMovie] count]] 
                         forState: UIControlStateNormal];
+            } else {
+                [button setTitle: [self.itemInfo objectForKey: @"hint"] forState: UIControlStateNormal];
             }
         }
             break;
@@ -424,6 +433,8 @@
                 browser = [[MWMovieBrowser alloc] initWithDelegate: self];
             
             browser.displayActionButton = YES;
+            browser.title = [self.itemInfo objectForKey: @"hint"];
+            browser.displayActionButton = NO;
 
             UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: browser];
             nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -460,14 +471,14 @@
     UIActionSheet *photoActionSheet = nil;
     
     if ( mediaItems.count ) {   
-        photoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"title"] 
+        photoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"hint"] 
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
                                               otherButtonTitles: @"Снять фото", @"Посмотреть фото", nil];
         
     } else {
-        photoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"title"]
+        photoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"hint"]
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
@@ -492,14 +503,14 @@
     UIActionSheet *videoActionSheet = nil;
     
     if ( mediaItems.count ) {
-        videoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"title"]
+        videoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"hint"]
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
                                               otherButtonTitles: @"Снять видео", @"Посмотреть видео", nil];
         
     } else {
-        videoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"title"]
+        videoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"hint"]
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
