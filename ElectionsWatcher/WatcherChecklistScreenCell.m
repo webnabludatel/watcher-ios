@@ -329,7 +329,7 @@
             break;
         case INPUT_PHOTO:
         case INPUT_VIDEO:
-            self.checklistItem.value = @"check attached media files";
+            self.checklistItem.value = [NSString stringWithFormat: @"%d", self.checklistItem.mediaItems.count];
             self.checklistItem.violationFlag = nil;
             break;
         case INPUT_COMMENT: {
