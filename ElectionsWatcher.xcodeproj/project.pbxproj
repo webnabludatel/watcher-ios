@@ -206,6 +206,7 @@
 		5FC6C0DE14CC1C270078AD8E /* WatcherChecklistSectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DD14CC1C270078AD8E /* WatcherChecklistSectionController.m */; };
 		5FC6C0E114CC206C0078AD8E /* WatcherChecklistScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0E014CC206C0078AD8E /* WatcherChecklistScreenController.m */; };
 		5FC6C0E414CC66DE0078AD8E /* WatcherChecklistScreenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0E314CC66DE0078AD8E /* WatcherChecklistScreenCell.m */; };
+		5FD5977D14EE5AEE00E27620 /* WatcherDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5977C14EE5AEE00E27620 /* WatcherDataManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -483,6 +484,8 @@
 		5FC6C0E014CC206C0078AD8E /* WatcherChecklistScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherChecklistScreenController.m; sourceTree = "<group>"; };
 		5FC6C0E214CC66DE0078AD8E /* WatcherChecklistScreenCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistScreenCell.h; sourceTree = "<group>"; };
 		5FC6C0E314CC66DE0078AD8E /* WatcherChecklistScreenCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherChecklistScreenCell.m; sourceTree = "<group>"; };
+		5FD5977B14EE5AEE00E27620 /* WatcherDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherDataManager.h; sourceTree = "<group>"; };
+		5FD5977C14EE5AEE00E27620 /* WatcherDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherDataManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -754,6 +757,8 @@
 				5F65584214EA667200135422 /* MWMoviePreview.m */,
 				5F12BABF14EA9C1900000471 /* MWMovieBrowser.h */,
 				5F12BAC014EA9C1900000471 /* MWMovieBrowser.m */,
+				5FD5977B14EE5AEE00E27620 /* WatcherDataManager.h */,
+				5FD5977C14EE5AEE00E27620 /* WatcherDataManager.m */,
 				5F7ADDCD14C1AE4100A8E955 /* Supporting Files */,
 				5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */,
 				5F8892B214E68C5F0067F2DD /* WatcherSettings.plist */,
@@ -1171,6 +1176,7 @@
 				5F7DDA2F14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld in Sources */,
 				5F7DDA3214EBC114005857D3 /* PollingPlace.m in Sources */,
 				5F7DDA3614EBC42B005857D3 /* WatcherPollingPlaceController.m in Sources */,
+				5FD5977D14EE5AEE00E27620 /* WatcherDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
