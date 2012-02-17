@@ -158,7 +158,6 @@ static NSString *sosReportSections[] = { @"sos_report" };
                                                                      inManagedObjectContext: appDelegate.managedObjectContext];
         
         [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
-        [appDelegate.managedObjectContext save: nil];
     }
     
     return cell;
@@ -170,7 +169,11 @@ static NSString *sosReportSections[] = { @"sos_report" };
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     if ( ! [appDelegate.currentPollingPlace.checklistItems containsObject: item] )
         [appDelegate.currentPollingPlace addChecklistItemsObject: item];
-    [appDelegate.managedObjectContext save: nil];
+    
+    NSError *error = nil;
+    [appDelegate.managedObjectContext save: &error];
+    if ( error ) 
+        NSLog(@"error saving emergency message: %@", error.description);
 }
 
 -(BOOL)isCancelling {

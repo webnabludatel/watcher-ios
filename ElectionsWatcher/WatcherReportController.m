@@ -68,8 +68,8 @@
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSArray *checklistItems = [appDelegate.currentPollingPlace.checklistItems allObjects];
     
-    NSPredicate *badPredicate   = [NSPredicate predicateWithFormat: @"SELF.sectionIndex >= 0 && SELF.screenIndex >= 0 && SELF.value LIKE 'false'"];
-    NSPredicate *goodPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionIndex >= 0 && SELF.screenIndex >= 0 && SELF.value LIKE 'true'"];
+    NSPredicate *badPredicate   = [NSPredicate predicateWithFormat: @"SELF.sectionIndex >= 0 && SELF.screenIndex >= 0 && SELF.violationFlag == 1"];
+    NSPredicate *goodPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionIndex >= 0 && SELF.screenIndex >= 0 && SELF.violationFlag == 0"];
     
     self.goodItems = [checklistItems filteredArrayUsingPredicate: goodPredicate];
     self.badItems = [checklistItems filteredArrayUsingPredicate: badPredicate];
@@ -187,7 +187,7 @@
         NSArray *screenItems = [screenInfo objectForKey: @"items"];
         NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", item.name];
     
-        cell.textLabel.text = [[[screenItems filteredArrayUsingPredicate: itemPredicate] lastObject] objectForKey: @"title"];
+        cell.textLabel.text = [[[screenItems filteredArrayUsingPredicate: itemPredicate] lastObject] objectForKey: @"violation_text"];
     }
     
     if ( indexPath.section == 0 && indexPath.row == 0 ) {

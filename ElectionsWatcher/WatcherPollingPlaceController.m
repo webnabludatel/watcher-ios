@@ -103,9 +103,6 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 
 - (void) handleDoneButton: (id) sender {
     if ( self.pollingPlace.type.length && self.pollingPlace.number.intValue ) {
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        [appDelegate.managedObjectContext save: nil];
-        
         [pollingPlaceControllerDelegate watcherPollingPlaceController: self didSavePollingPlace: self.pollingPlace];
     } else {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 

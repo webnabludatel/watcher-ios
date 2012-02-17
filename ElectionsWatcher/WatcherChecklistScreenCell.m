@@ -213,10 +213,15 @@
 - (void) loadItem {
     switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
         case INPUT_TEXT:
+        case INPUT_EMAIL:
         case INPUT_NUMBER:
+        case INPUT_CONSTANT:
         case INPUT_DROPDOWN: {
             UITextField *textField = (UITextField *) self.control;
             textField.text = self.checklistItem.value;
+            
+            if ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_CONSTANT )
+                [self saveItem];
         }
             break;
             
@@ -269,7 +274,11 @@
         }
             break;
             
-        case INPUT_COMMENT:
+        case INPUT_COMMENT: {
+            UITextView *textView = (UITextView *) self.control;
+            textView.text = self.checklistItem.value;
+            
+        }
             break;
     }
 }
@@ -287,11 +296,16 @@
     self.checklistItem.synchronized = [NSNumber numberWithBool: NO];
     
     switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
+        case INPUT_CONSTANT:
+            // do not touch the value
+            break;
         case INPUT_TEXT:
+        case INPUT_EMAIL:
         case INPUT_NUMBER:
         case INPUT_DROPDOWN: {
             UITextField *textField = (UITextField *) self.control;
             self.checklistItem.value = textField.text;
+            self.checklistItem.violationFlag = nil;
         }
             break;
         case INPUT_SWITCH: {
@@ -300,12 +314,15 @@
             switch ( (int) slider.value ) {
                 case -1:
                     self.checklistItem.value = [switchOptions objectForKey: @"lo_value"];
+                    self.checklistItem.violationFlag = [NSNumber numberWithInt: 0];
                     break;
                 case 0:
                     self.checklistItem.value = nil;
+                    self.checklistItem.violationFlag = nil;
                     break;
                 case +1:
                     self.checklistItem.value = [switchOptions objectForKey: @"hi_value"];
+                    self.checklistItem.violationFlag = [NSNumber numberWithInt: 1];
                     break;
             }
         }
@@ -313,9 +330,14 @@
         case INPUT_PHOTO:
         case INPUT_VIDEO:
             self.checklistItem.value = @"check attached media files";
+            self.checklistItem.violationFlag = nil;
             break;
-        case INPUT_COMMENT:
+        case INPUT_COMMENT: {
+            UITextView *textView = (UITextView *) self.control;
+            self.checklistItem.value = textView.text;
+            self.checklistItem.violationFlag = nil;
             break;
+        }
     }
 
     [self.saveDelegate didSaveAttributeItem: self.checklistItem];
@@ -374,7 +396,7 @@
         [parentController presentModalViewController: imagePicker animated: YES];
     }
     
-    if ( buttonIndex == 1 ) {
+    if ( ( buttonIndex == 1 ) && ( buttonIndex != actionSheet.cancelButtonIndex ) ) {
         int controlType = [[self.itemInfo objectForKey: @"control"] intValue];
         
         NSArray *mediaItems = 
@@ -490,8 +512,8 @@
 }
 
 - (void) imagePickerController: (UIImagePickerController *) picker didFinishPickingMediaWithInfo: (NSDictionary *) info {
-    // save checklist item before adding media, otherwise it doesn't work
-    [self saveItem];
+    // save checklist item before adding media, otherwise it doesn't work -- WTF???
+    // [self saveItem];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -506,7 +528,7 @@
         UIImage *originalImage = (UIImage *) [info objectForKey: UIImagePickerControllerOriginalImage];
         NSString *photosDirectory = [docsDirectory stringByAppendingPathComponent: @"Photos"];
         NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
-        NSString *imageFilename = [NSString stringWithFormat: @"%d.png", fabs(currentTimestamp) * 1000]; 
+        NSString *imageFilename = [NSString stringWithFormat: @"%qx.png", fabs(currentTimestamp) * 1000]; 
         NSString *imageFilepath = [photosDirectory stringByAppendingPathComponent: imageFilename];
         
         UIImageWriteToSavedPhotosAlbum (originalImage, nil, nil , nil);
@@ -527,7 +549,7 @@
         NSString *moviePath = [[info objectForKey: UIImagePickerControllerMediaURL] path];
         NSString *videosDirectory = [docsDirectory stringByAppendingPathComponent: @"Videos"];
         NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
-        NSString *videoFilename = [NSString stringWithFormat: @"%d.mov", fabs(currentTimestamp) * 1000];
+        NSString *videoFilename = [NSString stringWithFormat: @"%qx.mov", fabs(currentTimestamp) * 1000];
         NSString *videoFilepath = [videosDirectory stringByAppendingPathComponent: videoFilename];
         
         if ( ! [fm fileExistsAtPath: videosDirectory] )

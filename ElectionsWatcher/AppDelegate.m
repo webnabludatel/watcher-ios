@@ -14,6 +14,7 @@
 #import "WatcherSettingsController.h"
 #import "WatcherReportController.h"
 #import "WatcherSOSController.h"
+#import "WatcherDataManager.h"
 #import "PollingPlace.h"
 #import "TestFlight.h"
 
@@ -21,17 +22,21 @@
 
 @synthesize window = _window;
 @synthesize tabBarController = _tabBarController;
-@synthesize managedObjectModel;
-@synthesize managedObjectContext;
-@synthesize persistentStoreCoordinator;
-@synthesize locationManager;
-@synthesize currentLocation;
-@synthesize currentPollingPlace;
+@synthesize managedObjectModel = _managedObjectModel;
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
+@synthesize locationManager = _locationManager;
+@synthesize currentLocation = _currentLocation;
+@synthesize currentPollingPlace = _currentPollingPlace;
+@synthesize dataManager = _dataManager;
 
 - (void)dealloc
 {
     [_window release];
     [_tabBarController release];
+    [_currentLocation release];
+    [_dataManager release];
+    
     [super dealloc];
 }
 
@@ -40,10 +45,10 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
     // location manager
-	locationManager = [[CLLocationManager alloc] init];
-	[locationManager setDelegate: self];
-	[locationManager setDesiredAccuracy: kCLLocationAccuracyHundredMeters];
-	[locationManager setDistanceFilter: 1000];
+	_locationManager = [[[CLLocationManager alloc] init] autorelease];
+	[_locationManager setDelegate: self];
+	[_locationManager setDesiredAccuracy: kCLLocationAccuracyHundredMeters];
+	[_locationManager setDistanceFilter: 1000];
     
     // last active polling place
     NSArray *paths    = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
@@ -52,7 +57,7 @@
     if ( number ) {
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: number, @"NUMBER", nil];
         NSArray *results  = [self executeFetchRequest: @"findPollingPlace" forEntity: @"PollingPlace" withParameters: params];
-        currentPollingPlace = [[results lastObject] retain];
+        _currentPollingPlace = [[results lastObject] retain];
     }
     
     
@@ -97,6 +102,10 @@
                                              navigationController4, navigationController5, nil];
     
     
+    // upload data manager
+    _dataManager = [[WatcherDataManager alloc] init];
+    
+    
     // complete initialization
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
@@ -113,6 +122,7 @@
      Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
+    [self.dataManager stopProcessing];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -136,6 +146,7 @@
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
     [self.locationManager startUpdatingLocation];
+    [self.dataManager startProcessing];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -147,46 +158,21 @@
      */
 }
 
-/*
-// Optional UITabBarControllerDelegate method.
-- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
-{
-}
-*/
-
-/*
-// Optional UITabBarControllerDelegate method.
-- (void)tabBarController:(UITabBarController *)tabBarController didEndCustomizingViewControllers:(NSArray *)viewControllers changed:(BOOL)changed
-{
-}
-*/
-
 #pragma mark -
-#pragma mark Navigation controller delegate
-
--(void)navigationController:(UINavigationController *)navigationController 
-     willShowViewController:(UIViewController *)viewController 
-                   animated:(BOOL)animated {
-}
-
--(void)navigationController:(UINavigationController *)navigationController 
-      didShowViewController:(UIViewController *)viewController 
-                   animated:(BOOL)animated {
-    
-}
+#pragma mark Polling place accessor override
 
 -(PollingPlace *)currentPollingPlace {
-    return currentPollingPlace;
+    return _currentPollingPlace;
 }
 
 -(void)setCurrentPollingPlace:(PollingPlace *) aCurrentPollingPlace {
-    [currentPollingPlace release]; currentPollingPlace = nil;
-    currentPollingPlace = [aCurrentPollingPlace retain];
+    [_currentPollingPlace release]; _currentPollingPlace = nil;
+    _currentPollingPlace = [aCurrentPollingPlace retain];
     
     NSError *error    = nil;
     NSArray *paths    = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
     NSString *path    = [[paths lastObject] stringByAppendingPathComponent: @"current_number.txt"];
-    [[NSString stringWithFormat: @"%@", currentPollingPlace.number] writeToFile: path
+    [[NSString stringWithFormat: @"%@", _currentPollingPlace.number] writeToFile: path
                                                                      atomically: YES 
                                                                        encoding: NSUTF8StringEncoding 
                                                                           error: &error];
@@ -209,32 +195,32 @@
 #pragma mark Core Data stack
 
 - (NSManagedObjectContext *) managedObjectContext {
-    if ( managedObjectContext != nil ) {
-        return managedObjectContext;
+    if ( _managedObjectContext != nil ) {
+        return _managedObjectContext;
     }
     
     NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
     if ( coordinator != nil ) {
-        managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [managedObjectContext setPersistentStoreCoordinator: coordinator];
+        _managedObjectContext = [[NSManagedObjectContext alloc] init];
+        [_managedObjectContext setPersistentStoreCoordinator: coordinator];
     }
     
-    return managedObjectContext;
+    return _managedObjectContext;
 }
 
 - (NSManagedObjectModel *) managedObjectModel {
-    if ( managedObjectModel != nil ) {
-        return managedObjectModel;
+    if ( _managedObjectModel != nil ) {
+        return _managedObjectModel;
     }
     
-    managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles: nil] retain];
+    _managedObjectModel = [[NSManagedObjectModel mergedModelFromBundles: nil] retain];
     
-    return managedObjectModel;
+    return _managedObjectModel;
 }
 
 - (NSPersistentStoreCoordinator *) persistentStoreCoordinator {
-    if ( persistentStoreCoordinator != nil ) {
-        return persistentStoreCoordinator;
+    if ( _persistentStoreCoordinator != nil ) {
+        return _persistentStoreCoordinator;
     }
     
     NSArray*  paths         = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
@@ -242,12 +228,12 @@
     NSURL* storeUrl         = [NSURL fileURLWithPath: [cachePath stringByAppendingPathComponent: @"ElectionsWatcher.sqlite"]];
     
     NSError *error = nil;
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
-    NSDictionary* storeOptions = [NSDictionary dictionaryWithObjectsAndKeys:
+    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel: [self managedObjectModel]];
+    NSDictionary* storeOptions  = [NSDictionary dictionaryWithObjectsAndKeys:
                                   [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                                   [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
     
-    if ( ![persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
+    if ( ![_persistentStoreCoordinator addPersistentStoreWithType: NSSQLiteStoreType
                                                    configuration: nil 
                                                              URL: storeUrl 
                                                          options: storeOptions 
@@ -258,7 +244,7 @@
         exit ( -1 );
     }
     
-    return persistentStoreCoordinator;
+    return _persistentStoreCoordinator;
 }
 
 #pragma mark -

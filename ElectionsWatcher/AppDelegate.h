@@ -10,7 +10,7 @@
 #import <CoreData/CoreData.h>
 #import <CoreLocation/CoreLocation.h>
 
-@class PollingPlace;
+@class PollingPlace, WatcherDataManager;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate>
 
@@ -23,6 +23,7 @@
 @property (nonatomic, readonly) CLLocationManager *locationManager;
 @property (nonatomic, retain) CLLocation *currentLocation;
 @property (nonatomic, assign) PollingPlace *currentPollingPlace;
+@property (nonatomic, retain) WatcherDataManager *dataManager;
 
 - (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params;
 

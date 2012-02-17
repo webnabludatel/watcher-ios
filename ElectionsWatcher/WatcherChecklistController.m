@@ -217,9 +217,14 @@
 
 -(void)watcherPollingPlaceController:(WatcherPollingPlaceController *)controller didSavePollingPlace:(PollingPlace *)pollinngPlace {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate.managedObjectContext save: nil];
+    NSError *error = nil;
+    [appDelegate.managedObjectContext save: &error];
     
-    appDelegate.currentPollingPlace = controller.pollingPlace;
+    if ( error )
+        NSLog(@"error saving polling place info: %@", error.description);
+    else
+        appDelegate.currentPollingPlace = controller.pollingPlace;
+    
     
     [self dismissModalViewControllerAnimated: YES];
     [self.tableView reloadData];

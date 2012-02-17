@@ -100,6 +100,25 @@ static NSString *settingsSections[] = { @"personal_info" };
     return labelSize.height + 70;
 }
 
+- (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: [itemInfo objectForKey: @"name"], @"ITEM_NAME", nil];
+    NSArray *results = [appDelegate executeFetchRequest: @"findItemByName" 
+                                              forEntity: @"ChecklistItem" 
+                                         withParameters: params];
+    
+    if ( results.count ) {
+        [(WatcherChecklistScreenCell *) cell setChecklistItem: [results lastObject]];
+    } else {
+        ChecklistItem *checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                                     inManagedObjectContext: appDelegate.managedObjectContext];
+        [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
+    }
+}
+
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     NSString *cellId = [NSString stringWithFormat: @"SettingsCell_%d_%d", indexPath.section, indexPath.row];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
@@ -113,20 +132,6 @@ static NSString *settingsSections[] = { @"personal_info" };
         [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
     }
     
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: [itemInfo objectForKey: @"name"], @"ITEM_NAME", nil];
-    NSArray *results = [appDelegate executeFetchRequest: @"findItemByName" 
-                                              forEntity: @"ChecklistItem" 
-                                         withParameters: params];
-    
-    if ( results.count ) {
-        [(WatcherChecklistScreenCell *) cell setChecklistItem: [results lastObject]];
-    } else {
-        [(WatcherChecklistScreenCell *) cell setChecklistItem: [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
-                                                                                             inManagedObjectContext: appDelegate.managedObjectContext]];
-        [appDelegate.managedObjectContext save: nil];
-    }
-    
     return cell;
 }
 
@@ -134,7 +139,11 @@ static NSString *settingsSections[] = { @"personal_info" };
 
 - (void) didSaveAttributeItem:(ChecklistItem *)item {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate.managedObjectContext save: nil];
+    NSError *error = nil;
+    [appDelegate.managedObjectContext save: &error];
+    
+    if ( error ) 
+        NSLog(@"error saving settings attribute: %@", error.description);
 }
 
 -(BOOL)isCancelling {
