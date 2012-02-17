@@ -25,13 +25,20 @@
 
 - (void) runDataManager {
     @autoreleasepool {
-        NSTimer *timer = [NSTimer timerWithTimeInterval: 10.0 target: self selector: @selector(checkForUnsentData) userInfo: nil repeats: YES];
+        NSTimer *timer = [NSTimer timerWithTimeInterval: 10.0 target: self 
+                                               selector: @selector(checkForUnsentData) 
+                                               userInfo: nil 
+                                                repeats: YES];
+        
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
         [[NSRunLoop currentRunLoop] run];
     }
 }
 
 - (void) checkForUnsentData {
+    if ( [[NSThread currentThread] isCancelled] )
+        [NSThread exit];
+    
     NSLog(@"start checking for non-synchronized items");
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
@@ -98,6 +105,9 @@
 }
 
 - (void) stopProcessing {
+    [_dataManagerThread cancel];
+    [_dataManagerThread release];
+    _dataManagerThread = nil;
 }
 
 @end
