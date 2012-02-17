@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="872" systemVersion="10K549" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="ChecklistItem" representedClassName="ChecklistItem" syncable="YES">
-        <attribute name="lat" optional="YES" attributeType="Integer 32" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lat" optional="YES" attributeType="Integer 64" defaultValueString="0.0" syncable="YES"/>
         <attribute name="lng" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="screenIndex" optional="YES" attributeType="Integer 32" defaultValueString="-1" syncable="YES"/>
         <attribute name="sectionIndex" optional="YES" attributeType="Integer 32" defaultValueString="-1" syncable="YES"/>
+        <attribute name="serverRecordId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="synchronized" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="value" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="violationFlag" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <relationship name="mediaItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="MediaItem" inverseName="checklistItem" inverseEntity="MediaItem" syncable="YES"/>
         <relationship name="pollingPlace" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="PollingPlace" inverseName="checklistItems" inverseEntity="PollingPlace" syncable="YES"/>
     </entity>
@@ -37,6 +39,7 @@
     <fetchRequest name="findItemsByScreen" entity="ChecklistItem" predicateString="sectionIndex == $SECTION_INDEX AND screenIndex == $SCREEN_INDEX"/>
     <fetchRequest name="findItemsBySection" entity="ChecklistItem" predicateString="sectionIndex == $SECTION_INDEX"/>
     <fetchRequest name="findPollingPlace" entity="PollingPlace" predicateString="number == $NUMBER"/>
+    <fetchRequest name="findUnsentChecklistItems" entity="ChecklistItem" predicateString="synchronized != 1"/>
     <fetchRequest name="listBadItems" entity="ChecklistItem" predicateString="sectionIndex >= 0 AND screenIndex >= 0 AND value == &quot;1&quot;"/>
     <fetchRequest name="listGoodItems" entity="ChecklistItem" predicateString="sectionIndex >= 0 AND screenIndex >= 0 AND value == &quot;-1&quot;"/>
     <fetchRequest name="listPollingPlaces" entity="PollingPlace"/>
