@@ -45,7 +45,7 @@
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
     // location manager
-	_locationManager = [[[CLLocationManager alloc] init] autorelease];
+	_locationManager = [[CLLocationManager alloc] init];
 	[_locationManager setDelegate: self];
 	[_locationManager setDesiredAccuracy: kCLLocationAccuracyHundredMeters];
 	[_locationManager setDistanceFilter: 1000];
