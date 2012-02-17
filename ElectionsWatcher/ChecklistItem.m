@@ -2,7 +2,7 @@
 //  ChecklistItem.m
 //  ElectionsWatcher
 //
-//  Created by xfire on 15.02.12.
+//  Created by xfire on 17.02.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -21,6 +21,8 @@
 @dynamic synchronized;
 @dynamic timestamp;
 @dynamic value;
+@dynamic serverRecordId;
+@dynamic violationFlag;
 @dynamic mediaItems;
 @dynamic pollingPlace;
 
