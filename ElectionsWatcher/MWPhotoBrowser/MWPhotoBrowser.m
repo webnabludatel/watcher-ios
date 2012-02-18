@@ -42,7 +42,7 @@
 	// Navigation & controls
 	UIToolbar *_toolbar;
 	NSTimer *_controlVisibilityTimer;
-	UIBarButtonItem *_previousButton, *_nextButton, *_actionButton;
+	UIBarButtonItem *_previousButton, *_nextButton, *_actionButton, *_removeButton;
     UIActionSheet *_actionsSheet;
     MBProgressHUD *_progressHUD;
     
@@ -56,6 +56,7 @@
     
     // Misc
     BOOL _displayActionButton;
+    BOOL _displayRemoveButton;
 	BOOL _performingLayout;
 	BOOL _rotating;
     BOOL _viewIsActive; // active as in it's in the view heirarchy
@@ -137,6 +138,7 @@
 @synthesize navigationBarBackgroundImageDefault = _navigationBarBackgroundImageDefault,
 navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandscapePhone;
 @synthesize displayActionButton = _displayActionButton, actionsSheet = _actionsSheet;
+@synthesize displayRemoveButton = _displayRemoveButton;
 @synthesize progressHUD = _progressHUD;
 @synthesize previousViewControllerBackButton = _previousViewControllerBackButton;
 
@@ -195,6 +197,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	[_previousButton release];
 	[_nextButton release];
     [_actionButton release];
+    [_removeButton release];
   	[_depreciatedPhotoData release];
     [self releaseAllUnderlyingPhotos];
     [[SDImageCache sharedImageCache] clearMemory]; // clear memory
@@ -251,7 +254,12 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     // Toolbar Items
     _previousButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/UIBarButtonItemArrowLeft.png"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoPreviousPage)];
     _nextButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"MWPhotoBrowser.bundle/images/UIBarButtonItemArrowRight.png"] style:UIBarButtonItemStylePlain target:self action:@selector(gotoNextPage)];
-    _actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction target:self action:@selector(actionButtonPressed:)];
+    _actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction 
+                                                                  target: self 
+                                                                  action:@selector(actionButtonPressed:)];
+    _removeButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash 
+                                                                  target: self
+                                                                  action: @selector(removeButtonPressed:)];
     
     // Update
     [self reloadData];
@@ -272,7 +280,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     [_recycledPages removeAllObjects];
     
     // Toolbar
-    if (numberOfPhotos > 1 || _displayActionButton) {
+    if (numberOfPhotos > 1 || _displayActionButton || _displayRemoveButton) {
         [self.view addSubview:_toolbar];
     } else {
         [_toolbar removeFromSuperview];
@@ -290,6 +298,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
     if (numberOfPhotos > 1) [items addObject:_nextButton];
     [items addObject:flexSpace];
     if (_displayActionButton) [items addObject:_actionButton];
+    if (_displayRemoveButton) [items addObject:_removeButton];
     [_toolbar setItems:items];
     [items release];
 	[self updateNavigation];
@@ -861,8 +870,6 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 	// Title
 	if ([self numberOfPhotos] > 1) {
 		self.title = [NSString stringWithFormat:@"%i %@ %i", _currentPageIndex+1, NSLocalizedString(@"of", @"Used in the context: 'Showing 1 of 3 items'"), [self numberOfPhotos]];		
-	} else {
-//		self.title = nil;
 	}
 	
 	// Buttons
@@ -990,6 +997,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 }
 
 - (void)actionButtonPressed:(id)sender {
+    /*
     if (_actionsSheet) {
         // Dismiss
         [_actionsSheet dismissWithClickedButtonIndex:_actionsSheet.cancelButtonIndex animated:YES];
@@ -1019,6 +1027,26 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
             
         }
     }
+     */
+    [_delegate photoBrowser: self pressedActionButtonAtIndex: _currentPageIndex];
+    [self reloadData];
+}
+
+- (void)removeButtonPressed:(id) sender {
+    [_delegate photoBrowser: self pressedRemoveButtonAtIndex: _currentPageIndex];
+    
+    if ( _currentPageIndex > 0 && _photoCount > 1 ) {
+        [self jumpToPageAtIndex: _currentPageIndex - 1];
+        [self reloadData];
+        [self updateNavigation];
+    } else if ( _currentPageIndex == 0 && _photoCount > 1 ) {
+        [self jumpToPageAtIndex: 0];
+        [self reloadData];
+        [self updateNavigation];
+    } else {
+        [self dismissModalViewControllerAnimated: YES];
+    }
+    
 }
 
 #pragma mark - Action Sheet Delegate

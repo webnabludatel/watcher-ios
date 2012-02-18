@@ -26,6 +26,8 @@
 - (id<MWPhoto>)photoBrowser:(MWPhotoBrowser *)photoBrowser photoAtIndex:(NSUInteger)index;
 @optional
 - (MWCaptionView *)photoBrowser:(MWPhotoBrowser *)photoBrowser captionViewForPhotoAtIndex:(NSUInteger)index;
+- (void) photoBrowser: (MWPhotoBrowser *) photoBrowser pressedActionButtonAtIndex: (NSUInteger) index;
+- (void) photoBrowser: (MWPhotoBrowser *) photoBrowser pressedRemoveButtonAtIndex: (NSUInteger) index;
 @end
 
 // MWPhotoBrowser
@@ -33,6 +35,7 @@
 
 // Properties
 @property (nonatomic) BOOL displayActionButton;
+@property (nonatomic) BOOL displayRemoveButton;
 
 // Init
 - (id)initWithPhotos:(NSArray *)photosArray  __attribute__((deprecated)); // Depreciated
