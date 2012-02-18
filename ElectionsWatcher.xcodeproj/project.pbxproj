@@ -486,6 +486,7 @@
 		5FC6C0E314CC66DE0078AD8E /* WatcherChecklistScreenCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherChecklistScreenCell.m; sourceTree = "<group>"; };
 		5FD5977B14EE5AEE00E27620 /* WatcherDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherDataManager.h; sourceTree = "<group>"; };
 		5FD5977C14EE5AEE00E27620 /* WatcherDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherDataManager.m; sourceTree = "<group>"; };
+		5FD5977E14EF149000E27620 /* WatcherChecklistScreenCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistScreenCellDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -739,6 +740,7 @@
 				5FC6C0E014CC206C0078AD8E /* WatcherChecklistScreenController.m */,
 				5FC6C0E214CC66DE0078AD8E /* WatcherChecklistScreenCell.h */,
 				5FC6C0E314CC66DE0078AD8E /* WatcherChecklistScreenCell.m */,
+				5FD5977E14EF149000E27620 /* WatcherChecklistScreenCellDelegate.h */,
 				5F7ADDDF14C1AE4100A8E955 /* WatcherGuideController.h */,
 				5F7ADDE014C1AE4100A8E955 /* WatcherGuideController.m */,
 				5F7ADDF314C1AF9700A8E955 /* WatcherSettingsController.h */,
@@ -1286,7 +1288,7 @@
 					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "17F71057-C7F0-42E0-A69F-74F1EA1623B0";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "048CB41B-5008-455F-8F97-E9AEC85C34DA";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
