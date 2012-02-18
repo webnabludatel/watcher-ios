@@ -2,13 +2,14 @@
 //  PollingPlace.m
 //  ElectionsWatcher
 //
-//  Created by xfire on 17.02.12.
+//  Created by xfire on 18.02.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import "PollingPlace.h"
 #import "ChecklistItem.h"
 #import "MediaItem.h"
+#import "WatcherProfile.h"
 
 
 @implementation PollingPlace
@@ -24,5 +25,6 @@
 @dynamic type;
 @dynamic checklistItems;
 @dynamic mediaItems;
+@dynamic watcherProfile;
 
 @end

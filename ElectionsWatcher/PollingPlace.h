@@ -2,14 +2,14 @@
 //  PollingPlace.h
 //  ElectionsWatcher
 //
-//  Created by xfire on 17.02.12.
+//  Created by xfire on 18.02.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class ChecklistItem, MediaItem;
+@class ChecklistItem, MediaItem, WatcherProfile;
 
 @interface PollingPlace : NSManagedObject
 
@@ -24,6 +24,7 @@
 @property (nonatomic, retain) NSString * type;
 @property (nonatomic, retain) NSSet *checklistItems;
 @property (nonatomic, retain) NSSet *mediaItems;
+@property (nonatomic, retain) WatcherProfile *watcherProfile;
 @end
 
 @interface PollingPlace (CoreDataGeneratedAccessors)

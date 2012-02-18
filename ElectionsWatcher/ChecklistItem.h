@@ -2,7 +2,7 @@
 //  ChecklistItem.h
 //  ElectionsWatcher
 //
-//  Created by xfire on 17.02.12.
+//  Created by xfire on 18.02.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -18,13 +18,14 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * screenIndex;
 @property (nonatomic, retain) NSNumber * sectionIndex;
+@property (nonatomic, retain) NSNumber * serverRecordId;
 @property (nonatomic, retain) NSNumber * synchronized;
 @property (nonatomic, retain) NSDate * timestamp;
 @property (nonatomic, retain) NSString * value;
-@property (nonatomic, retain) NSNumber * serverRecordId;
 @property (nonatomic, retain) NSNumber * violationFlag;
 @property (nonatomic, retain) NSSet *mediaItems;
 @property (nonatomic, retain) PollingPlace *pollingPlace;
+@property (nonatomic, retain) NSManagedObject *watcherProfile;
 @end
 
 @interface ChecklistItem (CoreDataGeneratedAccessors)
