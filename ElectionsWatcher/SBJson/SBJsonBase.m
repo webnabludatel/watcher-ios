@@ -27,32 +27,52 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "NSObject+SBJson.h"
-#import "SBJsonWriter.h"
-#import "SBJsonParser.h"
+#import "SBJsonBase.h"
+NSString * SBJSONErrorDomain = @"org.brautaset.JSON.ErrorDomain";
 
-@implementation NSObject (NSObject_SBJsonWriting)
 
-- (NSString *)JSONRepresentation {
-    SBJsonWriter *writer = [[[SBJsonWriter alloc] init] autorelease];    
-    NSString *json = [writer stringWithObject:self];
-    if (!json)
-        NSLog(@"-JSONRepresentation failed. Error is: %@", writer.error);
-    return json;
+@implementation SBJsonBase
+
+@synthesize errorTrace;
+@synthesize maxDepth;
+
+- (id)init {
+    self = [super init];
+    if (self)
+        self.maxDepth = 512;
+    return self;
 }
 
-@end
+- (void)dealloc {
+    [errorTrace release];
+    [super dealloc];
+}
 
+- (void)addErrorWithCode:(NSUInteger)code description:(NSString*)str {
+    NSDictionary *userInfo;
+    if (!errorTrace) {
+        errorTrace = [NSMutableArray new];
+        userInfo = [NSDictionary dictionaryWithObject:str forKey:NSLocalizedDescriptionKey];
+        
+    } else {
+        userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                    str, NSLocalizedDescriptionKey,
+                    [errorTrace lastObject], NSUnderlyingErrorKey,
+                    nil];
+    }
+    
+    NSError *error = [NSError errorWithDomain:SBJSONErrorDomain code:code userInfo:userInfo];
 
+    [self willChangeValueForKey:@"errorTrace"];
+    [errorTrace addObject:error];
+    [self didChangeValueForKey:@"errorTrace"];
+}
 
-@implementation NSString (NSString_SBJsonParsing)
-
-- (id)JSONValue {
-    SBJsonParser *parser = [[[SBJsonParser alloc] init] autorelease];
-    id repr = [parser objectWithString:self];
-    if (!repr)
-        NSLog(@"-JSONValue failed. Error is: %@", parser.error);
-    return repr;
+- (void)clearErrorTrace {
+    [self willChangeValueForKey:@"errorTrace"];
+    [errorTrace release];
+    errorTrace = nil;
+    [self didChangeValueForKey:@"errorTrace"];
 }
 
 @end
