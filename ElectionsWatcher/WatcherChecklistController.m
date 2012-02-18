@@ -11,6 +11,7 @@
 #import "WatcherPollingPlaceController.h"
 #import "AppDelegate.h"
 #import "PollingPlace.h"
+#import "WatcherProfile.h"
 
 @implementation WatcherChecklistController
 
@@ -69,10 +70,10 @@
     [self.tableView reloadData];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    self.navigationItem.title = appDelegate.currentPollingPlace ?
-    [NSString stringWithFormat: @"Наблюдение на %@ № %@", 
-     appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] : 
-    @"Наблюдение";
+    self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
+        [NSString stringWithFormat: @"Наблюдение на %@ № %@", 
+         appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] : 
+        @"Наблюдение";
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -95,7 +96,7 @@
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    return appDelegate.currentPollingPlace ? 2 : 1;
+    return appDelegate.watcherProfile.currentPollingPlace ? 2 : 1;
 }
 
 - (NSInteger) tableView: (UITableView *) tableView numberOfRowsInSection: (NSInteger) section {
@@ -107,7 +108,7 @@
                                                    withParameters: nil];
         return [pollingPlaces count]+1;
     } else {
-        return appDelegate.currentPollingPlace ? [watcherChecklist count] : 0;
+        return appDelegate.watcherProfile.currentPollingPlace ? [watcherChecklist count] : 0;
     }
 }
 
@@ -121,14 +122,14 @@
 
 - (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    if ( indexPath.section == 1 && appDelegate.currentPollingPlace ) {
+    if ( indexPath.section == 1 && appDelegate.watcherProfile.currentPollingPlace ) {
         NSArray *values = [watcherChecklist allValues];
         NSArray *sortedValues = [values sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" 
                                                                                                                              ascending: YES]]];
         NSDictionary *screenInfo = [sortedValues objectAtIndex: indexPath.row];
         
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
+        NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
         NSPredicate *sectionPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d", indexPath.row];
         NSArray *sectionItems = [checklistItems filteredArrayUsingPredicate: sectionPredicate];
         
@@ -156,7 +157,7 @@
             cell.textLabel.text = [NSString stringWithFormat: @"%@ № %@", pollingPlace.type, pollingPlace.number];
             cell.textLabel.textAlignment = UITextAlignmentLeft;
             
-            if ( pollingPlace == appDelegate.currentPollingPlace ) 
+            if ( pollingPlace == appDelegate.watcherProfile.currentPollingPlace ) 
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
             else
                 cell.accessoryType = UITableViewCellAccessoryNone;
@@ -190,7 +191,11 @@
                                                         forEntity: @"PollingPlace" 
                                                    withParameters: nil];
         if ( indexPath.row < pollingPlaces.count ) {
-            appDelegate.currentPollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
+            appDelegate.watcherProfile.currentPollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
+            NSError *error = nil;
+            [appDelegate.managedObjectContext save: &error];
+            if ( error ) 
+                NSLog(@"error saving current polling place: %@", error.description);
             [self.tableView reloadData];
         } else {
             WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
@@ -221,13 +226,13 @@
 
 -(void)watcherPollingPlaceController:(WatcherPollingPlaceController *)controller didSavePollingPlace:(PollingPlace *)pollinngPlace {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    appDelegate.watcherProfile.currentPollingPlace = controller.pollingPlace;
+
     NSError *error = nil;
     [appDelegate.managedObjectContext save: &error];
     
     if ( error )
         NSLog(@"error saving polling place info: %@", error.description);
-    else
-        appDelegate.currentPollingPlace = controller.pollingPlace;
     
     
     [self dismissModalViewControllerAnimated: YES];

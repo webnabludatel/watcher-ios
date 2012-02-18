@@ -2,7 +2,33 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>personal_info</key>
+	<key>auth_selection</key>
+	<dict>
+		<key>title</key>
+		<string>Регистрация</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>facebook</string>
+				<key>title</key>
+				<string>Facebook</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>twitter</string>
+				<key>title</key>
+				<string>Twitter</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>manual</string>
+				<key>title</key>
+				<string>ФИО + Email</string>
+			</dict>
+		</array>
+	</dict>
+	<key>observer_info</key>
 	<dict>
 		<key>title</key>
 		<string>Наблюдатель</string>
@@ -10,47 +36,13 @@
 		<array>
 			<dict>
 				<key>name</key>
-				<string>last_name</string>
-				<key>title</key>
-				<string>Фамилия</string>
-				<key>control</key>
-				<integer>0</integer>
-				<key>hint</key>
-				<string>фамилия</string>
-				<key>required</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>first_name</string>
-				<key>title</key>
-				<string>Имя</string>
-				<key>control</key>
-				<integer>0</integer>
-				<key>hint</key>
-				<string>имя</string>
-				<key>required</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>name</key>
-				<string>email</string>
-				<key>title</key>
-				<string>E-mail</string>
-				<key>control</key>
-				<integer>8</integer>
-				<key>hint</key>
-				<string>e-mail</string>
-				<key>required</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>name</key>
 				<string>user_id</string>
 				<key>title</key>
 				<string>ID пользователя</string>
 				<key>control</key>
 				<integer>7</integer>
+				<key>hint</key>
+				<string>вы не прошли регистрацию</string>
 			</dict>
 			<dict>
 				<key>name</key>

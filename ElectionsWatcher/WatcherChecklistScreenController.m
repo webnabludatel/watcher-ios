@@ -10,6 +10,7 @@
 #import "WatcherChecklistScreenCell.h"
 #import "AppDelegate.h"
 #import "PollingPlace.h"
+#import "WatcherProfile.h"
 
 @implementation WatcherChecklistScreenController
 
@@ -157,7 +158,7 @@
     cell.detailTextLabel.text = nil;
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
+    NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
     NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d && SELF.screenIndex == %d && SELF.name LIKE %@", 
                                     self.sectionIndex, self.screenIndex, [itemInfo objectForKey: @"name"]];
     NSArray *existingItems = [checklistItems filteredArrayUsingPredicate: itemPredicate];
@@ -178,8 +179,8 @@
 
 -(void)didSaveAttributeItem:(ChecklistItem *)item {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    if ( ! [appDelegate.currentPollingPlace.checklistItems containsObject: item] )
-        [appDelegate.currentPollingPlace addChecklistItemsObject: item];
+    if ( ! [appDelegate.watcherProfile.currentPollingPlace.checklistItems containsObject: item] )
+        [appDelegate.watcherProfile.currentPollingPlace addChecklistItemsObject: item];
     
     NSError *error = nil;
     [appDelegate.managedObjectContext save: &error];

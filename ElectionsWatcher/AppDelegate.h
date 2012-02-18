@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import <CoreLocation/CoreLocation.h>
+#import "Facebook.h"
 
-@class PollingPlace, WatcherDataManager;
+@class PollingPlace, WatcherDataManager, WatcherProfile;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, FBSessionDelegate, FBRequestDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UITabBarController *tabBarController;
@@ -22,8 +23,9 @@
 @property (nonatomic, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 @property (nonatomic, readonly) CLLocationManager *locationManager;
 @property (nonatomic, retain) CLLocation *currentLocation;
-@property (nonatomic, assign) PollingPlace *currentPollingPlace;
 @property (nonatomic, retain) WatcherDataManager *dataManager;
+@property (nonatomic, retain) Facebook *facebook;
+@property (nonatomic, readonly) WatcherProfile *watcherProfile;
 
 - (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params;
 

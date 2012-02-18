@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "ChecklistItem.h"
 #import "PollingPlace.h"
+#import "WatcherProfile.h"
 
 @implementation WatcherReportController
 
@@ -66,7 +67,7 @@
     [super viewWillAppear:animated];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *checklistItems = [appDelegate.currentPollingPlace.checklistItems allObjects];
+    NSArray *checklistItems = [appDelegate.watcherProfile.currentPollingPlace.checklistItems allObjects];
     
     NSPredicate *badPredicate   = [NSPredicate predicateWithFormat: @"SELF.sectionIndex >= 0 && SELF.screenIndex >= 0 && SELF.violationFlag == 1"];
     NSPredicate *goodPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionIndex >= 0 && SELF.screenIndex >= 0 && SELF.violationFlag == 0"];
@@ -82,10 +83,10 @@
     [self.tableView reloadData];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    self.navigationItem.title = appDelegate.currentPollingPlace ?
-    [NSString stringWithFormat: @"Отчет по %@ № %@", 
-     appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
-    @"Отчет";
+    self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
+        [NSString stringWithFormat: @"Отчет по %@ № %@", 
+         appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
+        @"Отчет";
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -110,12 +111,12 @@
     if ( section == 1 ) {
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
-        if ( appDelegate.currentPollingPlace )
+        if ( appDelegate.watcherProfile.currentPollingPlace )
             return self.badItems.count ?
                 [NSString stringWithFormat: @"Нарушения на %@ № %@", 
-                 appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
+                 appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
                 [NSString stringWithFormat: @"На %@ № %@ не отмечено нарушений", 
-                 appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] ;
+                 appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] ;
         else
             return @"Нет данных";
     } else {

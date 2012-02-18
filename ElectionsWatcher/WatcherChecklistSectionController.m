@@ -10,6 +10,7 @@
 #import "WatcherChecklistScreenController.h"
 #import "AppDelegate.h"
 #import "PollingPlace.h"
+#import "WatcherProfile.h"
 
 @implementation WatcherChecklistSectionController
 
@@ -112,7 +113,7 @@
     NSDictionary *screenInfo = [screens objectAtIndex: indexPath.row];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
+    NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
     NSPredicate *screenPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d && SELF.screenIndex == %d", 
                                     self.sectionIndex, indexPath.row];
     NSArray *screenItems = [checklistItems filteredArrayUsingPredicate: screenPredicate];

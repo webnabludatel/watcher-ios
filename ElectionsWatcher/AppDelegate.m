@@ -16,6 +16,7 @@
 #import "WatcherSOSController.h"
 #import "WatcherDataManager.h"
 #import "PollingPlace.h"
+#import "WatcherProfile.h"
 
 @implementation AppDelegate
 
@@ -26,8 +27,9 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 @synthesize locationManager = _locationManager;
 @synthesize currentLocation = _currentLocation;
-@synthesize currentPollingPlace = _currentPollingPlace;
 @synthesize dataManager = _dataManager;
+@synthesize facebook = _facebook;
+@synthesize watcherProfile = _watcherProfile;
 
 - (void)dealloc
 {
@@ -35,12 +37,17 @@
     [_tabBarController release];
     [_currentLocation release];
     [_dataManager release];
+    [_facebook release];
+    [_watcherProfile release];
     
     [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // TestFlight
+    [TestFlight takeOff: @"3e01d5e6faba63f16c5fa20704571f7a_NjI1NTIyMDEyLTAyLTE0IDE1OjA5OjIxLjE3NzczMw"];
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
     // location manager
@@ -48,17 +55,6 @@
 	[_locationManager setDelegate: self];
 	[_locationManager setDesiredAccuracy: kCLLocationAccuracyHundredMeters];
 	[_locationManager setDistanceFilter: 1000];
-    
-    // last active polling place
-    NSArray *paths    = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
-    NSString *path    = [[paths lastObject] stringByAppendingPathComponent: @"current_number.txt"];
-    NSString *number  = [NSString stringWithContentsOfFile: path encoding: NSUTF8StringEncoding error: nil];
-    if ( number ) {
-        NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: number, @"NUMBER", nil];
-        NSArray *results  = [self executeFetchRequest: @"findPollingPlace" forEntity: @"PollingPlace" withParameters: params];
-        _currentPollingPlace = [[results lastObject] retain];
-    }
-    
     
     // UI Init
     UIViewController *checklistController   = [[[WatcherChecklistController alloc] initWithNibName:@"WatcherChecklistController" 
@@ -104,13 +100,35 @@
     // upload data manager
     _dataManager = [[WatcherDataManager alloc] init];
     
+    // initialize profile
+    NSArray *profileResults = [self executeFetchRequest: @"findProfile" 
+                                              forEntity: @"WatcherProfile" 
+                                         withParameters: [NSDictionary dictionary]];
+    if ( profileResults.count ) {
+        _watcherProfile = [[profileResults lastObject] retain];
+    } else {
+        _watcherProfile = [[NSEntityDescription insertNewObjectForEntityForName: @"WatcherProfile" 
+                                                         inManagedObjectContext: self.managedObjectContext] retain];
+        
+        NSError *error = nil;
+        [_managedObjectContext save: &error];
+        if ( error ) 
+            NSLog(@"error initializing profile: %@", error.description );
+    }
+    
+    // facebook
+    _facebook = [[Facebook alloc] initWithAppId: @"308722072498316" andDelegate:self];
+    _facebook.accessToken = _watcherProfile.fbAccessToken;
+    _facebook.expirationDate = _watcherProfile.fbAccessExpires;
+    
+    if ( [_facebook isSessionValid] )
+        [_facebook requestWithGraphPath: @"me" andDelegate: self];
+    
+    // twitter
     
     // complete initialization
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
-    
-    // TestFlight
-    [TestFlight takeOff: @"3e01d5e6faba63f16c5fa20704571f7a_NjI1NTIyMDEyLTAyLTE0IDE1OjA5OjIxLjE3NzczMw"];
     
     return YES;
 }
@@ -155,29 +173,6 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
-}
-
-#pragma mark -
-#pragma mark Polling place accessor override
-
--(PollingPlace *)currentPollingPlace {
-    return _currentPollingPlace;
-}
-
--(void)setCurrentPollingPlace:(PollingPlace *) aCurrentPollingPlace {
-    [_currentPollingPlace release]; _currentPollingPlace = nil;
-    _currentPollingPlace = [aCurrentPollingPlace retain];
-    
-    NSError *error    = nil;
-    NSArray *paths    = NSSearchPathForDirectoriesInDomains ( NSCachesDirectory, NSUserDomainMask, YES );
-    NSString *path    = [[paths lastObject] stringByAppendingPathComponent: @"current_number.txt"];
-    [[NSString stringWithFormat: @"%@", _currentPollingPlace.number] writeToFile: path
-                                                                     atomically: YES 
-                                                                       encoding: NSUTF8StringEncoding 
-                                                                          error: &error];
-    
-    if ( error ) 
-        NSLog(@"error saving current polling place: %@", error.description);
 }
 
 #pragma mark -
@@ -265,6 +260,98 @@
         NSLog(@"Core Data Error: %@", error.description);
 
     return results;
+}
+
+#pragma mark -
+#pragma mark Facebook support
+
+// Pre 4.2 support
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [_facebook handleOpenURL:url]; 
+}
+
+// For 4.2+ support
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [_facebook handleOpenURL:url]; 
+}
+
+-(void)fbDidLogin {
+    _watcherProfile.fbAccessToken = _facebook.accessToken;
+    _watcherProfile.fbAccessExpires = _facebook.expirationDate;
+    
+        [_facebook requestWithGraphPath: @"me" andDelegate: self];
+    
+    NSError *error = nil;
+    [_managedObjectContext save: &error];
+    if ( error )
+        NSLog(@"Core Data Error: %@", error.description);
+    
+    
+}
+
+-(void)fbDidLogout {
+    _watcherProfile.fbAccessToken = nil;
+    _watcherProfile.fbAccessExpires = nil;
+    
+    NSError *error = nil;
+    [_managedObjectContext save: &error];
+    if ( error )
+        NSLog(@"Core Data Error: %@", error.description);
+}
+
+-(void)fbDidExtendToken:(NSString *)accessToken expiresAt:(NSDate *)expiresAt {
+    _watcherProfile.fbAccessToken = accessToken;
+    _watcherProfile.fbAccessExpires = expiresAt;
+    
+    NSError *error = nil;
+    [_managedObjectContext save: &error];
+    if ( error )
+        NSLog(@"Core Data Error: %@", error.description);
+}
+
+-(void)fbDidNotLogin:(BOOL)cancelled {
+    _watcherProfile.fbAccessToken = nil;
+    _watcherProfile.fbAccessExpires = nil;
+    
+    NSError *error = nil;
+    [_managedObjectContext save: &error];
+    if ( error )
+        NSLog(@"Core Data Error: %@", error.description);
+}
+
+-(void)fbSessionInvalidated {
+    _watcherProfile.fbAccessToken = nil;
+    _watcherProfile.fbAccessExpires = nil;
+    
+    NSError *error = nil;
+    [_managedObjectContext save: &error];
+    if ( error )
+        NSLog(@"Core Data Error: %@", error.description);
+}
+
+-(void)request:(FBRequest *)request didLoad:(id)result {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    
+    _watcherProfile.fbNickname = [result objectForKey: @"username"];
+    /*
+    _watcherProfile.email = [result objectForKey: @"email"];
+    _watcherProfile.firstName = [result objectForKey: @"first_name"];
+    _watcherProfile.lastName = [result objectForKey: @"last_name"];
+     */
+    
+    NSError *error = nil;
+    [_managedObjectContext save: &error];
+    if ( error )
+        NSLog(@"Core Data Error: %@", error.description);
+}
+
+-(void)request:(FBRequest *)request didFailWithError:(NSError *)error {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+}
+
+-(void)requestLoading:(FBRequest *)request {
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
 
 @end

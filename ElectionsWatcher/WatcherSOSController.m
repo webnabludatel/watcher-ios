@@ -10,12 +10,14 @@
 #import "WatcherChecklistScreenCell.h"
 #import "AppDelegate.h"
 #import "PollingPlace.h"
+#import "WatcherProfile.h"
 
 @implementation WatcherSOSController
 
 static NSString *sosReportSections[] = { @"sos_report" };
 
 @synthesize sosReport;
+@synthesize latestActiveResponder;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -63,10 +65,10 @@ static NSString *sosReportSections[] = { @"sos_report" };
     [self.tableView reloadData];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    self.navigationItem.title = appDelegate.currentPollingPlace ?
-    [NSString stringWithFormat: @"S.O.S.: %@ № %@", 
-     appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
-    @"S.O.S";
+    self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
+        [NSString stringWithFormat: @"S.O.S.: %@ № %@", 
+         appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
+        @"S.O.S";
     
 }
 
@@ -144,7 +146,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
     NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *checklistItems = [[appDelegate.currentPollingPlace checklistItems] allObjects];
+    NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
     NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", [itemInfo objectForKey: @"name"]];
     NSArray *existingItems = [checklistItems filteredArrayUsingPredicate: itemPredicate];
     
@@ -180,8 +182,8 @@ static NSString *sosReportSections[] = { @"sos_report" };
 
 -(void)didSaveAttributeItem:(ChecklistItem *)item {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    if ( ! [appDelegate.currentPollingPlace.checklistItems containsObject: item] )
-        [appDelegate.currentPollingPlace addChecklistItemsObject: item];
+    if ( ! [appDelegate.watcherProfile.currentPollingPlace.checklistItems containsObject: item] )
+        [appDelegate.watcherProfile.currentPollingPlace addChecklistItemsObject: item];
     
     NSError *error = nil;
     [appDelegate.managedObjectContext save: &error];

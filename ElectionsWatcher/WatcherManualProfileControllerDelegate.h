@@ -8,6 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+@class WatcherManualProfileController;
+@class WatcherProfile;
+
 @protocol WatcherManualProfileControllerDelegate <NSObject>
+
+- (void) watcherManualProfileController: (WatcherManualProfileController *) controller
+                         didSaveProfile: (WatcherProfile *) watcherProfile;
+
+- (void) watcherManualProfileControllerDidCancel: (WatcherManualProfileController *) controller;
 
 @end

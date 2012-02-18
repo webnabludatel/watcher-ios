@@ -7,16 +7,31 @@
 //
 
 #import "WatcherManualProfileController.h"
+#import "AppDelegate.h"
+#import "WatcherChecklistScreenCell.h"
+#import "WatcherProfile.h"
 
 @implementation WatcherManualProfileController
+
+static NSString *settingsSections[] = { @"personal_info" };
+
+@synthesize profileControllerDelegate;
+@synthesize settings;
+@synthesize latestActiveResponder;
+@synthesize isCancelling;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
-        // Custom initialization
+        self.title = @"ФИО + Email";
     }
     return self;
+}
+
+-(void)dealloc {
+    [settings release];
+    [super dealloc];
 }
 
 - (void)didReceiveMemoryWarning
@@ -33,11 +48,13 @@
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherProfile" 
+                                                            ofType: @"plist"];
+    self.settings = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
+    
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(handleCancelButton:)] autorelease];
+    
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target: self action: @selector(handleDoneButton:)] autorelease];
 }
 
 - (void)viewDidUnload
@@ -55,6 +72,8 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -75,85 +94,94 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[section]];
+    return [sectionInfo objectForKey: @"title"];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+- (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView {
+    return [[self.settings allKeys] count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"Cell";
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[section]];
+    return [[sectionInfo objectForKey: @"items"] count];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    NSString *itemTitle = [itemInfo objectForKey: @"title"];
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    CGSize labelSize = [itemTitle sizeWithFont: [UIFont boldSystemFontOfSize: 13] 
+                             constrainedToSize: CGSizeMake(280, 120) 
+                                 lineBreakMode: UILineBreakModeWordWrap];
+    
+    return labelSize.height + 70;
+}
+
+- (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: [itemInfo objectForKey: @"name"], @"ITEM_NAME", nil];
+    NSArray *results = [appDelegate executeFetchRequest: @"findItemByName" 
+                                              forEntity: @"ChecklistItem" 
+                                         withParameters: params];
+    
+    if ( results.count ) {
+        [(WatcherChecklistScreenCell *) cell setChecklistItem: [results lastObject]];
+    } else {
+        ChecklistItem *checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                                     inManagedObjectContext: appDelegate.managedObjectContext];
+        [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
     }
+}
+
+- (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
+    NSString *cellId = [NSString stringWithFormat: @"SettingsCell_%d_%d", indexPath.section, indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
-    // Configure the cell...
+    if ( cell == nil ) {
+        cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
+                                                  reuseIdentifier: cellId 
+                                                     withItemInfo: itemInfo] autorelease];
+        [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
+    }
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+#pragma mark - Button handlers
+
+- (void) handleCancelButton: (id) sender {
+    [self.profileControllerDelegate watcherManualProfileControllerDidCancel: self];
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+- (void) handleDoneButton: (id) sender {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [self.profileControllerDelegate watcherManualProfileController: self 
+                                                    didSaveProfile: appDelegate.watcherProfile];
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
+#pragma mark - Attribute save delegate 
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
+- (void) didSaveAttributeItem:(ChecklistItem *)item {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
 
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    if ( [@"last_name" isEqualToString: item.name] )
+        appDelegate.watcherProfile.lastName = item.value;
+    
+    if ( [@"first_name" isEqualToString: item.name] )
+        appDelegate.watcherProfile.firstName = item.value;
+    
+    if ( [@"email" isEqualToString: item.name] )
+        appDelegate.watcherProfile.email = item.value;
+    
+    [appDelegate.watcherProfile addProfileChecklistItemsObject: item];
 }
 
 @end

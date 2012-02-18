@@ -1,5 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict/>
+<dict>
+	<key>personal_info</key>
+	<dict>
+		<key>title</key>
+		<string>Наблюдатель</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>last_name</string>
+				<key>title</key>
+				<string>Фамилия</string>
+				<key>control</key>
+				<integer>0</integer>
+				<key>hint</key>
+				<string>фамилия</string>
+				<key>required</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>first_name</string>
+				<key>title</key>
+				<string>Имя</string>
+				<key>control</key>
+				<integer>0</integer>
+				<key>hint</key>
+				<string>имя</string>
+				<key>required</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>email</string>
+				<key>title</key>
+				<string>E-mail</string>
+				<key>control</key>
+				<integer>8</integer>
+				<key>hint</key>
+				<string>e-mail</string>
+				<key>required</key>
+				<true/>
+			</dict>
+		</array>
+	</dict>
+</dict>
 </plist>
