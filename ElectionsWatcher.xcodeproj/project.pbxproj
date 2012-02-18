@@ -13,8 +13,6 @@
 		5F2062C614E876D50031BA22 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2062C514E876D50031BA22 /* RegexKitLite.m */; };
 		5F2062C814E876FC0031BA22 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2062C714E876FC0031BA22 /* libicucore.dylib */; };
 		5F2062CA14E8FB470031BA22 /* transparent.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5F2062C914E8FB470031BA22 /* transparent.gif */; };
-		5F624CAE14EBB323009149AF /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F624CAD14EBB323009149AF /* ChecklistItem.m */; };
-		5F624CB114EBB323009149AF /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F624CB014EBB323009149AF /* MediaItem.m */; };
 		5F65581A14EA5E0300135422 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65580E14EA5E0300135422 /* MWCaptionView.m */; };
 		5F65581B14EA5E0300135422 /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65581014EA5E0300135422 /* MWPhoto.m */; };
 		5F65581C14EA5E0300135422 /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65581214EA5E0300135422 /* MWPhotoBrowser.m */; };
@@ -138,7 +136,6 @@
 		5F7ADDF814C1B0E700A8E955 /* WatcherGuideController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */; };
 		5F7ADDFA14C1B0FD00A8E955 /* WatcherChecklistController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7ADDFB14C1B0FD00A8E955 /* WatcherChecklistController.xib */; };
 		5F7DDA2F14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5F7DDA2D14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld */; };
-		5F7DDA3214EBC114005857D3 /* PollingPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7DDA3114EBC114005857D3 /* PollingPlace.m */; };
 		5F7DDA3614EBC42B005857D3 /* WatcherPollingPlaceController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7DDA3414EBC42B005857D3 /* WatcherPollingPlaceController.m */; };
 		5F7DDA3714EBC42B005857D3 /* WatcherPollingPlaceController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5F7DDA3514EBC42B005857D3 /* WatcherPollingPlaceController.xib */; };
 		5F7DDA3914EBCDCA005857D3 /* WatcherPollingPlace.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F7DDA3814EBCDCA005857D3 /* WatcherPollingPlace.plist */; };
@@ -170,18 +167,6 @@
 		5F8892E214E7DFF00067F2DD /* slider_neutral@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DE14E7DFF00067F2DD /* slider_neutral@2x.png */; };
 		5F8892E314E7DFF00067F2DD /* slider_thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F8892DF14E7DFF00067F2DD /* slider_thumb@2x.png */; };
 		5F91F20E14C1C59300446C86 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F91F20D14C1C59300446C86 /* CoreData.framework */; };
-		5F91F22C14C2EFB200446C86 /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21414C2EFB200446C86 /* NSObject+SBJson.m */; };
-		5F91F22D14C2EFB200446C86 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21714C2EFB200446C86 /* SBJsonParser.m */; };
-		5F91F22E14C2EFB200446C86 /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21914C2EFB200446C86 /* SBJsonStreamParser.m */; };
-		5F91F22F14C2EFB200446C86 /* SBJsonStreamParserAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21B14C2EFB200446C86 /* SBJsonStreamParserAccumulator.m */; };
-		5F91F23014C2EFB200446C86 /* SBJsonStreamParserAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21D14C2EFB200446C86 /* SBJsonStreamParserAdapter.m */; };
-		5F91F23114C2EFB200446C86 /* SBJsonStreamParserState.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F21F14C2EFB200446C86 /* SBJsonStreamParserState.m */; };
-		5F91F23214C2EFB200446C86 /* SBJsonStreamWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F22114C2EFB200446C86 /* SBJsonStreamWriter.m */; };
-		5F91F23314C2EFB200446C86 /* SBJsonStreamWriterAccumulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F22314C2EFB200446C86 /* SBJsonStreamWriterAccumulator.m */; };
-		5F91F23414C2EFB200446C86 /* SBJsonStreamWriterState.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F22514C2EFB200446C86 /* SBJsonStreamWriterState.m */; };
-		5F91F23514C2EFB200446C86 /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F22714C2EFB200446C86 /* SBJsonTokeniser.m */; };
-		5F91F23614C2EFB200446C86 /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F22914C2EFB200446C86 /* SBJsonUTF8Stream.m */; };
-		5F91F23714C2EFB200446C86 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F22B14C2EFB200446C86 /* SBJsonWriter.m */; };
 		5F91F24C14C2EFE700446C86 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F23914C2EFE700446C86 /* ASIAuthenticationDialog.m */; };
 		5F91F24D14C2EFE700446C86 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F23C14C2EFE700446C86 /* ASIDataCompressor.m */; };
 		5F91F24E14C2EFE700446C86 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F91F23E14C2EFE700446C86 /* ASIDataDecompressor.m */; };
@@ -202,11 +187,29 @@
 		5F974D0D14CED7B400598945 /* ActionSheetDistancePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F974D0614CED7B400598945 /* ActionSheetDistancePicker.m */; };
 		5F974D0E14CED7B400598945 /* ActionSheetStringPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F974D0814CED7B400598945 /* ActionSheetStringPicker.m */; };
 		5F974D0F14CED7B400598945 /* DistancePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F974D0A14CED7B400598945 /* DistancePickerView.m */; };
+		5FA5E15314F01A1F00030487 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15214F01A1F00030487 /* MediaItem.m */; };
+		5FA5E15614F01A2000030487 /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15514F01A2000030487 /* ChecklistItem.m */; };
+		5FA5E15C14F01A2000030487 /* PollingPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15B14F01A2000030487 /* PollingPlace.m */; };
+		5FA5E15F14F048AE00030487 /* WatcherProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15E14F048AE00030487 /* WatcherProfile.m */; };
 		5FC6C0DB14CBF8970078AD8E /* WatcherChecklist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */; };
 		5FC6C0DE14CC1C270078AD8E /* WatcherChecklistSectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DD14CC1C270078AD8E /* WatcherChecklistSectionController.m */; };
 		5FC6C0E114CC206C0078AD8E /* WatcherChecklistScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0E014CC206C0078AD8E /* WatcherChecklistScreenController.m */; };
 		5FC6C0E414CC66DE0078AD8E /* WatcherChecklistScreenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0E314CC66DE0078AD8E /* WatcherChecklistScreenCell.m */; };
 		5FD5977D14EE5AEE00E27620 /* WatcherDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5977C14EE5AEE00E27620 /* WatcherDataManager.m */; };
+		5FD5978714EFEE8E00E27620 /* WatcherManualProfileController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5978514EFEE8C00E27620 /* WatcherManualProfileController.m */; };
+		5FD5978814EFEE8E00E27620 /* WatcherManualProfileController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FD5978614EFEE8D00E27620 /* WatcherManualProfileController.xib */; };
+		5FD5978B14EFF2A000E27620 /* WatcherProfile.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5FD5978A14EFF29F00E27620 /* WatcherProfile.plist */; };
+		5FD5979714EFFAC700E27620 /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5978E14EFFAC700E27620 /* Facebook.m */; };
+		5FD5979814EFFAC700E27620 /* FBDialog.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5FD5979014EFFAC700E27620 /* FBDialog.bundle */; };
+		5FD5979914EFFAC700E27620 /* FBDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5979214EFFAC700E27620 /* FBDialog.m */; };
+		5FD5979A14EFFAC700E27620 /* FBLoginDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5979414EFFAC700E27620 /* FBLoginDialog.m */; };
+		5FD5979B14EFFAC700E27620 /* FBRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5979614EFFAC700E27620 /* FBRequest.m */; };
+		5FD597A914EFFBF300E27620 /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5979E14EFFBF300E27620 /* NSObject+SBJSON.m */; };
+		5FD597AA14EFFBF300E27620 /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD597A014EFFBF300E27620 /* NSString+SBJSON.m */; };
+		5FD597AB14EFFBF300E27620 /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD597A214EFFBF300E27620 /* SBJSON.m */; };
+		5FD597AC14EFFBF300E27620 /* SBJsonBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD597A414EFFBF300E27620 /* SBJsonBase.m */; };
+		5FD597AD14EFFBF300E27620 /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD597A614EFFBF300E27620 /* SBJsonParser.m */; };
+		5FD597AE14EFFBF300E27620 /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD597A814EFFBF300E27620 /* SBJsonWriter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -220,10 +223,6 @@
 		5F2062C514E876D50031BA22 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		5F2062C714E876FC0031BA22 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		5F2062C914E8FB470031BA22 /* transparent.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = transparent.gif; sourceTree = "<group>"; };
-		5F624CAC14EBB323009149AF /* ChecklistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistItem.h; sourceTree = "<group>"; };
-		5F624CAD14EBB323009149AF /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
-		5F624CAF14EBB323009149AF /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
-		5F624CB014EBB323009149AF /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
 		5F65580D14EA5E0300135422 /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
 		5F65580E14EA5E0300135422 /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
 		5F65580F14EA5E0300135422 /* MWPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhoto.h; sourceTree = "<group>"; };
@@ -374,8 +373,6 @@
 		5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WatcherGuideController.xib; sourceTree = "<group>"; };
 		5F7ADDFB14C1B0FD00A8E955 /* WatcherChecklistController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WatcherChecklistController.xib; sourceTree = "<group>"; };
 		5F7DDA2E14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ElectionsWatcherDataModel.xcdatamodel; sourceTree = "<group>"; };
-		5F7DDA3014EBC114005857D3 /* PollingPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingPlace.h; sourceTree = "<group>"; };
-		5F7DDA3114EBC114005857D3 /* PollingPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingPlace.m; sourceTree = "<group>"; };
 		5F7DDA3314EBC42B005857D3 /* WatcherPollingPlaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherPollingPlaceController.h; sourceTree = "<group>"; };
 		5F7DDA3414EBC42B005857D3 /* WatcherPollingPlaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherPollingPlaceController.m; sourceTree = "<group>"; };
 		5F7DDA3514EBC42B005857D3 /* WatcherPollingPlaceController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherPollingPlaceController.xib; sourceTree = "<group>"; };
@@ -411,32 +408,6 @@
 		5F8892DE14E7DFF00067F2DD /* slider_neutral@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_neutral@2x.png"; sourceTree = "<group>"; };
 		5F8892DF14E7DFF00067F2DD /* slider_thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "slider_thumb@2x.png"; sourceTree = "<group>"; };
 		5F91F20D14C1C59300446C86 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		5F91F21214C2EFB200446C86 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
-		5F91F21314C2EFB200446C86 /* NSObject+SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJson.h"; sourceTree = "<group>"; };
-		5F91F21414C2EFB200446C86 /* NSObject+SBJson.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJson.m"; sourceTree = "<group>"; };
-		5F91F21514C2EFB200446C86 /* SBJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJson.h; sourceTree = "<group>"; };
-		5F91F21614C2EFB200446C86 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
-		5F91F21714C2EFB200446C86 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
-		5F91F21814C2EFB200446C86 /* SBJsonStreamParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParser.h; sourceTree = "<group>"; };
-		5F91F21914C2EFB200446C86 /* SBJsonStreamParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParser.m; sourceTree = "<group>"; };
-		5F91F21A14C2EFB200446C86 /* SBJsonStreamParserAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAccumulator.h; sourceTree = "<group>"; };
-		5F91F21B14C2EFB200446C86 /* SBJsonStreamParserAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAccumulator.m; sourceTree = "<group>"; };
-		5F91F21C14C2EFB200446C86 /* SBJsonStreamParserAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserAdapter.h; sourceTree = "<group>"; };
-		5F91F21D14C2EFB200446C86 /* SBJsonStreamParserAdapter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserAdapter.m; sourceTree = "<group>"; };
-		5F91F21E14C2EFB200446C86 /* SBJsonStreamParserState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamParserState.h; sourceTree = "<group>"; };
-		5F91F21F14C2EFB200446C86 /* SBJsonStreamParserState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamParserState.m; sourceTree = "<group>"; };
-		5F91F22014C2EFB200446C86 /* SBJsonStreamWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriter.h; sourceTree = "<group>"; };
-		5F91F22114C2EFB200446C86 /* SBJsonStreamWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriter.m; sourceTree = "<group>"; };
-		5F91F22214C2EFB200446C86 /* SBJsonStreamWriterAccumulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterAccumulator.h; sourceTree = "<group>"; };
-		5F91F22314C2EFB200446C86 /* SBJsonStreamWriterAccumulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterAccumulator.m; sourceTree = "<group>"; };
-		5F91F22414C2EFB200446C86 /* SBJsonStreamWriterState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonStreamWriterState.h; sourceTree = "<group>"; };
-		5F91F22514C2EFB200446C86 /* SBJsonStreamWriterState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonStreamWriterState.m; sourceTree = "<group>"; };
-		5F91F22614C2EFB200446C86 /* SBJsonTokeniser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonTokeniser.h; sourceTree = "<group>"; };
-		5F91F22714C2EFB200446C86 /* SBJsonTokeniser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonTokeniser.m; sourceTree = "<group>"; };
-		5F91F22814C2EFB200446C86 /* SBJsonUTF8Stream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonUTF8Stream.h; sourceTree = "<group>"; };
-		5F91F22914C2EFB200446C86 /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonUTF8Stream.m; sourceTree = "<group>"; };
-		5F91F22A14C2EFB200446C86 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
-		5F91F22B14C2EFB200446C86 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		5F91F23814C2EFE700446C86 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		5F91F23914C2EFE700446C86 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		5F91F23A14C2EFE700446C86 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -477,6 +448,14 @@
 		5F974D0814CED7B400598945 /* ActionSheetStringPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetStringPicker.m; sourceTree = "<group>"; };
 		5F974D0914CED7B400598945 /* DistancePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistancePickerView.h; sourceTree = "<group>"; };
 		5F974D0A14CED7B400598945 /* DistancePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistancePickerView.m; sourceTree = "<group>"; };
+		5FA5E15114F01A1F00030487 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
+		5FA5E15214F01A1F00030487 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
+		5FA5E15414F01A2000030487 /* ChecklistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistItem.h; sourceTree = "<group>"; };
+		5FA5E15514F01A2000030487 /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
+		5FA5E15A14F01A2000030487 /* PollingPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingPlace.h; sourceTree = "<group>"; };
+		5FA5E15B14F01A2000030487 /* PollingPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingPlace.m; sourceTree = "<group>"; };
+		5FA5E15D14F048AE00030487 /* WatcherProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherProfile.h; sourceTree = "<group>"; };
+		5FA5E15E14F048AE00030487 /* WatcherProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherProfile.m; sourceTree = "<group>"; };
 		5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherChecklist.plist; sourceTree = "<group>"; };
 		5FC6C0DC14CC1C270078AD8E /* WatcherChecklistSectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistSectionController.h; sourceTree = "<group>"; };
 		5FC6C0DD14CC1C270078AD8E /* WatcherChecklistSectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherChecklistSectionController.m; sourceTree = "<group>"; };
@@ -487,6 +466,34 @@
 		5FD5977B14EE5AEE00E27620 /* WatcherDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherDataManager.h; sourceTree = "<group>"; };
 		5FD5977C14EE5AEE00E27620 /* WatcherDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherDataManager.m; sourceTree = "<group>"; };
 		5FD5977E14EF149000E27620 /* WatcherChecklistScreenCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistScreenCellDelegate.h; sourceTree = "<group>"; };
+		5FD5978414EFEE8B00E27620 /* WatcherManualProfileController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherManualProfileController.h; sourceTree = "<group>"; };
+		5FD5978514EFEE8C00E27620 /* WatcherManualProfileController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherManualProfileController.m; sourceTree = "<group>"; };
+		5FD5978614EFEE8D00E27620 /* WatcherManualProfileController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherManualProfileController.xib; sourceTree = "<group>"; };
+		5FD5978914EFEEF800E27620 /* WatcherManualProfileControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherManualProfileControllerDelegate.h; sourceTree = "<group>"; };
+		5FD5978A14EFF29F00E27620 /* WatcherProfile.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherProfile.plist; sourceTree = "<group>"; };
+		5FD5978D14EFFAC700E27620 /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
+		5FD5978E14EFFAC700E27620 /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
+		5FD5978F14EFFAC700E27620 /* FBConnect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBConnect.h; sourceTree = "<group>"; };
+		5FD5979014EFFAC700E27620 /* FBDialog.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBDialog.bundle; sourceTree = "<group>"; };
+		5FD5979114EFFAC700E27620 /* FBDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBDialog.h; sourceTree = "<group>"; };
+		5FD5979214EFFAC700E27620 /* FBDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBDialog.m; sourceTree = "<group>"; };
+		5FD5979314EFFAC700E27620 /* FBLoginDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBLoginDialog.h; sourceTree = "<group>"; };
+		5FD5979414EFFAC700E27620 /* FBLoginDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBLoginDialog.m; sourceTree = "<group>"; };
+		5FD5979514EFFAC700E27620 /* FBRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBRequest.h; sourceTree = "<group>"; };
+		5FD5979614EFFAC700E27620 /* FBRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBRequest.m; sourceTree = "<group>"; };
+		5FD5979C14EFFBF300E27620 /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		5FD5979D14EFFBF300E27620 /* NSObject+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SBJSON.h"; sourceTree = "<group>"; };
+		5FD5979E14EFFBF300E27620 /* NSObject+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SBJSON.m"; sourceTree = "<group>"; };
+		5FD5979F14EFFBF300E27620 /* NSString+SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SBJSON.h"; sourceTree = "<group>"; };
+		5FD597A014EFFBF300E27620 /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
+		5FD597A114EFFBF300E27620 /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
+		5FD597A214EFFBF300E27620 /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
+		5FD597A314EFFBF300E27620 /* SBJsonBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonBase.h; sourceTree = "<group>"; };
+		5FD597A414EFFBF300E27620 /* SBJsonBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonBase.m; sourceTree = "<group>"; };
+		5FD597A514EFFBF300E27620 /* SBJsonParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonParser.h; sourceTree = "<group>"; };
+		5FD597A614EFFBF300E27620 /* SBJsonParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonParser.m; sourceTree = "<group>"; };
+		5FD597A714EFFBF300E27620 /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
+		5FD597A814EFFBF300E27620 /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -715,6 +722,7 @@
 		5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */ = {
 			isa = PBXGroup;
 			children = (
+				5FD5978C14EFFA8500E27620 /* Facebook */,
 				5F7AD6BB14EB8F950099FE53 /* TestFlightSDK0.8.3 */,
 				5F65580C14EA5DC900135422 /* SDWebImage */,
 				5F65580B14EA5D6300135422 /* MWPhotoBrowser */,
@@ -745,6 +753,9 @@
 				5F7ADDE014C1AE4100A8E955 /* WatcherGuideController.m */,
 				5F7ADDF314C1AF9700A8E955 /* WatcherSettingsController.h */,
 				5F7ADDF414C1AF9700A8E955 /* WatcherSettingsController.m */,
+				5FD5978414EFEE8B00E27620 /* WatcherManualProfileController.h */,
+				5FD5978514EFEE8C00E27620 /* WatcherManualProfileController.m */,
+				5FD5978914EFEEF800E27620 /* WatcherManualProfileControllerDelegate.h */,
 				5F7DDA3314EBC42B005857D3 /* WatcherPollingPlaceController.h */,
 				5F7DDA3414EBC42B005857D3 /* WatcherPollingPlaceController.m */,
 				5F1E382A14ED037C004E9EAC /* WatcherPollingPlaceControllerDelegate.h */,
@@ -764,6 +775,7 @@
 				5F7ADDCD14C1AE4100A8E955 /* Supporting Files */,
 				5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */,
 				5F8892B214E68C5F0067F2DD /* WatcherSettings.plist */,
+				5FD5978A14EFF29F00E27620 /* WatcherProfile.plist */,
 				5F7DDA3814EBCDCA005857D3 /* WatcherPollingPlace.plist */,
 				5F8892D214E7CD800067F2DD /* WatcherSOS.plist */,
 			);
@@ -814,6 +826,7 @@
 		5F7ADDF214C1AED000A8E955 /* XIB */ = {
 			isa = PBXGroup;
 			children = (
+				5FD5978614EFEE8D00E27620 /* WatcherManualProfileController.xib */,
 				5F7ADDFB14C1B0FD00A8E955 /* WatcherChecklistController.xib */,
 				5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */,
 				5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */,
@@ -827,13 +840,15 @@
 		5F91F20514C1C3BC00446C86 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5F624CAF14EBB323009149AF /* MediaItem.h */,
-				5F624CB014EBB323009149AF /* MediaItem.m */,
-				5F624CAC14EBB323009149AF /* ChecklistItem.h */,
-				5F624CAD14EBB323009149AF /* ChecklistItem.m */,
-				5F7DDA3014EBC114005857D3 /* PollingPlace.h */,
-				5F7DDA3114EBC114005857D3 /* PollingPlace.m */,
 				5F7DDA2D14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld */,
+				5FA5E15D14F048AE00030487 /* WatcherProfile.h */,
+				5FA5E15E14F048AE00030487 /* WatcherProfile.m */,
+				5FA5E15114F01A1F00030487 /* MediaItem.h */,
+				5FA5E15214F01A1F00030487 /* MediaItem.m */,
+				5FA5E15414F01A2000030487 /* ChecklistItem.h */,
+				5FA5E15514F01A2000030487 /* ChecklistItem.m */,
+				5FA5E15A14F01A2000030487 /* PollingPlace.h */,
+				5FA5E15B14F01A2000030487 /* PollingPlace.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -841,32 +856,19 @@
 		5F91F20F14C2EF0100446C86 /* SBJson */ = {
 			isa = PBXGroup;
 			children = (
-				5F91F21214C2EFB200446C86 /* JSON.h */,
-				5F91F21314C2EFB200446C86 /* NSObject+SBJson.h */,
-				5F91F21414C2EFB200446C86 /* NSObject+SBJson.m */,
-				5F91F21514C2EFB200446C86 /* SBJson.h */,
-				5F91F21614C2EFB200446C86 /* SBJsonParser.h */,
-				5F91F21714C2EFB200446C86 /* SBJsonParser.m */,
-				5F91F21814C2EFB200446C86 /* SBJsonStreamParser.h */,
-				5F91F21914C2EFB200446C86 /* SBJsonStreamParser.m */,
-				5F91F21A14C2EFB200446C86 /* SBJsonStreamParserAccumulator.h */,
-				5F91F21B14C2EFB200446C86 /* SBJsonStreamParserAccumulator.m */,
-				5F91F21C14C2EFB200446C86 /* SBJsonStreamParserAdapter.h */,
-				5F91F21D14C2EFB200446C86 /* SBJsonStreamParserAdapter.m */,
-				5F91F21E14C2EFB200446C86 /* SBJsonStreamParserState.h */,
-				5F91F21F14C2EFB200446C86 /* SBJsonStreamParserState.m */,
-				5F91F22014C2EFB200446C86 /* SBJsonStreamWriter.h */,
-				5F91F22114C2EFB200446C86 /* SBJsonStreamWriter.m */,
-				5F91F22214C2EFB200446C86 /* SBJsonStreamWriterAccumulator.h */,
-				5F91F22314C2EFB200446C86 /* SBJsonStreamWriterAccumulator.m */,
-				5F91F22414C2EFB200446C86 /* SBJsonStreamWriterState.h */,
-				5F91F22514C2EFB200446C86 /* SBJsonStreamWriterState.m */,
-				5F91F22614C2EFB200446C86 /* SBJsonTokeniser.h */,
-				5F91F22714C2EFB200446C86 /* SBJsonTokeniser.m */,
-				5F91F22814C2EFB200446C86 /* SBJsonUTF8Stream.h */,
-				5F91F22914C2EFB200446C86 /* SBJsonUTF8Stream.m */,
-				5F91F22A14C2EFB200446C86 /* SBJsonWriter.h */,
-				5F91F22B14C2EFB200446C86 /* SBJsonWriter.m */,
+				5FD5979C14EFFBF300E27620 /* JSON.h */,
+				5FD5979D14EFFBF300E27620 /* NSObject+SBJSON.h */,
+				5FD5979E14EFFBF300E27620 /* NSObject+SBJSON.m */,
+				5FD5979F14EFFBF300E27620 /* NSString+SBJSON.h */,
+				5FD597A014EFFBF300E27620 /* NSString+SBJSON.m */,
+				5FD597A114EFFBF300E27620 /* SBJSON.h */,
+				5FD597A214EFFBF300E27620 /* SBJSON.m */,
+				5FD597A314EFFBF300E27620 /* SBJsonBase.h */,
+				5FD597A414EFFBF300E27620 /* SBJsonBase.m */,
+				5FD597A514EFFBF300E27620 /* SBJsonParser.h */,
+				5FD597A614EFFBF300E27620 /* SBJsonParser.m */,
+				5FD597A714EFFBF300E27620 /* SBJsonWriter.h */,
+				5FD597A814EFFBF300E27620 /* SBJsonWriter.m */,
 			);
 			path = SBJson;
 			sourceTree = "<group>";
@@ -931,6 +933,23 @@
 				5F974D0A14CED7B400598945 /* DistancePickerView.m */,
 			);
 			path = Pickers;
+			sourceTree = "<group>";
+		};
+		5FD5978C14EFFA8500E27620 /* Facebook */ = {
+			isa = PBXGroup;
+			children = (
+				5FD5978D14EFFAC700E27620 /* Facebook.h */,
+				5FD5978E14EFFAC700E27620 /* Facebook.m */,
+				5FD5978F14EFFAC700E27620 /* FBConnect.h */,
+				5FD5979014EFFAC700E27620 /* FBDialog.bundle */,
+				5FD5979114EFFAC700E27620 /* FBDialog.h */,
+				5FD5979214EFFAC700E27620 /* FBDialog.m */,
+				5FD5979314EFFAC700E27620 /* FBLoginDialog.h */,
+				5FD5979414EFFAC700E27620 /* FBLoginDialog.m */,
+				5FD5979514EFFAC700E27620 /* FBRequest.h */,
+				5FD5979614EFFAC700E27620 /* FBRequest.m */,
+			);
+			path = Facebook;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1108,6 +1127,9 @@
 				5F7AD6C214EB8F950099FE53 /* release_notes.txt in Resources */,
 				5F7DDA3714EBC42B005857D3 /* WatcherPollingPlaceController.xib in Resources */,
 				5F7DDA3914EBCDCA005857D3 /* WatcherPollingPlace.plist in Resources */,
+				5FD5978814EFEE8E00E27620 /* WatcherManualProfileController.xib in Resources */,
+				5FD5978B14EFF2A000E27620 /* WatcherProfile.plist in Resources */,
+				5FD5979814EFFAC700E27620 /* FBDialog.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1123,18 +1145,6 @@
 				5F7ADDDA14C1AE4100A8E955 /* WatcherChecklistController.m in Sources */,
 				5F7ADDE114C1AE4100A8E955 /* WatcherGuideController.m in Sources */,
 				5F7ADDF614C1AF9700A8E955 /* WatcherSettingsController.m in Sources */,
-				5F91F22C14C2EFB200446C86 /* NSObject+SBJson.m in Sources */,
-				5F91F22D14C2EFB200446C86 /* SBJsonParser.m in Sources */,
-				5F91F22E14C2EFB200446C86 /* SBJsonStreamParser.m in Sources */,
-				5F91F22F14C2EFB200446C86 /* SBJsonStreamParserAccumulator.m in Sources */,
-				5F91F23014C2EFB200446C86 /* SBJsonStreamParserAdapter.m in Sources */,
-				5F91F23114C2EFB200446C86 /* SBJsonStreamParserState.m in Sources */,
-				5F91F23214C2EFB200446C86 /* SBJsonStreamWriter.m in Sources */,
-				5F91F23314C2EFB200446C86 /* SBJsonStreamWriterAccumulator.m in Sources */,
-				5F91F23414C2EFB200446C86 /* SBJsonStreamWriterState.m in Sources */,
-				5F91F23514C2EFB200446C86 /* SBJsonTokeniser.m in Sources */,
-				5F91F23614C2EFB200446C86 /* SBJsonUTF8Stream.m in Sources */,
-				5F91F23714C2EFB200446C86 /* SBJsonWriter.m in Sources */,
 				5F91F24C14C2EFE700446C86 /* ASIAuthenticationDialog.m in Sources */,
 				5F91F24D14C2EFE700446C86 /* ASIDataCompressor.m in Sources */,
 				5F91F24E14C2EFE700446C86 /* ASIDataDecompressor.m in Sources */,
@@ -1173,12 +1183,24 @@
 				5F65584314EA667200135422 /* MWMoviePreview.m in Sources */,
 				5F12BAC114EA9C1900000471 /* MWMovieBrowser.m in Sources */,
 				5F12BAC414EAFFFF00000471 /* WatcherReportGraph.m in Sources */,
-				5F624CAE14EBB323009149AF /* ChecklistItem.m in Sources */,
-				5F624CB114EBB323009149AF /* MediaItem.m in Sources */,
 				5F7DDA2F14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld in Sources */,
-				5F7DDA3214EBC114005857D3 /* PollingPlace.m in Sources */,
 				5F7DDA3614EBC42B005857D3 /* WatcherPollingPlaceController.m in Sources */,
 				5FD5977D14EE5AEE00E27620 /* WatcherDataManager.m in Sources */,
+				5FD5978714EFEE8E00E27620 /* WatcherManualProfileController.m in Sources */,
+				5FD5979714EFFAC700E27620 /* Facebook.m in Sources */,
+				5FD5979914EFFAC700E27620 /* FBDialog.m in Sources */,
+				5FD5979A14EFFAC700E27620 /* FBLoginDialog.m in Sources */,
+				5FD5979B14EFFAC700E27620 /* FBRequest.m in Sources */,
+				5FD597A914EFFBF300E27620 /* NSObject+SBJSON.m in Sources */,
+				5FD597AA14EFFBF300E27620 /* NSString+SBJSON.m in Sources */,
+				5FD597AB14EFFBF300E27620 /* SBJSON.m in Sources */,
+				5FD597AC14EFFBF300E27620 /* SBJsonBase.m in Sources */,
+				5FD597AD14EFFBF300E27620 /* SBJsonParser.m in Sources */,
+				5FD597AE14EFFBF300E27620 /* SBJsonWriter.m in Sources */,
+				5FA5E15314F01A1F00030487 /* MediaItem.m in Sources */,
+				5FA5E15614F01A2000030487 /* ChecklistItem.m in Sources */,
+				5FA5E15C14F01A2000030487 /* PollingPlace.m in Sources */,
+				5FA5E15F14F048AE00030487 /* WatcherProfile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
