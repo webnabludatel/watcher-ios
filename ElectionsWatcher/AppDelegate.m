@@ -16,7 +16,6 @@
 #import "WatcherSOSController.h"
 #import "WatcherDataManager.h"
 #import "PollingPlace.h"
-#import "TestFlight.h"
 
 @implementation AppDelegate
 

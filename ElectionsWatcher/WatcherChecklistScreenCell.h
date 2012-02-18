@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "MWPhotoBrowser.h"
 #import "WatcherSaveAttributeDelegate.h"
+#import "WatcherChecklistScreenCellDelegate.h"
+#import "MBProgressHUD.h"
 
 #define INPUT_TEXT          0
 #define INPUT_NUMBER        1
@@ -21,8 +23,9 @@
 #define INPUT_EMAIL         8
 
 @class ChecklistItem;
+@class MBProgressHUD;
 
-@interface WatcherChecklistScreenCell : UITableViewCell <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, MWPhotoBrowserDelegate>
+@interface WatcherChecklistScreenCell : UITableViewCell <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, MWPhotoBrowserDelegate, MBProgressHUDDelegate>
 
 @property (nonatomic, assign) NSDictionary *itemInfo;
 @property (nonatomic, assign) UIView *control;
@@ -32,6 +35,8 @@
 @property (nonatomic) NSInteger screenIndex;
 @property (nonatomic, retain) NSMutableArray *mwBrowserItems;
 @property (nonatomic, assign) id<WatcherSaveAttributeDelegate> saveDelegate;
+@property (nonatomic, assign) id<WatcherChecklistScreenCellDelegate> checklistCellDelegate;
+@property (nonatomic, retain) MBProgressHUD *HUD;
 
 
 - (id) initWithStyle: (UITableViewCellStyle) style reuseIdentifier: (NSString *) reuseIdentifier withItemInfo: (NSDictionary *) anItemInfo;

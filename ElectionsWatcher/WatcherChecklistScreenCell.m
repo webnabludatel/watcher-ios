@@ -28,6 +28,8 @@
 @synthesize screenIndex;
 @synthesize mwBrowserItems;
 @synthesize saveDelegate;
+@synthesize checklistCellDelegate;
+@synthesize HUD;
 
 #pragma mark -
 #pragma mark Cell implementation
@@ -156,16 +158,28 @@
                 textView.backgroundColor = [UIColor clearColor];
                 textView.delegate = self;
                 
-                UIView *saveTextToolbar = [[UIView alloc] initWithFrame: CGRectMake(0, 0, self.frame.size.width, 50)];
-                UIButton *saveTextButton = [UIButton buttonWithType: UIButtonTypeRoundedRect];
-                [saveTextButton setFrame: CGRectInset(saveTextToolbar.bounds, 10, 10)];
-                [saveTextButton setTitle: @"Сохранить" forState: UIControlStateNormal];
-                [saveTextButton addTarget: textView action: @selector(resignFirstResponder) forControlEvents: UIControlEventTouchUpInside];
+                UIToolbar *saveTextToolbar = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, self.frame.size.width, 50)];
                 
-                [saveTextToolbar addSubview: saveTextButton];
-                [saveTextToolbar setBackgroundColor: [UIColor groupTableViewBackgroundColor]];
+                UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel 
+                                                                                            target: self 
+                                                                                            action: @selector(cancelTextView)];
+                
+                UIBarButtonItem *updateItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone 
+                                                                                            target: self 
+                                                                                            action: @selector(saveTextView)];
+                
+                UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace 
+                                                                                        target: nil
+                                                                                        action: nil];
+                
+                [saveTextToolbar setTintColor: [UIColor blackColor]];
+                [saveTextToolbar setItems: [NSArray arrayWithObjects: cancelItem, spacer, updateItem, nil]];
                 
                 textView.inputAccessoryView = saveTextToolbar;
+                
+                [spacer release];
+                [cancelItem release];
+                [updateItem release];
                 [saveTextToolbar release];
             }
                 break;
@@ -405,7 +419,20 @@
         [parentController presentModalViewController: imagePicker animated: YES];
     }
     
-    if ( ( buttonIndex == 1 ) && ( buttonIndex != actionSheet.cancelButtonIndex ) ) {
+    if ( buttonIndex == 1 ) {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePicker.allowsEditing = NO;
+        imagePicker.delegate = self;
+        imagePicker.mediaTypes = [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_PHOTO ?
+            [NSArray arrayWithObjects: (NSString *) kUTTypeImage, nil] :
+            [NSArray arrayWithObjects: (NSString *) kUTTypeMovie, nil] ;
+        
+        UIViewController *parentController = [self firstAvailableUIViewController];
+        [parentController presentModalViewController: imagePicker animated: YES];
+    }
+    
+    if ( ( buttonIndex == 2 ) && ( buttonIndex != actionSheet.cancelButtonIndex ) ) {
         int controlType = [[self.itemInfo objectForKey: @"control"] intValue];
         
         NSArray *mediaItems = 
@@ -435,6 +462,7 @@
             browser.displayActionButton = YES;
             browser.title = [self.itemInfo objectForKey: @"hint"];
             browser.displayActionButton = NO;
+            browser.displayRemoveButton = YES;
 
             UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: browser];
             nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -444,7 +472,6 @@
             [browser release];
         }
     }
-    
 }
 
 #pragma mark -
@@ -460,10 +487,52 @@
     return nil;
 }
 
+- (void) photoBrowser: (MWPhotoBrowser *) photoBrowser pressedRemoveButtonAtIndex: (NSUInteger) index {
+    int controlType = [[self.itemInfo objectForKey: @"control"] intValue];
+    
+    NSArray *mediaItems = 
+        controlType == INPUT_PHOTO ?
+            [self mediaItemsOfType: (NSString *) kUTTypeImage] : 
+        controlType == INPUT_VIDEO ?
+            [self mediaItemsOfType: (NSString *) kUTTypeMovie] : nil;
+
+    NSError *error = nil;
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext deleteObject: [mediaItems objectAtIndex: index]];
+    [appDelegate.managedObjectContext save: &error];
+    
+    NSArray *mediaItemsAfterRemoval = 
+        controlType == INPUT_PHOTO ?
+            [self mediaItemsOfType: (NSString *) kUTTypeImage] : 
+        controlType == INPUT_VIDEO ?
+            [self mediaItemsOfType: (NSString *) kUTTypeMovie] : nil;
+    
+    if ( error ) 
+        NSLog(@"error removing media item: %@", error);
+
+    [self.mwBrowserItems removeAllObjects];
+    
+    if ( mediaItemsAfterRemoval.count ) {
+        for ( MediaItem *mediaItem in mediaItemsAfterRemoval ) {
+            if ( controlType == INPUT_PHOTO )
+                [self.mwBrowserItems addObject: [MWPhoto photoWithFilePath: mediaItem.filePath]];
+            
+            if ( controlType == INPUT_VIDEO ) 
+                [self.mwBrowserItems addObject: [MWMoviePreview movieWithFilePath: mediaItem.filePath]];
+        }
+    }
+    
+    photoBrowser.title = [self.itemInfo objectForKey: @"hint"];
+    
+    [self loadItem];
+}
+
 #pragma mark -
 #pragma mark Using iPhone camera
 
 - (void) takePhoto: (id) sender {
+    [[self.checklistCellDelegate latestActiveResponder] resignFirstResponder];
     // TODO: check camera availability and media types
     
     NSArray *mediaItems = [self mediaItemsOfType: (NSString *) kUTTypeImage];
@@ -475,14 +544,14 @@
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
-                                              otherButtonTitles: @"Снять фото", @"Посмотреть фото", nil];
+                                              otherButtonTitles: @"Снять фото", @"Выбрать в альбомах", @"Посмотреть фото", nil];
         
     } else {
         photoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"hint"]
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
-                                              otherButtonTitles: @"Снять фото", nil];
+                                              otherButtonTitles: @"Снять фото", @"Выбрать в альбомах", nil];
     }
     
     
@@ -496,6 +565,7 @@
 }
 
 - (void) takeVideo: (id) sender {
+    [[self.checklistCellDelegate latestActiveResponder] resignFirstResponder];
     // TODO: check camera availability and media types
     
     NSArray *mediaItems = [self mediaItemsOfType: (NSString *) kUTTypeMovie];
@@ -507,14 +577,14 @@
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
-                                              otherButtonTitles: @"Снять видео", @"Посмотреть видео", nil];
+                                              otherButtonTitles: @"Снять видео", @"Выбрать в альбомах", @"Посмотреть видео", nil];
         
     } else {
         videoActionSheet = [[UIActionSheet alloc] initWithTitle: [self.itemInfo objectForKey: @"hint"]
                                                        delegate: self 
                                               cancelButtonTitle: @"Отменить" 
                                          destructiveButtonTitle: nil 
-                                              otherButtonTitles: @"Снять видео", nil];
+                                              otherButtonTitles: @"Снять видео", @"Выбрать в альбомах", nil];
     }
     
     UIViewController *parentViewController = [self firstAvailableUIViewController];
@@ -522,15 +592,15 @@
     [videoActionSheet release];
 }
 
-- (void) imagePickerController: (UIImagePickerController *) picker didFinishPickingMediaWithInfo: (NSDictionary *) info {
-    // save checklist item before adding media, otherwise it doesn't work -- WTF???
-    // [self saveItem];
+- (void) processImagePickerData: (NSDictionary *) data {
+    BOOL saveMediaToLibrary = [[data objectForKey: @"saveMediaToLibrary"] boolValue];
+    NSDictionary *info = [data objectForKey: @"info"];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSFileManager *fm = [NSFileManager defaultManager];
     MediaItem *mediaItem = [NSEntityDescription insertNewObjectForEntityForName: @"MediaItem" 
                                                          inManagedObjectContext: [appDelegate managedObjectContext]];
-
+    
     NSString *docsDirectory = [NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
     NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     
@@ -542,7 +612,8 @@
         NSString *imageFilename = [NSString stringWithFormat: @"%qx.png", fabs(currentTimestamp) * 1000]; 
         NSString *imageFilepath = [photosDirectory stringByAppendingPathComponent: imageFilename];
         
-        UIImageWriteToSavedPhotosAlbum (originalImage, nil, nil , nil);
+        if ( saveMediaToLibrary )
+            UIImageWriteToSavedPhotosAlbum (originalImage, nil, nil , nil);
         
         if ( ! [fm fileExistsAtPath: photosDirectory] )
             [fm createDirectoryAtPath: photosDirectory withIntermediateDirectories: YES 
@@ -568,9 +639,8 @@
                            attributes: nil 
                                 error: nil];
         
-        if ( UIVideoAtPathIsCompatibleWithSavedPhotosAlbum ( moviePath ) ) {
+        if ( UIVideoAtPathIsCompatibleWithSavedPhotosAlbum ( moviePath ) && saveMediaToLibrary )
             UISaveVideoAtPathToSavedPhotosAlbum ( moviePath, nil, nil, nil );
-        }
         
         [fm copyItemAtPath: moviePath toPath: videoFilepath error: nil];
         
@@ -583,11 +653,31 @@
     [self.checklistItem addMediaItemsObject: mediaItem];
     [self saveItem];
     
+    [self setNeedsLayout];
+}
+
+- (void) imagePickerController: (UIImagePickerController *) picker didFinishPickingMediaWithInfo: (NSDictionary *) info {
+    BOOL saveMediaToLibrary = ( picker.sourceType == UIImagePickerControllerSourceTypeCamera );
     UIViewController *parentController = [self firstAvailableUIViewController];
     [parentController dismissModalViewControllerAnimated: YES];
     [picker release];
     
-    [self setNeedsLayout];
+    HUD = [[MBProgressHUD alloc] initWithView: [UIApplication sharedApplication].keyWindow];
+	[[UIApplication sharedApplication].keyWindow addSubview: HUD];
+    
+    HUD.delegate = self;
+    HUD.labelText = @"Сохранение";
+    
+    NSDictionary *data = [NSDictionary dictionaryWithObjectsAndKeys: 
+                          info, @"info", 
+                          [NSNumber numberWithBool: saveMediaToLibrary], @"saveMediaToLibrary", 
+                          nil];
+    
+    [HUD showWhileExecuting: @selector(processImagePickerData:) onTarget: self withObject: data animated: YES];
+}
+
+- (void) hudWasHidden {
+    [HUD release];
 }
 
 - (void) imagePickerControllerDidCancel: (UIImagePickerController *) picker {
@@ -660,7 +750,9 @@
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
     [textField resignFirstResponder];
-    [self saveItem];
+    
+    if ( textField.text.length )
+        [self saveItem];
 }
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField {
@@ -669,6 +761,8 @@
 }
 
 - (BOOL) textFieldShouldBeginEditing:(UITextField *)textField {
+    [[self.checklistCellDelegate latestActiveResponder] resignFirstResponder];
+    [self.checklistCellDelegate setLatestActiveResponder: textField];
     if ( [self.itemInfo objectForKey: @"possible_values"] == nil ) {
         return YES;
     } else {
@@ -681,16 +775,33 @@
 #pragma mark UITextView events
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    [[self.checklistCellDelegate latestActiveResponder] resignFirstResponder];
+    [self.checklistCellDelegate setLatestActiveResponder: textView];
     return YES;
 }
 
+/*
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView {
     return YES;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
     [textView resignFirstResponder];
-    [self saveItem];
+    if ( textView.text.length )
+        [self saveItem];
+}*/
+
+-(void) cancelTextView {
+    UITextView *textView = (UITextView *) self.control;
+    [textView resignFirstResponder];
+    [self loadItem];
+}
+
+-(void) saveTextView {
+    UITextView *textView = (UITextView *) self.control;
+    if ( textView.text.length )
+        [self saveItem];
+    [textView resignFirstResponder];
 }
 
 #pragma mark -
@@ -723,7 +834,8 @@
                             forState: UIControlStateNormal];
     }
     
-    [self saveItem];
+    if ( slider.value != 0 )
+        [self saveItem];
 }
 
 @end

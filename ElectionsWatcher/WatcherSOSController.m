@@ -55,13 +55,19 @@ static NSString *sosReportSections[] = { @"sos_report" };
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear: animated];
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear: animated];
+    
     [self.tableView reloadData];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = appDelegate.currentPollingPlace ?
-        [NSString stringWithFormat: @"S.O.S.: %@ № %@", 
-         appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
-        @"S.O.S";
+    [NSString stringWithFormat: @"S.O.S.: %@ № %@", 
+     appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
+    @"S.O.S";
+    
 }
 
 - (void)viewDidUnload

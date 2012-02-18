@@ -60,19 +60,19 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.tableView reloadData];
-    
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    self.navigationItem.title = appDelegate.currentPollingPlace ?
-        [NSString stringWithFormat: @"Наблюдение на %@ № %@", 
-         appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] : 
-        @"Наблюдение";
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self.tableView reloadData];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    self.navigationItem.title = appDelegate.currentPollingPlace ?
+    [NSString stringWithFormat: @"Наблюдение на %@ № %@", 
+     appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] : 
+    @"Наблюдение";
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -163,7 +163,7 @@
             
         } else {
             cell.textLabel.text = @"Добавить участок...";
-            cell.textLabel.textAlignment = UITextAlignmentCenter;
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
         }
         
         return cell;

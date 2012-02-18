@@ -63,14 +63,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.title = [sectionData objectForKey: @"title"];
-    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.title = [sectionData objectForKey: @"title"];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

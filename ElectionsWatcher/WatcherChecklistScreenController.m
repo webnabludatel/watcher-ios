@@ -17,6 +17,7 @@
 @synthesize sectionIndex;
 @synthesize screenInfo;
 @synthesize isCancelling;
+@synthesize latestActiveResponder;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -66,15 +67,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.title = [self.screenInfo objectForKey: @"title"];
-    
-    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    self.title = [self.screenInfo objectForKey: @"title"];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -147,6 +147,7 @@
         
         WatcherChecklistScreenCell *watcherCell = (WatcherChecklistScreenCell *) cell;
         watcherCell.saveDelegate = self;
+        watcherCell.checklistCellDelegate = self;
         watcherCell.sectionIndex = self.sectionIndex;
         watcherCell.screenIndex = self.screenIndex;
     }

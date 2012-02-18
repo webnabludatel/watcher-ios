@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "WatcherSaveAttributeDelegate.h"
+#import "WatcherChecklistScreenCellDelegate.h"
 
-@interface WatcherChecklistScreenController : UITableViewController <WatcherSaveAttributeDelegate>
+@interface WatcherChecklistScreenController : UITableViewController <WatcherSaveAttributeDelegate, WatcherChecklistScreenCellDelegate>
 
 @property (nonatomic, retain) NSDictionary *screenInfo;
 @property (nonatomic) NSInteger screenIndex;
 @property (nonatomic) NSInteger sectionIndex;
 @property (nonatomic) BOOL isCancelling;
+@property (nonatomic, assign) UIResponder *latestActiveResponder;
 
 @end

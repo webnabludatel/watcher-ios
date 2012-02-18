@@ -73,18 +73,19 @@
     
     self.goodItems = [checklistItems filteredArrayUsingPredicate: goodPredicate];
     self.badItems = [checklistItems filteredArrayUsingPredicate: badPredicate];
-    
-    [self.tableView reloadData];
-    
-    self.navigationItem.title = appDelegate.currentPollingPlace ?
-        [NSString stringWithFormat: @"Отчет по %@ № %@", 
-         appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
-        @"Отчет";
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self.tableView reloadData];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    self.navigationItem.title = appDelegate.currentPollingPlace ?
+    [NSString stringWithFormat: @"Отчет по %@ № %@", 
+     appDelegate.currentPollingPlace.type, appDelegate.currentPollingPlace.number] :
+    @"Отчет";
 }
 
 - (void)viewWillDisappear:(BOOL)animated

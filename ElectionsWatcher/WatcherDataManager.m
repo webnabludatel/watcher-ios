@@ -25,7 +25,7 @@
 
 - (void) runDataManager {
     @autoreleasepool {
-        NSTimer *timer = [NSTimer timerWithTimeInterval: 10.0 target: self 
+        NSTimer *timer = [NSTimer timerWithTimeInterval: 60.0 target: self 
                                                selector: @selector(checkForUnsentData) 
                                                userInfo: nil 
                                                 repeats: YES];
@@ -39,7 +39,7 @@
     if ( [[NSThread currentThread] isCancelled] )
         [NSThread exit];
     
-    NSLog(@"start checking for non-synchronized items");
+//    NSLog(@"start checking for non-synchronized items");
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
     NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentChecklistItems" 
@@ -88,15 +88,15 @@
 }
 
 - (void) sendChecklistItem: (ChecklistItem *) checklistItem {
-    NSLog(@"sending checklist item [%@]", checklistItem.name);
+//    NSLog(@"sending checklist item [%@]", checklistItem.name);
 }
 
 - (void) sendMediaItem: (MediaItem *) mediaItem {
-    NSLog(@"sending checklist item [%@] media: %@", mediaItem.checklistItem.name, mediaItem.filePath);
+//    NSLog(@"sending checklist item [%@] media: %@", mediaItem.checklistItem.name, mediaItem.filePath);
 }
 
 - (void) uploadMediaItem: (MediaItem *) mediaItem {
-    NSLog(@"uploadn checklist item [%@] media: %@", mediaItem.checklistItem.name, mediaItem.filePath);
+//    NSLog(@"uploadn checklist item [%@] media: %@", mediaItem.checklistItem.name, mediaItem.filePath);
 }
 
 - (void) startProcessing {
