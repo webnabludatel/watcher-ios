@@ -68,13 +68,24 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    CGFloat height = self.navigationController.navigationBar.frame.size.height-10;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 160, height)];
+    label.font = [UIFont boldSystemFontOfSize: 12];
+    label.text = [screenInfo objectForKey: @"title"];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.numberOfLines = 2;
+    label.textAlignment = UITextAlignmentCenter;
+    
+    self.navigationItem.titleView = label;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    self.title = [self.screenInfo objectForKey: @"title"];
+//    self.title = [self.screenInfo objectForKey: @"title"];
     [self.tableView reloadData];
 }
 
@@ -100,9 +111,11 @@
     return 1;
 }
 
+/*
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return [self.screenInfo objectForKey: @"title"];
 }
+ */
 
 - (NSInteger) tableView: (UITableView *) tableView numberOfRowsInSection: (NSInteger) section
 {
@@ -123,7 +136,10 @@
     else
         labelSize = CGSizeZero;
     
-    return controlType == INPUT_COMMENT ? labelSize.height + 140 : labelSize.height + 70;
+    return controlType == INPUT_COMMENT ? 
+            labelSize.height + 140 : 
+        itemTitle.length ? 
+            labelSize.height + 70 : 60;
 }
 
 /*

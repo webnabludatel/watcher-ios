@@ -138,14 +138,22 @@
     NSArray *bundleContents = [fm contentsOfDirectoryAtPath: [[NSBundle mainBundle] bundlePath]  error: nil];
     NSPredicate *guidePredicate = [NSPredicate predicateWithFormat: @"SELF LIKE 'golos*.html'"];
     NSArray *guideContents = [bundleContents filteredArrayUsingPredicate: guidePredicate];
+    NSString *trimmedSearchString = [searchString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
     for ( NSString *filename in guideContents) {
         NSString *filepath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: filename];
         NSString *contents = [NSString stringWithContentsOfFile: filepath encoding: NSUTF8StringEncoding error: nil];
-        if ( [contents rangeOfString: searchString].location != NSNotFound ) {
-            NSString *htmlTitle = [contents stringByMatching: @"<h1>(.+?)</h1>" capture:1];
-            NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys: filepath, @"path", htmlTitle, @"title", nil];
-            [self.searchResults addObject: result];
+        if ( [contents rangeOfString: trimmedSearchString options: NSCaseInsensitiveSearch].location != NSNotFound ) {
+            NSString *htmlTitle = [contents stringByMatching: @"<h1>(.+?)</h1>" 
+                                                     options: RKLCaseless 
+                                                     inRange: NSMakeRange(0, contents.length) 
+                                                     capture: 1 
+                                                       error: nil];
+            if ( htmlTitle.length ) {
+                NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                        filepath, @"path", htmlTitle, @"title", nil];
+                [self.searchResults addObject: result];
+            }
         }
     }
 }

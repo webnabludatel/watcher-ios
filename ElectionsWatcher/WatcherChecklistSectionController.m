@@ -52,6 +52,10 @@
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Вернуться" 
+                                                                              style: UIBarButtonItemStylePlain 
+                                                                             target: nil 
+                                                                             action: nil] autorelease];
 }
 
 - (void)viewDidUnload
@@ -64,13 +68,27 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    CGFloat height = self.navigationController.navigationBar.frame.size.height-10;
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 160, height)];
+    label.font = [UIFont boldSystemFontOfSize: 12];
+    label.text = [sectionData objectForKey: @"title"];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.numberOfLines = 2;
+    label.textAlignment = UITextAlignmentCenter;
+    
+    self.navigationItem.titleView = label;
+    
+    [label release];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    self.title = [sectionData objectForKey: @"title"];
+//    self.title = [sectionData objectForKey: @"title"];
     [self.tableView reloadData];
 }
 

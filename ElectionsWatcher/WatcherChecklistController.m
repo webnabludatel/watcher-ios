@@ -49,6 +49,12 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Вернуться" 
+                                                                              style: UIBarButtonItemStylePlain 
+                                                                             target: nil 
+                                                                             action: nil] autorelease];
+
 }
 
 - (void)viewDidUnload

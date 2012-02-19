@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 #import <CoreLocation/CoreLocation.h>
+#import <Accounts/Accounts.h>
+#import <Twitter/Twitter.h>
 #import "Facebook.h"
 
 @class PollingPlace, WatcherDataManager, WatcherProfile;
@@ -28,5 +30,7 @@
 @property (nonatomic, readonly) WatcherProfile *watcherProfile;
 
 - (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params;
+- (void) setupTwitterAccountForUsername: (NSString *) username withCompletionHandler: (void (^)(void)) completionHandler;
+- (void) updateSynchronizationStatus;
 
 @end

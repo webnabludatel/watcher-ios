@@ -17,6 +17,7 @@
 #import "WatcherDataManager.h"
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
+#import "NSString+SBJSON.h"
 
 @implementation AppDelegate
 
@@ -173,6 +174,42 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+}
+
+#pragma mark -
+#pragma mark Synchronization status
+
+-(void)updateSynchronizationStatus {
+    UIViewController *viewController = self.tabBarController.selectedViewController;
+    
+    if ( [viewController isKindOfClass: [UINavigationController class]] ) {
+        UINavigationController *navController = (UINavigationController *) viewController;
+        
+        if ( self.dataManager.active ) {
+            UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
+            UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: activityIndicator];
+            navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
+            [activityIndicator startAnimating];
+            
+            [activityIndicator release];
+            [barButtonItem release];
+        } else {
+            UIImage *image = nil;
+            
+            if ( self.dataManager.hasErrors )
+                image = [UIImage imageNamed: @"sync_errors_icon"];
+            else
+                image = [UIImage imageNamed: @"sync_ok_icon"];
+            
+            UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage: image 
+                                                                              style: UIBarButtonItemStyleBordered 
+                                                                             target: nil
+                                                                             action: nil];
+            
+            navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
+            [barButtonItem release];
+        }
+    }
 }
 
 #pragma mark -
@@ -334,11 +371,15 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
     _watcherProfile.fbNickname = [result objectForKey: @"username"];
-    /*
-    _watcherProfile.email = [result objectForKey: @"email"];
-    _watcherProfile.firstName = [result objectForKey: @"first_name"];
-    _watcherProfile.lastName = [result objectForKey: @"last_name"];
-     */
+
+    if ( ! _watcherProfile.email.length )
+        _watcherProfile.email = [result objectForKey: @"email"];
+    
+    if ( ! _watcherProfile.firstName.length )
+        _watcherProfile.firstName = [result objectForKey: @"first_name"];
+    
+    if ( ! _watcherProfile.lastName.length )
+        _watcherProfile.lastName = [result objectForKey: @"last_name"];
     
     NSError *error = nil;
     [_managedObjectContext save: &error];
@@ -353,5 +394,52 @@
 -(void)requestLoading:(FBRequest *)request {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 }
+
+#pragma mark - Twitter
+
+- (void) setupTwitterAccountForUsername: (NSString *) username withCompletionHandler: (void (^)(void)) completionHandler {
+    if ( username.length ) {
+        ACAccountStore *store = [[ACAccountStore alloc] init];
+        ACAccountType *twitterAccountType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+        NSArray *twitterAccounts = [store accountsWithAccountType: twitterAccountType];
+        ACAccount *twitterAccount = [[twitterAccounts filteredArrayUsingPredicate: 
+                                      [NSPredicate predicateWithFormat: @"SELF.username LIKE %@", username]] lastObject];
+        
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+        
+        NSURL *url = [NSURL URLWithString: @"https://api.twitter.com/1/account/verify_credentials.json"];
+        TWRequest *twRequest = [[TWRequest alloc] initWithURL: url parameters: nil requestMethod: TWRequestMethodGET];
+        [twRequest setAccount: [[twitterAccount retain] autorelease]];
+        [twRequest performRequestWithHandler: ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+            if ( responseData ) {
+                NSString *jsonString = [[NSString alloc] initWithData: responseData encoding: NSUTF8StringEncoding];
+                NSDictionary *twProfile = [jsonString JSONValue];
+                
+                _watcherProfile.twNickname = [twProfile objectForKey: @"screen_name"];
+                [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                completionHandler();
+                
+                NSError *error = nil;
+                [_managedObjectContext save: &error];
+                if ( error )
+                    NSLog(@"Core Data Error: %@", error.description);
+            } else {
+                NSLog(@"twitter request error: %@", error);
+            }
+        }];
+    } else {
+        _watcherProfile.twNickname = nil;
+        _watcherProfile.twAccessExpires = nil;
+        _watcherProfile.twAccessToken = nil;
+        
+        NSError *error = nil;
+        [_managedObjectContext save: &error];
+        if ( error )
+            NSLog(@"Core Data Error: %@", error.description);
+        
+        completionHandler();
+    }
+}
+
 
 @end

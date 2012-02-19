@@ -9,12 +9,14 @@
 #import "WatcherSettingsController.h"
 #import "WatcherChecklistScreenCell.h"
 #import "WatcherManualProfileController.h"
+#import "WatcherTwitterSetupController.h"
 #import "WatcherProfile.h"
 #import "AppDelegate.h"
 
 @implementation WatcherSettingsController
 
-@synthesize settings;
+@synthesize settings = _settings;
+@synthesize HUD = _HUD;
 
 static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
 
@@ -40,7 +42,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
 
 
 -(void)dealloc {
-    [settings release];
+    [_settings release];
     
     [super dealloc];
 }
@@ -66,6 +68,11 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
     
     [appDelegate.watcherProfile addObserver: self 
                                  forKeyPath: @"fbNickname" 
+                                    options: NSKeyValueObservingOptionNew 
+                                    context: nil];
+    
+    [appDelegate.watcherProfile addObserver: self 
+                                 forKeyPath: @"twNickname" 
                                     options: NSKeyValueObservingOptionNew 
                                     context: nil];
     
@@ -103,7 +110,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ( indexPath.section == 0 ) {
-        return 35;
+        return 42;
     } else {
         NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
         NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
@@ -113,7 +120,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
                                  constrainedToSize: CGSizeMake(280, 120) 
                                      lineBreakMode: UILineBreakModeWordWrap];
         
-        return labelSize.height + 65;
+        return labelSize.height + 70;
     }
 }
 
@@ -124,18 +131,32 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
     if ( indexPath.section == 0 ) {
         cell.textLabel.text = [itemInfo objectForKey: @"title"];
         
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        
         if ( [@"manual" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
-            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-            
             if ( appDelegate.watcherProfile.firstName.length )
                 cell.detailTextLabel.text = [NSString stringWithFormat: @"%@ %@", 
                                              appDelegate.watcherProfile.firstName, appDelegate.watcherProfile.lastName];
+            
+            cell.imageView.image = [UIImage imageNamed: @"manualuser_icon"];
         }
         
         if ( [@"facebook" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
-            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
             if ( appDelegate.watcherProfile.fbNickname.length )
                 cell.detailTextLabel.text = appDelegate.watcherProfile.fbNickname;
+            else
+                cell.detailTextLabel.text = nil;
+            
+            cell.imageView.image = [UIImage imageNamed: @"facebook_icon"];
+        }
+        
+        if ( [@"twitter" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
+            if ( appDelegate.watcherProfile.twNickname.length ) 
+                cell.detailTextLabel.text = appDelegate.watcherProfile.twNickname;
+            else
+                cell.detailTextLabel.text = nil;
+            
+            cell.imageView.image = [UIImage imageNamed: @"twitter_icon"];
         }
     } else {
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -190,6 +211,34 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
                 [appDelegate.facebook authorize: nil];
         }
         
+        if ( [@"twitter" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
+            ACAccountStore *store = [[ACAccountStore alloc] init];
+            ACAccountType *twitterAccountType = [store accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierTwitter];
+
+            _HUD = [[MBProgressHUD alloc] initWithWindow: [UIApplication sharedApplication].keyWindow];
+            _HUD.delegate = self;
+            [[UIApplication sharedApplication].keyWindow addSubview: _HUD];
+            [_HUD show: YES];
+            
+            [store requestAccessToAccountsWithType: twitterAccountType 
+                             withCompletionHandler: ^(BOOL granted, NSError *error) {
+                                 if ( granted ) {
+                                     
+                                     WatcherTwitterSetupController *twitterSetupController = [[WatcherTwitterSetupController alloc] initWithNibName: @"WatcherTwitterSetupController" bundle: nil];
+                                     twitterSetupController.delegate = self;
+                                     
+                                     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: twitterSetupController];
+                                     nc.navigationBar.tintColor = [UIColor blackColor];
+                                     [self presentViewController: nc animated: YES completion: ^(void){ [_HUD hide: YES]; }];
+                                     [twitterSetupController release];
+                                     [nc release];
+                                 } else {
+                                     NSLog(@"user rejected access to twitter accounts");
+                                 }
+                             }];
+            [store release];
+        }
+        
         if ( [@"manual" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
             WatcherManualProfileController *profileController = [[WatcherManualProfileController alloc] initWithNibName: @"WatcherManualProfileController" bundle: nil];
             profileController.profileControllerDelegate = self;
@@ -238,6 +287,25 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
         NSLog(@"error saving profile attribute: %@", error.description);
 }
 
+#pragma mark - Twitter setup delegate
+
+-(void)watcherTwitterSetupController:(WatcherTwitterSetupController *)controller didSelectUsername:(NSString *)username {
+    _HUD = [[MBProgressHUD alloc] initWithWindow: [UIApplication sharedApplication].keyWindow];
+    _HUD.delegate = self;
+    [[UIApplication sharedApplication].keyWindow addSubview: _HUD];
+    [_HUD show: YES];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate setupTwitterAccountForUsername: username withCompletionHandler: ^(void){
+        [self dismissModalViewControllerAnimated: YES];
+        [_HUD hide: YES];
+    }];
+}
+
+-(void)watcherTwitterSetupControllerDidCancel:(WatcherTwitterSetupController *)controller {
+    [self dismissModalViewControllerAnimated: YES];
+}
+
 #pragma mark - Key/value observation 
 
 - (void)observeValueForKeyPath: (NSString *)keyPath
@@ -247,8 +315,14 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    if ( object == appDelegate.watcherProfile && [@"fbNickname" isEqualToString: keyPath] )
+    if ( object == appDelegate.watcherProfile )
         [self.tableView reloadData];
+}
+
+#pragma mark - HUD
+
+-(void)hudWasHidden {
+    [_HUD release]; _HUD = nil;
 }
 
 

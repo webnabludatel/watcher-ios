@@ -25,7 +25,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
     
     if ( self ) {
         self.tabBarItem.image = [UIImage imageNamed:@"sos"];
-        self.tabBarItem.title = @"S.O.S.";
+        self.tabBarItem.title = @"Меня удаляют";
     }
     
     return self;
@@ -66,9 +66,9 @@ static NSString *sosReportSections[] = { @"sos_report" };
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
-        [NSString stringWithFormat: @"S.O.S.: %@ № %@", 
+        [NSString stringWithFormat: @"Меня удаляют: %@ № %@", 
          appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
-        @"S.O.S";
+        @"Меня удаляют";
     
 }
 
@@ -98,19 +98,12 @@ static NSString *sosReportSections[] = { @"sos_report" };
     if ( section == [[self.sosReport allKeys] count] - 1 ) {
         UIView *footerView      = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 60)] autorelease];
         UIButton *saveButton    = [UIButton buttonWithType: UIButtonTypeRoundedRect];
-        UIButton *resetButton   = [UIButton buttonWithType: UIButtonTypeRoundedRect];
         
-        CGRect saveButtonFrame, resetButtonFrame;
-        CGRectDivide(footerView.bounds, &saveButtonFrame, &resetButtonFrame, footerView.bounds.size.width/2, CGRectMinXEdge);
-        
-        saveButton.frame = CGRectInset(saveButtonFrame, 10, 10);
-        resetButton.frame = CGRectInset(resetButtonFrame, 10, 10);
+        saveButton.frame = CGRectInset(footerView.bounds, 10, 10);
         
         [saveButton setTitle: @"Отправить" forState: UIControlStateNormal];
-        [resetButton setTitle: @"Очистить" forState: UIControlStateNormal];
         
         [footerView addSubview: saveButton];
-        [footerView addSubview: resetButton];
         
         return footerView;
     } else {
@@ -138,7 +131,10 @@ static NSString *sosReportSections[] = { @"sos_report" };
                              constrainedToSize: CGSizeMake(280, 120) 
                                  lineBreakMode: UILineBreakModeWordWrap];
     
-    return controlType == INPUT_COMMENT ? labelSize.height + 140 : labelSize.height + 70;
+    return controlType == INPUT_COMMENT ? 
+            labelSize.height + 120 : 
+        itemTitle.length ? 
+            labelSize.height + 70 : 60;
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

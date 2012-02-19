@@ -15,6 +15,8 @@
 
 @synthesize dataManagerThread = _dataManagerThread;
 @synthesize uploadQueue = _uploadQueue;
+@synthesize active = _active;
+@synthesize hasErrors = _hasErrors;
 
 -(void)dealloc {
     [_dataManagerThread release];
@@ -25,7 +27,9 @@
 
 - (void) runDataManager {
     @autoreleasepool {
-        NSTimer *timer = [NSTimer timerWithTimeInterval: 60.0 target: self 
+        _uploadQueue = [[NSOperationQueue alloc] init];
+        
+        NSTimer *timer = [NSTimer timerWithTimeInterval: 10.0 target: self 
                                                selector: @selector(checkForUnsentData) 
                                                userInfo: nil 
                                                 repeats: YES];
@@ -39,17 +43,14 @@
     if ( [[NSThread currentThread] isCancelled] )
         [NSThread exit];
     
-//    NSLog(@"start checking for non-synchronized items");
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     
     NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentChecklistItems" 
                                                   forEntity: @"ChecklistItem" 
                                              withParameters: [NSDictionary dictionary]];
     
     if ( unsentItems.count ) {
-        [_uploadQueue release]; _uploadQueue = nil;
-        _uploadQueue = [[NSOperationQueue alloc] init];
-        
         for ( ChecklistItem *checklistItem in unsentItems ) {
             if ( checklistItem.isInserted || checklistItem.isUpdated ) 
                 continue;
@@ -82,9 +83,9 @@
             
             [checklistItemSendOperation release];
         }
-        
-        [self.uploadQueue waitUntilAllOperationsAreFinished];
     }
+    
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) sendChecklistItem: (ChecklistItem *) checklistItem {
@@ -108,6 +109,15 @@
     [_dataManagerThread cancel];
     [_dataManagerThread release];
     _dataManagerThread = nil;
+}
+
+- (BOOL) active {
+    NSLog(@"current operations in upload queue: %d", _uploadQueue.operationCount);
+    return ( _uploadQueue.operationCount > 0 );
+}
+
+- (BOOL) hasErrors {
+    return NO;
 }
 
 @end

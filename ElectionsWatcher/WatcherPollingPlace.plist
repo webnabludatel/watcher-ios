@@ -10,18 +10,6 @@
 		<array>
 			<dict>
 				<key>name</key>
-				<string>district_number</string>
-				<key>title</key>
-				<string>Номер избирательного участка</string>
-				<key>control</key>
-				<integer>1</integer>
-				<key>hint</key>
-				<string>введите номер</string>
-				<key>required</key>
-				<true/>
-			</dict>
-			<dict>
-				<key>name</key>
 				<string>district_type</string>
 				<key>title</key>
 				<string>Тип участка</string>
@@ -55,6 +43,18 @@
 			</dict>
 			<dict>
 				<key>name</key>
+				<string>district_number</string>
+				<key>title</key>
+				<string>Номер</string>
+				<key>control</key>
+				<integer>1</integer>
+				<key>hint</key>
+				<string></string>
+				<key>required</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>name</key>
 				<string>district_chairman</string>
 				<key>title</key>
 				<string>Председатель</string>
@@ -75,23 +75,13 @@
 			</dict>
 			<dict>
 				<key>name</key>
-				<string>district_watchers_count</string>
-				<key>title</key>
-				<string>Всего наблюдателей</string>
-				<key>control</key>
-				<integer>1</integer>
-				<key>hint</key>
-				<string>введите число</string>
-			</dict>
-			<dict>
-				<key>name</key>
 				<string>district_banner_photo</string>
 				<key>title</key>
-				<string>Вывеска на участке</string>
+				<string></string>
 				<key>control</key>
 				<integer>4</integer>
 				<key>hint</key>
-				<string>Фото</string>
+				<string>Вывеска на участке</string>
 			</dict>
 		</array>
 	</dict>

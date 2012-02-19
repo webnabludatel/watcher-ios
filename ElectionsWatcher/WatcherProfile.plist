@@ -17,8 +17,6 @@
 				<integer>0</integer>
 				<key>hint</key>
 				<string>фамилия</string>
-				<key>required</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>name</key>
@@ -29,8 +27,6 @@
 				<integer>0</integer>
 				<key>hint</key>
 				<string>имя</string>
-				<key>required</key>
-				<true/>
 			</dict>
 			<dict>
 				<key>name</key>
@@ -41,8 +37,16 @@
 				<integer>8</integer>
 				<key>hint</key>
 				<string>e-mail</string>
-				<key>required</key>
-				<true/>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>phone</string>
+				<key>title</key>
+				<string>Телефон</string>
+				<key>control</key>
+				<integer>8</integer>
+				<key>hint</key>
+				<string>введите телефон</string>
 			</dict>
 		</array>
 	</dict>

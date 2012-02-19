@@ -125,14 +125,14 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return ( section == 1 && self.badItems.count ) ? 80 : 0;
+    return ( section == 1 && self.badItems.count ) ? 100 : 0;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if ( section == 1 && self.badItems.count ) {
-        UIView *footerView = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 80)] autorelease];
+        UIView *footerView = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 100)] autorelease];
         
-        CGRect labelFrame = CGRectMake(15, 0, footerView.bounds.size.width-30, 20);
+        CGRect labelFrame = CGRectMake(15, 10, footerView.bounds.size.width-30, 20);
         UILabel *label1 = [[[UILabel alloc] initWithFrame: labelFrame] autorelease];
         UILabel *label2 = [[[UILabel alloc] initWithFrame: CGRectOffset(labelFrame, 0, 20)] autorelease];
         UILabel *label3 = [[[UILabel alloc] initWithFrame: CGRectOffset(labelFrame, 0, 40)] autorelease];
@@ -217,8 +217,7 @@
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *CellIdentifier = ( indexPath.section == 0 && indexPath.row == 0 ) ? @"GraphCell" : @"ReportCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -252,6 +251,8 @@
             [cell.contentView addSubview: badCountLabel];
             [badCountLabel release];
             
+            graphHolder.backgroundColor = [UIColor clearColor];
+            cell.backgroundView = [[[UIImageView alloc] initWithImage: [UIImage imageNamed: @"report_graph_bg"]] autorelease];
         } else {
             cell.textLabel.font = [UIFont boldSystemFontOfSize: 12];
             cell.textLabel.numberOfLines = 3;

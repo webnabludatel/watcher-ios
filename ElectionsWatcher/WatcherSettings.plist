@@ -4,8 +4,6 @@
 <dict>
 	<key>auth_selection</key>
 	<dict>
-		<key>title</key>
-		<string>Регистрация</string>
 		<key>items</key>
 		<array>
 			<dict>

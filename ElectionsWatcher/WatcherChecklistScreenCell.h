@@ -36,7 +36,7 @@
 @property (nonatomic, retain) NSMutableArray *mwBrowserItems;
 @property (nonatomic, assign) id<WatcherSaveAttributeDelegate> saveDelegate;
 @property (nonatomic, assign) id<WatcherChecklistScreenCellDelegate> checklistCellDelegate;
-@property (nonatomic, retain) MBProgressHUD *HUD;
+@property (nonatomic, assign) MBProgressHUD *HUD;
 
 
 - (id) initWithStyle: (UITableViewCellStyle) style reuseIdentifier: (NSString *) reuseIdentifier withItemInfo: (NSDictionary *) anItemInfo;

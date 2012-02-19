@@ -12,6 +12,8 @@
 
 @property (nonatomic, retain) NSThread *dataManagerThread;
 @property (nonatomic, retain) NSOperationQueue *uploadQueue;
+@property (nonatomic) BOOL active;
+@property (nonatomic) BOOL hasErrors;
 
 - (void) startProcessing;
 - (void) stopProcessing;

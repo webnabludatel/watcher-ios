@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "WatcherSaveAttributeDelegate.h"
 #import "WatcherManualProfileControllerDelegate.h"
+#import "WatcherTwitterSetupControllerDelegate.h"
+#import "MBProgressHUD.h"
 
-@class PollingPlace;
+@class PollingPlace, MBProgressHUD;
 
-@interface WatcherSettingsController : UITableViewController <WatcherSaveAttributeDelegate, WatcherManualProfileControllerDelegate>
+@interface WatcherSettingsController : UITableViewController <WatcherSaveAttributeDelegate, WatcherManualProfileControllerDelegate, MBProgressHUDDelegate, WatcherTwitterSetupControllerDelegate>
 
 @property (nonatomic, retain) NSDictionary *settings;
+@property (nonatomic, assign) MBProgressHUD *HUD;
 
 @end
