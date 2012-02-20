@@ -128,6 +128,7 @@
     // twitter
     
     // complete initialization
+    self.tabBarController.delegate = self;
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
@@ -174,6 +175,22 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+}
+
+#pragma mark -
+#pragma mark Tab bar controller delegate
+
+-(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    
+    [self updateSynchronizationStatus];
+}
+
+#pragma mark -
+#pragma mark Navigation controller delegate
+
+-(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    
+    [self updateSynchronizationStatus];
 }
 
 #pragma mark -
@@ -290,21 +307,41 @@
 #pragma mark Core Data helpers
 
 - (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params {
-    NSManagedObjectContext *context = [self managedObjectContext];
-    NSManagedObjectModel *model     = [self managedObjectModel];
-    NSEntityDescription *entityDesc = [NSEntityDescription entityForName: entity inManagedObjectContext: context];
-    
-    NSFetchRequest *fetchRequest    = [model fetchRequestFromTemplateWithName: request substitutionVariables: params];
-    
-    [fetchRequest setEntity: entityDesc];
-    
-    NSError *error   = nil;
-    NSArray *results = [context executeFetchRequest: fetchRequest error: &error];
-    
-    if ( error )
-        NSLog(@"Core Data Error: %@", error.description);
+    @synchronized ( self ) {
+        NSManagedObjectContext *context = [self managedObjectContext];
+        NSManagedObjectModel *model     = [self managedObjectModel];
+        NSEntityDescription *entityDesc = [NSEntityDescription entityForName: entity inManagedObjectContext: context];
+        
+        NSFetchRequest *fetchRequest    = [model fetchRequestFromTemplateWithName: request substitutionVariables: params];
+        
+        [fetchRequest setEntity: entityDesc];
+        
+        NSError *error   = nil;
+        NSArray *results = [context executeFetchRequest: fetchRequest error: &error];
+        
+        if ( error )
+            NSLog(@"Core Data Error: %@", error.description);
 
-    return results;
+        return results;
+    }
+}
+
+- (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withContext: (NSManagedObjectContext* ) context withParameters: (NSDictionary *) params {
+    @synchronized ( self ) {
+        NSManagedObjectModel *model     = [self managedObjectModel];
+        NSEntityDescription *entityDesc = [NSEntityDescription entityForName: entity inManagedObjectContext: context];
+        NSFetchRequest *fetchRequest    = [model fetchRequestFromTemplateWithName: request substitutionVariables: params];
+        
+        [fetchRequest setEntity: entityDesc];
+        
+        NSError *error   = nil;
+        NSArray *results = [context executeFetchRequest: fetchRequest error: &error];
+        
+        if ( error )
+            NSLog(@"Core Data Error: %@", error.description);
+        
+        return results;
+    }
 }
 
 #pragma mark -
@@ -422,6 +459,7 @@
             if ( responseData ) {
                 NSString *jsonString = [[NSString alloc] initWithData: responseData encoding: NSUTF8StringEncoding];
                 NSDictionary *twProfile = [jsonString JSONValue];
+                [jsonString release];
                 
                 _watcherProfile.twNickname = [twProfile objectForKey: @"screen_name"];
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
@@ -435,6 +473,9 @@
                 NSLog(@"twitter request error: %@", error);
             }
         }];
+        
+        [twRequest release];
+        [store release];
     } else {
         _watcherProfile.twNickname = nil;
         _watcherProfile.twAccessExpires = nil;

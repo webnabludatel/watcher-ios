@@ -79,6 +79,8 @@
     label.textAlignment = UITextAlignmentCenter;
     
     self.navigationItem.titleView = label;
+    
+    [label release];
 }
 
 - (void)viewDidAppear:(BOOL)animated

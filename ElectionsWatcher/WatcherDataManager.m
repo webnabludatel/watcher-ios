@@ -22,6 +22,8 @@
 
 @synthesize dataManagerThread = _dataManagerThread;
 @synthesize uploadQueue = _uploadQueue;
+@synthesize objectsInProgress = _objectsInProgress;
+@synthesize managedObjectContext = _managedObjectContext;
 @synthesize errors = _errors;
 @synthesize active = _active;
 @synthesize hasErrors = _hasErrors;
@@ -30,6 +32,8 @@
     [_dataManagerThread release];
     [_uploadQueue release];
     [_errors release];
+    [_objectsInProgress release];
+    [_managedObjectContext release];
     
     [super dealloc];
 }
@@ -38,6 +42,16 @@
     @autoreleasepool {
         _uploadQueue = [[NSOperationQueue alloc] init];
         _errors = [[NSMutableArray alloc] init];
+        _objectsInProgress = [[NSMutableSet alloc] init];
+        _managedObjectContext = [[NSManagedObjectContext alloc] init];
+        
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        [_managedObjectContext setPersistentStoreCoordinator: appDelegate.persistentStoreCoordinator];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self 
+                                                 selector: @selector(mergeContextChanges:) 
+                                                     name: NSManagedObjectContextDidSaveNotification 
+                                                   object: self.managedObjectContext];
         
         NSTimer *timer = [NSTimer timerWithTimeInterval: 10.0 target: self 
                                                selector: @selector(processUnsentData) 
@@ -47,6 +61,20 @@
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
         [[NSRunLoop currentRunLoop] run];
     }
+}
+
+- (void) saveManagedObjectContext {
+    NSError *error = nil;
+    [self.managedObjectContext save: &error];
+    if ( error )
+        NSLog(@"error saving data manager context: %@", error.description);
+}
+
+- (void) mergeContextChanges: (NSNotification *) notification {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext performSelectorOnMainThread: @selector(mergeChangesFromContextDidSaveNotification:) 
+                                                       withObject: notification 
+                                                    waitUntilDone: YES];
 }
 
 - (void) registerCurrentDevice {
@@ -81,13 +109,18 @@
     
     NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentChecklistItems" 
                                                   forEntity: @"ChecklistItem" 
+                                                withContext: self.managedObjectContext
                                              withParameters: [NSDictionary dictionary]];
-
     
     if ( unsentItems.count ) {
         for ( ChecklistItem *checklistItem in unsentItems ) {
             if ( checklistItem.isInserted || checklistItem.isUpdated ) 
                 continue;
+            
+            if ( [_objectsInProgress containsObject: checklistItem] )
+                continue;
+            
+            [_objectsInProgress addObject: checklistItem];
             
             NSLog(@"processing checklist item [%@]", checklistItem.name);
             
@@ -98,6 +131,13 @@
             [self.uploadQueue addOperation: checklistItemSendOperation];
 
             for ( MediaItem *mediaItem in checklistItem.mediaItems ) {
+                if ( [_objectsInProgress containsObject: mediaItem] )
+                    continue;
+                
+                [_objectsInProgress addObject: mediaItem];
+                
+                NSLog(@"processing media item [%@]", mediaItem.filePath);
+                
                 NSOperation *mediaItemSendOperation = [[NSInvocationOperation alloc] initWithTarget: self 
                                                                                            selector: @selector(sendMediaItem:) 
                                                                                              object: mediaItem];
@@ -163,7 +203,8 @@
                 NSDictionary *result = [messageInfo objectForKey: @"result"];
                 checklistItem.serverRecordId = [result objectForKey: @"message_id"];
                 checklistItem.synchronized = [NSNumber numberWithBool: YES];
-                [appDelegate.managedObjectContext save: &error];
+//                [self.managedObjectContext save: &error];
+                [self performSelector:@selector(saveManagedObjectContext) onThread: _dataManagerThread withObject: nil waitUntilDone:YES];
                 
                 NSLog(@"checklist item [%@] successfully synchronized", checklistItem.name);
             } else {
@@ -174,33 +215,81 @@
         }
     }
     
+    [_objectsInProgress removeObject: checklistItem];
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
 }
 
 - (void) sendMediaItem: (MediaItem *) mediaItem {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
+    
+    NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys: 
+                             mediaItem.serverUrl, @"url", 
+                             mediaItem.mediaType, @"type",
+                             [NSNumber numberWithDouble: [mediaItem.timestamp timeIntervalSince1970]], @"timestamp",
+                             nil];
+    
+    NSString *json = [payload JSONRepresentation];
+    NSString *deviceId = [[UIDevice currentDevice] uniqueIdentifier];
+    NSString *digest = [self md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
+    
+    NSURL *url = [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@/media_items.json?digest=%@", 
+                                        mediaItem.checklistItem.serverRecordId, digest]];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
+    [request setPostValue: deviceId forKey: @"device_id"];
+    [request setPostValue: json forKey: @"payload"];
+    [request startSynchronous];
+    
+    NSError *error = [request error];
+    
+    if ( error ) {
+        NSLog(@"error sending media item: %@", error);
+        [_errors addObject: error];
+    } else {
+        if ( [request responseStatusCode] == 200 ) {
+            NSString *response = [request responseString];
+            NSDictionary *messageInfo = [response JSONValue];
+            if ( [@"ok" isEqualToString: [messageInfo objectForKey: @"status"]] ) {
+                NSDictionary *result = [messageInfo objectForKey: @"result"];
+                mediaItem.serverRecordId = [result objectForKey: @"media_item_id"];
+                mediaItem.synchronized = [NSNumber numberWithBool: YES];
+//                [self.managedObjectContext save: &error];
+                [self performSelector:@selector(saveManagedObjectContext) onThread: _dataManagerThread withObject: nil waitUntilDone:YES];
+                
+                NSLog(@"media item [%@] successfully synchronized", mediaItem.filePath);
+            } else {
+                // TODO: process server-side errors (check spec)
+            }
+        } else {
+            NSLog(@"http request status: %d", [request responseStatusCode]);
+        }
+    }    
+    
+    [_objectsInProgress removeObject: mediaItem];
+    [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
 }
 
 - (void) uploadMediaItem: (MediaItem *) mediaItem {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
     
-    AmazonS3Client *s3Client = [[AmazonS3Client alloc] initWithAccessKey: @"AKIAI4WR4FWZGWPTX7DA" 
-                                                           withSecretKey: @"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"];
+    AmazonS3Client *s3Client = [[AmazonS3Client alloc] initWithAccessKey: @"AKIAIX6IT3CLX62LPWPA" 
+                                                           withSecretKey: @"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"];
 
     @try {
         S3PutObjectRequest *putRequest = [[S3PutObjectRequest alloc] initWithKey: [mediaItem.filePath lastPathComponent] 
-                                                                        inBucket: @"watcher"];
+                                                                        inBucket: @"webnabludatel-media"];
         
         putRequest.contentType = [mediaItem.mediaType isEqualToString: (NSString *) kUTTypeImage] ? @"image/png" : @"video/quicktime";
         putRequest.data = [NSData dataWithContentsOfFile: mediaItem.filePath];
         
         S3Response *response = [s3Client putObject: putRequest];
         NSLog(@"Amazon response token: %@", response.id2);
-        mediaItem.serverUrl = [@"http://watcher.s3-website-us-east-1.amazonaws.com/" stringByAppendingString: [mediaItem.filePath lastPathComponent]];
+        mediaItem.serverUrl = [@"http://webnabludatel-media.s3.amazonaws.com/" stringByAppendingString: [mediaItem.filePath lastPathComponent]];
         NSLog(@"media item saved to server URL: %@", mediaItem.serverUrl);
         
-        NSError *error = nil;
-        [appDelegate.managedObjectContext save: &error];
+//        [self.managedObjectContext save: &error];
+        [self performSelector:@selector(saveManagedObjectContext) onThread: _dataManagerThread withObject: nil waitUntilDone:YES];
     }
     @catch ( AmazonClientException *e ) {
         NSLog(@"Amazon client error: %@", e.message);
@@ -243,7 +332,8 @@
                 watcherProfile.userId       = [NSString stringWithFormat: @"%@", [result objectForKey: @"user_id"]];
                 watcherProfile.serverSecret = [result objectForKey: @"secret"];
                 
-                [appDelegate.managedObjectContext save: &error];
+//                [self.managedObjectContext save: &error];
+                [self performSelector:@selector(saveManagedObjectContext) onThread: _dataManagerThread withObject: nil waitUntilDone:YES];
             } else {
                 // TODO: process server-side errors (check spec)
             }

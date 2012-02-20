@@ -29,7 +29,15 @@
 @property (nonatomic, retain) Facebook *facebook;
 @property (nonatomic, readonly) WatcherProfile *watcherProfile;
 
-- (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params;
+- (NSArray *) executeFetchRequest: (NSString *) request 
+                        forEntity: (NSString *) entity 
+                   withParameters: (NSDictionary *) params;
+
+- (NSArray *) executeFetchRequest: (NSString *) request 
+                        forEntity: (NSString *) entity 
+                      withContext: (NSManagedObjectContext* ) context 
+                   withParameters: (NSDictionary *) params;
+
 - (void) setupTwitterAccountForUsername: (NSString *) username withCompletionHandler: (void (^)(void)) completionHandler;
 - (void) updateSynchronizationStatus;
 - (void) showNetworkActivity;
