@@ -2,7 +2,7 @@
 //  MediaItem.m
 //  ElectionsWatcher
 //
-//  Created by xfire on 18.02.12.
+//  Created by xfire on 20.02.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -17,6 +17,8 @@
 @dynamic mediaType;
 @dynamic serverUrl;
 @dynamic timestamp;
+@dynamic synchronized;
+@dynamic serverRecordId;
 @dynamic checklistItem;
 @dynamic pollingPlace;
 
