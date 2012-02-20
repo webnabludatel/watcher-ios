@@ -2,7 +2,7 @@
 //  WatcherProfile.m
 //  ElectionsWatcher
 //
-//  Created by xfire on 18.02.12.
+//  Created by xfire on 20.02.12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -23,6 +23,7 @@
 @dynamic twAccessExpires;
 @dynamic fbNickname;
 @dynamic twNickname;
+@dynamic serverSecret;
 @dynamic currentPollingPlace;
 @dynamic profileChecklistItems;
 
