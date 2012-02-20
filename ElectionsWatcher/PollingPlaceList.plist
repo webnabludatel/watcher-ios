@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>polling_places</key>
+	<array>
+		<dict>
+			<key>region_id</key>
+			<string>77</string>
+			<key>polling_place_type</key>
+			<string>uik</string>
+			<key>polling_place_number</key>
+			<string>666</string>
+		</dict>
+	</array>
+</dict>
+</plist>

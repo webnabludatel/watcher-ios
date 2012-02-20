@@ -144,19 +144,34 @@
             labelSize.height + 70 : 60;
 }
 
-/*
 - (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
-    WatcherChecklistScreenCell *watcherCell = (WatcherChecklistScreenCell *) cell;
-    watcherCell.itemInfo = [[screenInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
-    [watcherCell setNeedsLayout];
+    NSArray *items              = [screenInfo objectForKey: @"items"];
+    NSDictionary *itemInfo      = [items objectAtIndex: indexPath.row];
+    AppDelegate *appDelegate    = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSArray *checklistItems     = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
+    NSPredicate *itemPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d && SELF.screenIndex == %d && SELF.name LIKE %@", 
+                                   self.sectionIndex, self.screenIndex, [itemInfo objectForKey: @"name"]];
+    
+    NSArray *existingItems = [checklistItems filteredArrayUsingPredicate: itemPredicate];
+    ChecklistItem *checklistItem = nil;
+    
+    if ( existingItems.count ) {
+        checklistItem = [existingItems lastObject];
+        [appDelegate.managedObjectContext refreshObject: checklistItem mergeChanges: NO];
+        [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
+    } else {
+        checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                                     inManagedObjectContext: appDelegate.managedObjectContext];
+        
+        [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
+    }
 }
- */
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSArray *items              = [screenInfo objectForKey: @"items"];
     NSDictionary *itemInfo      = [items objectAtIndex: indexPath.row];
-    NSString *CellIdentifier    = [@"inputCell_" stringByAppendingString: [[itemInfo objectForKey: @"control"] stringValue]];
-//    NSString *CellIdentifier    = [NSString stringWithFormat: @"cell_%d_%d", indexPath.section, indexPath.row];
+//    NSString *CellIdentifier    = [@"inputCell_" stringByAppendingString: [[itemInfo objectForKey: @"control"] stringValue]];
+    NSString *CellIdentifier    = [NSString stringWithFormat: @"cell_%d_%d", indexPath.section, indexPath.row];
     UITableViewCell *cell       = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if ( cell == nil ) {
@@ -174,21 +189,6 @@
     
     cell.textLabel.text = nil;
     cell.detailTextLabel.text = nil;
-    
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
-    NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d && SELF.screenIndex == %d && SELF.name LIKE %@", 
-                                    self.sectionIndex, self.screenIndex, [itemInfo objectForKey: @"name"]];
-    NSArray *existingItems = [checklistItems filteredArrayUsingPredicate: itemPredicate];
-    
-    if ( existingItems.count ) {
-        [(WatcherChecklistScreenCell *) cell setChecklistItem: [existingItems lastObject]];
-    } else {
-        ChecklistItem *checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
-                                                                     inManagedObjectContext: appDelegate.managedObjectContext];
-        
-        [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
-    }
     
     return cell;
 }

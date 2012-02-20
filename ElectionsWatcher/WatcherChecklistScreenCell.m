@@ -17,6 +17,7 @@
 #import "MWPhotoBrowser.h"
 #import "MWMoviePreview.h"
 #import "MWMovieBrowser.h"
+#import "UIImage+Resize.h"
 
 @implementation WatcherChecklistScreenCell
 
@@ -609,7 +610,7 @@
         UIImage *originalImage = (UIImage *) [info objectForKey: UIImagePickerControllerOriginalImage];
         NSString *photosDirectory = [docsDirectory stringByAppendingPathComponent: @"Photos"];
         NSTimeInterval currentTimestamp = [[NSDate date] timeIntervalSince1970];
-        NSString *imageFilename = [NSString stringWithFormat: @"%qx.png", fabs(currentTimestamp) * 1000]; 
+        NSString *imageFilename = [NSString stringWithFormat: @"%qx.jpg", fabs(currentTimestamp) * 1000]; 
         NSString *imageFilepath = [photosDirectory stringByAppendingPathComponent: imageFilename];
         
         if ( saveMediaToLibrary )
@@ -620,7 +621,24 @@
                            attributes: nil 
                                 error: nil];
         
-        [UIImagePNGRepresentation(originalImage) writeToFile: imageFilepath atomically: YES];
+//        [UIImagePNGRepresentation(originalImage) writeToFile: imageFilepath atomically: YES];
+        CGFloat maxDim = 800.0f;
+        CGFloat w, h;
+        
+//        NSLog(@"original image: w=%f, h=%f", originalImage.size.width, originalImage.size.height);
+        if ( originalImage.size.width > originalImage.size.height ) {
+            w = maxDim;
+            h = ( maxDim / originalImage.size.width ) * originalImage.size.height;
+        } else {
+            w = ( maxDim / originalImage.size.height ) * originalImage.size.width;
+            h = maxDim;
+        }
+//        NSLog(@"target size: w=%f, h=%f", w, h);
+        
+        UIImage *resizedImage = [originalImage resizedImage: CGSizeMake(w, h) 
+                                       interpolationQuality: kCGInterpolationHigh];
+        
+        [UIImageJPEGRepresentation(resizedImage, 0.8f) writeToFile: imageFilepath atomically: YES];
         
         mediaItem.mediaType = mediaType;
         mediaItem.filePath = imageFilepath;
