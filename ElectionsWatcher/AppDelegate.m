@@ -132,6 +132,8 @@
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
+    [TestFlight passCheckpoint: @"Application Init"];
+    
     return YES;
 }
 
@@ -432,6 +434,9 @@
     [_managedObjectContext save: &error];
     if ( error )
         NSLog(@"Core Data Error: %@", error.description);
+    
+    [TestFlight passCheckpoint: @"Facebook login"];
+
 }
 
 -(void)request:(FBRequest *)request didFailWithError:(NSError *)error {
@@ -471,6 +476,8 @@
                 [_managedObjectContext save: &error];
                 if ( error )
                     NSLog(@"Core Data Error: %@", error.description);
+                
+                [TestFlight passCheckpoint: @"Twitter login"];
             } else {
                 NSLog(@"twitter request error: %@", error);
             }

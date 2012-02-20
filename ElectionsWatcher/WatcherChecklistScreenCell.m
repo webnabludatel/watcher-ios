@@ -365,6 +365,7 @@
     }
 
     [self.saveDelegate didSaveAttributeItem: self.checklistItem];
+    [TestFlight passCheckpoint: [NSString stringWithFormat: @"Save checklist item [%@]", self.checklistItem.name]];
 }
 
 #pragma mark -

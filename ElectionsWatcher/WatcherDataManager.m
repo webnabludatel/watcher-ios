@@ -170,6 +170,8 @@
     
     NSLog(@"completed processing cycle with %d items in progress", _objectsInProgress.count);
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
+    
+    [TestFlight passCheckpoint: @"Scan for modified checklist items"];
 }
 
 /* threading: all core data operations should be performed on the same thread with managedObjectContext */
