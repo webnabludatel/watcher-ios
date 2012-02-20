@@ -13,10 +13,10 @@
 #import "WatcherProfile.h"
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
-#import "NSString+SBJSON.h"
 #import "NSObject+SBJSON.h"
 #import <CommonCrypto/CommonDigest.h>
 #import <AWSiOSSDK/S3/AmazonS3Client.h>
+#import <MobileCoreServices/UTCoreTypes.h>
 
 @implementation WatcherDataManager
 
@@ -136,9 +136,9 @@
                              [NSNumber numberWithDouble: [checklistItem.timestamp timeIntervalSince1970]], @"timestamp",
                              nil];
     
+    NSString *json = [payload JSONRepresentation];
     NSString *deviceId = [[UIDevice currentDevice] uniqueIdentifier];
-    NSString *digest = [self md5: [[deviceId stringByAppendingString: [payload JSONRepresentation]] 
-                        stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
+    NSString *digest = [self md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
     
     NSURL *url = [checklistItem.serverRecordId doubleValue] > 0 ? 
         [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@.json?digest=%@", 
@@ -147,7 +147,7 @@
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
     if ( [checklistItem.serverRecordId doubleValue] > 0 ) [request setRequestMethod: @"PUT"];
     [request setPostValue: deviceId forKey: @"device_id"];
-    [request setPostValue: [payload JSONRepresentation] forKey: @"payload"];
+    [request setPostValue: json forKey: @"payload"];
     [request startSynchronous];
     
     NSError *error = [request error];
@@ -181,6 +181,32 @@
 }
 
 - (void) uploadMediaItem: (MediaItem *) mediaItem {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
+    
+    AmazonS3Client *s3Client = [[AmazonS3Client alloc] initWithAccessKey: @"AKIAI4WR4FWZGWPTX7DA" 
+                                                           withSecretKey: @"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"];
+
+    @try {
+        S3PutObjectRequest *putRequest = [[S3PutObjectRequest alloc] initWithKey: [mediaItem.filePath lastPathComponent] 
+                                                                        inBucket: @"watcher"];
+        
+        putRequest.contentType = [mediaItem.mediaType isEqualToString: (NSString *) kUTTypeImage] ? @"image/png" : @"video/quicktime";
+        putRequest.data = [NSData dataWithContentsOfFile: mediaItem.filePath];
+        
+        S3Response *response = [s3Client putObject: putRequest];
+        NSLog(@"Amazon response token: %@", response.id2);
+        mediaItem.serverUrl = [@"http://watcher.s3-website-us-east-1.amazonaws.com/" stringByAppendingString: [mediaItem.filePath lastPathComponent]];
+        NSLog(@"media item saved to server URL: %@", mediaItem.serverUrl);
+        
+        NSError *error = nil;
+        [appDelegate.managedObjectContext save: &error];
+    }
+    @catch ( AmazonClientException *e ) {
+        NSLog(@"Amazon client error: %@", e.message);
+    }
+    
+    [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
 }
 
 - (void) sendDeviceRegistration: (NSString *) UDID {

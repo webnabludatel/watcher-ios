@@ -17,7 +17,7 @@
 #import "WatcherDataManager.h"
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
-#import "NSString+SBJSON.h"
+#import "NSObject+SBJSON.h"
 
 @implementation AppDelegate
 
