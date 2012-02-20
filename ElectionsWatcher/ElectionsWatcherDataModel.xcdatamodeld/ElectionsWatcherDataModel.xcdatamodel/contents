@@ -18,7 +18,9 @@
     <entity name="MediaItem" representedClassName="MediaItem" syncable="YES">
         <attribute name="filePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mediaType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serverRecordId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="serverUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="synchronized" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="checklistItem" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="ChecklistItem" inverseName="mediaItems" inverseEntity="ChecklistItem" syncable="YES"/>
         <relationship name="pollingPlace" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="PollingPlace" inverseName="mediaItems" inverseEntity="PollingPlace" syncable="YES"/>
@@ -63,7 +65,7 @@
     <fetchRequest name="listPollingPlaces" entity="PollingPlace"/>
     <elements>
         <element name="ChecklistItem" positionX="-27" positionY="-384" width="128" height="240"/>
-        <element name="MediaItem" positionX="-54" positionY="72" width="128" height="135"/>
+        <element name="MediaItem" positionX="-54" positionY="72" width="128" height="165"/>
         <element name="PollingPlace" positionX="351" positionY="-144" width="128" height="225"/>
         <element name="WatcherProfile" positionX="160" positionY="192" width="128" height="240"/>
     </elements>
