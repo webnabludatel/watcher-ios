@@ -190,7 +190,20 @@
 		5FA5E15314F01A1F00030487 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15214F01A1F00030487 /* MediaItem.m */; };
 		5FA5E15614F01A2000030487 /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15514F01A2000030487 /* ChecklistItem.m */; };
 		5FA5E15C14F01A2000030487 /* PollingPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15B14F01A2000030487 /* PollingPlace.m */; };
-		5FA5E15F14F048AE00030487 /* WatcherProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15E14F048AE00030487 /* WatcherProfile.m */; };
+		5FA5E16614F12E8700030487 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA5E16514F12E8700030487 /* Twitter.framework */; };
+		5FA5E16814F130BD00030487 /* report_graph_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E16714F130BD00030487 /* report_graph_bg.png */; };
+		5FA5E16A14F1358B00030487 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA5E16914F1358B00030487 /* Accounts.framework */; };
+		5FA5E16E14F137D200030487 /* WatcherTwitterSetupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E16C14F137D200030487 /* WatcherTwitterSetupController.m */; };
+		5FA5E16F14F137D200030487 /* WatcherTwitterSetupController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E16D14F137D200030487 /* WatcherTwitterSetupController.xib */; };
+		5FA5E17314F173C900030487 /* facebook_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17114F173C900030487 /* facebook_icon.png */; };
+		5FA5E17414F173C900030487 /* twitter_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17214F173C900030487 /* twitter_icon.png */; };
+		5FA5E17614F1757700030487 /* manualuser_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17514F1757700030487 /* manualuser_icon.png */; };
+		5FA5E17914F1A1C500030487 /* sync_errors_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17714F1A1C500030487 /* sync_errors_icon@2x.png */; };
+		5FA5E17A14F1A1C500030487 /* sync_ok_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17814F1A1C500030487 /* sync_ok_icon@2x.png */; };
+		5FA5E17D14F1A3FE00030487 /* sync_errors_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17B14F1A3FE00030487 /* sync_errors_icon.png */; };
+		5FA5E17E14F1A3FE00030487 /* sync_ok_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17C14F1A3FE00030487 /* sync_ok_icon.png */; };
+		5FA5E18114F237C200030487 /* WatcherProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E18014F237C200030487 /* WatcherProfile.m */; };
+		5FA5E18314F24AA200030487 /* AWSiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA5E18214F24AA100030487 /* AWSiOSSDK.framework */; };
 		5FC6C0DB14CBF8970078AD8E /* WatcherChecklist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */; };
 		5FC6C0DE14CC1C270078AD8E /* WatcherChecklistSectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DD14CC1C270078AD8E /* WatcherChecklistSectionController.m */; };
 		5FC6C0E114CC206C0078AD8E /* WatcherChecklistScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0E014CC206C0078AD8E /* WatcherChecklistScreenController.m */; };
@@ -454,8 +467,23 @@
 		5FA5E15514F01A2000030487 /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
 		5FA5E15A14F01A2000030487 /* PollingPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingPlace.h; sourceTree = "<group>"; };
 		5FA5E15B14F01A2000030487 /* PollingPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingPlace.m; sourceTree = "<group>"; };
-		5FA5E15D14F048AE00030487 /* WatcherProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherProfile.h; sourceTree = "<group>"; };
-		5FA5E15E14F048AE00030487 /* WatcherProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherProfile.m; sourceTree = "<group>"; };
+		5FA5E16514F12E8700030487 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
+		5FA5E16714F130BD00030487 /* report_graph_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = report_graph_bg.png; sourceTree = "<group>"; };
+		5FA5E16914F1358B00030487 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		5FA5E16B14F137D100030487 /* WatcherTwitterSetupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherTwitterSetupController.h; sourceTree = "<group>"; };
+		5FA5E16C14F137D200030487 /* WatcherTwitterSetupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherTwitterSetupController.m; sourceTree = "<group>"; };
+		5FA5E16D14F137D200030487 /* WatcherTwitterSetupController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherTwitterSetupController.xib; sourceTree = "<group>"; };
+		5FA5E17014F16BD300030487 /* WatcherTwitterSetupControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherTwitterSetupControllerDelegate.h; sourceTree = "<group>"; };
+		5FA5E17114F173C900030487 /* facebook_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_icon.png; sourceTree = "<group>"; };
+		5FA5E17214F173C900030487 /* twitter_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = twitter_icon.png; sourceTree = "<group>"; };
+		5FA5E17514F1757700030487 /* manualuser_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = manualuser_icon.png; sourceTree = "<group>"; };
+		5FA5E17714F1A1C500030487 /* sync_errors_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync_errors_icon@2x.png"; sourceTree = "<group>"; };
+		5FA5E17814F1A1C500030487 /* sync_ok_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync_ok_icon@2x.png"; sourceTree = "<group>"; };
+		5FA5E17B14F1A3FE00030487 /* sync_errors_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_errors_icon.png; sourceTree = "<group>"; };
+		5FA5E17C14F1A3FE00030487 /* sync_ok_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_ok_icon.png; sourceTree = "<group>"; };
+		5FA5E17F14F237C200030487 /* WatcherProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherProfile.h; sourceTree = "<group>"; };
+		5FA5E18014F237C200030487 /* WatcherProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherProfile.m; sourceTree = "<group>"; };
+		5FA5E18214F24AA100030487 /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSiOSSDK.framework; path = "../aws-ios-sdk-1.1.1/AWSiOSSDK.framework"; sourceTree = "<group>"; };
 		5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherChecklist.plist; sourceTree = "<group>"; };
 		5FC6C0DC14CC1C270078AD8E /* WatcherChecklistSectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistSectionController.h; sourceTree = "<group>"; };
 		5FC6C0DD14CC1C270078AD8E /* WatcherChecklistSectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherChecklistSectionController.m; sourceTree = "<group>"; };
@@ -501,6 +529,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FA5E18314F24AA200030487 /* AWSiOSSDK.framework in Frameworks */,
+				5FA5E16A14F1358B00030487 /* Accounts.framework in Frameworks */,
+				5FA5E16614F12E8700030487 /* Twitter.framework in Frameworks */,
 				5F65584014EA65ED00135422 /* MediaPlayer.framework in Frameworks */,
 				5F65583E14EA63B900135422 /* MessageUI.framework in Frameworks */,
 				5F2062C814E876FC0031BA22 /* libicucore.dylib in Frameworks */,
@@ -702,6 +733,9 @@
 		5F7ADDC514C1AE4100A8E955 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FA5E18214F24AA100030487 /* AWSiOSSDK.framework */,
+				5FA5E16914F1358B00030487 /* Accounts.framework */,
+				5FA5E16514F12E8700030487 /* Twitter.framework */,
 				5F65583F14EA65ED00135422 /* MediaPlayer.framework */,
 				5F65583D14EA63B900135422 /* MessageUI.framework */,
 				5F91F26214C2F47B00446C86 /* MobileCoreServices.framework */,
@@ -756,6 +790,9 @@
 				5FD5978414EFEE8B00E27620 /* WatcherManualProfileController.h */,
 				5FD5978514EFEE8C00E27620 /* WatcherManualProfileController.m */,
 				5FD5978914EFEEF800E27620 /* WatcherManualProfileControllerDelegate.h */,
+				5FA5E16B14F137D100030487 /* WatcherTwitterSetupController.h */,
+				5FA5E16C14F137D200030487 /* WatcherTwitterSetupController.m */,
+				5FA5E17014F16BD300030487 /* WatcherTwitterSetupControllerDelegate.h */,
 				5F7DDA3314EBC42B005857D3 /* WatcherPollingPlaceController.h */,
 				5F7DDA3414EBC42B005857D3 /* WatcherPollingPlaceController.m */,
 				5F1E382A14ED037C004E9EAC /* WatcherPollingPlaceControllerDelegate.h */,
@@ -796,6 +833,14 @@
 		5F7ADDF114C1AEB200A8E955 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				5FA5E17B14F1A3FE00030487 /* sync_errors_icon.png */,
+				5FA5E17C14F1A3FE00030487 /* sync_ok_icon.png */,
+				5FA5E17714F1A1C500030487 /* sync_errors_icon@2x.png */,
+				5FA5E17814F1A1C500030487 /* sync_ok_icon@2x.png */,
+				5FA5E17514F1757700030487 /* manualuser_icon.png */,
+				5FA5E17114F173C900030487 /* facebook_icon.png */,
+				5FA5E17214F173C900030487 /* twitter_icon.png */,
+				5FA5E16714F130BD00030487 /* report_graph_bg.png */,
 				5F65584914EA6E4500135422 /* play_button.png */,
 				5F2062C914E8FB470031BA22 /* transparent.gif */,
 				5F8892C814E6AE7F0067F2DD /* election_watcher_appstore.png */,
@@ -826,6 +871,7 @@
 		5F7ADDF214C1AED000A8E955 /* XIB */ = {
 			isa = PBXGroup;
 			children = (
+				5FA5E16D14F137D200030487 /* WatcherTwitterSetupController.xib */,
 				5FD5978614EFEE8D00E27620 /* WatcherManualProfileController.xib */,
 				5F7ADDFB14C1B0FD00A8E955 /* WatcherChecklistController.xib */,
 				5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */,
@@ -840,9 +886,9 @@
 		5F91F20514C1C3BC00446C86 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				5FA5E17F14F237C200030487 /* WatcherProfile.h */,
+				5FA5E18014F237C200030487 /* WatcherProfile.m */,
 				5F7DDA2D14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld */,
-				5FA5E15D14F048AE00030487 /* WatcherProfile.h */,
-				5FA5E15E14F048AE00030487 /* WatcherProfile.m */,
 				5FA5E15114F01A1F00030487 /* MediaItem.h */,
 				5FA5E15214F01A1F00030487 /* MediaItem.m */,
 				5FA5E15414F01A2000030487 /* ChecklistItem.h */,
@@ -1130,6 +1176,15 @@
 				5FD5978814EFEE8E00E27620 /* WatcherManualProfileController.xib in Resources */,
 				5FD5978B14EFF2A000E27620 /* WatcherProfile.plist in Resources */,
 				5FD5979814EFFAC700E27620 /* FBDialog.bundle in Resources */,
+				5FA5E16814F130BD00030487 /* report_graph_bg.png in Resources */,
+				5FA5E16F14F137D200030487 /* WatcherTwitterSetupController.xib in Resources */,
+				5FA5E17314F173C900030487 /* facebook_icon.png in Resources */,
+				5FA5E17414F173C900030487 /* twitter_icon.png in Resources */,
+				5FA5E17614F1757700030487 /* manualuser_icon.png in Resources */,
+				5FA5E17914F1A1C500030487 /* sync_errors_icon@2x.png in Resources */,
+				5FA5E17A14F1A1C500030487 /* sync_ok_icon@2x.png in Resources */,
+				5FA5E17D14F1A3FE00030487 /* sync_errors_icon.png in Resources */,
+				5FA5E17E14F1A3FE00030487 /* sync_ok_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1200,7 +1255,8 @@
 				5FA5E15314F01A1F00030487 /* MediaItem.m in Sources */,
 				5FA5E15614F01A2000030487 /* ChecklistItem.m in Sources */,
 				5FA5E15C14F01A2000030487 /* PollingPlace.m in Sources */,
-				5FA5E15F14F048AE00030487 /* WatcherProfile.m in Sources */,
+				5FA5E16E14F137D200030487 /* WatcherTwitterSetupController.m in Sources */,
+				5FA5E18114F237C200030487 /* WatcherProfile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1280,6 +1336,10 @@
 					armv6,
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../aws-ios-sdk-1.1.1\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
@@ -1301,6 +1361,10 @@
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XMPSoft Ltd.";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../aws-ios-sdk-1.1.1\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
@@ -1310,7 +1374,7 @@
 					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "048CB41B-5008-455F-8F97-E9AEC85C34DA";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "15B9F0BB-C1C6-4664-A7E3-7BCF669CD009";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
