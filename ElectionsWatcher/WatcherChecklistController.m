@@ -77,7 +77,7 @@
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
-        [NSString stringWithFormat: @"Наблюдение на %@ № %@", 
+        [NSString stringWithFormat: @"%@ № %@", 
          appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] : 
         @"Наблюдение";
 }
@@ -225,6 +225,42 @@
         
         [self.navigationController pushViewController: sectionController animated: YES];
         [sectionController release];
+    }
+}
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                    forEntity: @"PollingPlace" 
+                                               withParameters: nil];
+    
+    return indexPath.section == 0 && indexPath.row < pollingPlaces.count;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                    forEntity: @"PollingPlace" 
+                                               withParameters: nil];
+    PollingPlace *pollingPlaceToRemove = [pollingPlaces objectAtIndex: indexPath.row];
+    
+    if ( pollingPlaceToRemove == appDelegate.watcherProfile.currentPollingPlace ) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
+                                                            message: @"Нельзя удалить активный избирательный участок" 
+                                                           delegate: nil 
+                                                  cancelButtonTitle: @"OK" 
+                                                  otherButtonTitles: nil];
+        [alertView show];
+        [alertView release];
+    } else {
+        [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
+        
+        NSError *error = nil;
+        [appDelegate.managedObjectContext save: &error];
+        if ( error ) 
+            NSLog(@"error removing polling place: %@", error.description);
+        
+        [self.tableView reloadData];
     }
 }
 

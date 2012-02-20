@@ -50,13 +50,15 @@
     self.title = @"Twitter";
     self.twitterAccounts = [NSMutableArray array];
     
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel 
-                                                                                           target: self 
-                                                                                           action: @selector(handleCancelButton:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Сохранить"
+                                                                               style: UIBarButtonItemStyleDone
+                                                                              target: self
+                                                                              action: @selector(handleDoneButton:)] autorelease];
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone 
-                                                                                            target: self 
-                                                                                            action: @selector(handleDoneButton:)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Отменить"
+                                                                              style: UIBarButtonItemStylePlain
+                                                                             target: self
+                                                                             action: @selector(handleCancelButton:)] autorelease];
 
 }
 

@@ -157,7 +157,7 @@
     
     if ( existingItems.count ) {
         checklistItem = [existingItems lastObject];
-        [appDelegate.managedObjectContext refreshObject: checklistItem mergeChanges: NO];
+//        [appDelegate.managedObjectContext refreshObject: checklistItem mergeChanges: NO];
         [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
     } else {
         checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 

@@ -203,13 +203,15 @@
         UINavigationController *navController = (UINavigationController *) viewController;
         
         if ( self.dataManager.active ) {
-            UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
-            UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: activityIndicator];
-            navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
-            [activityIndicator startAnimating];
-            
-            [activityIndicator release];
-            [barButtonItem release];
+            if ( ! [navController.topViewController.navigationItem.rightBarButtonItem.customView isKindOfClass: [UIActivityIndicatorView class]] ) {
+                UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
+                UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: activityIndicator];
+                navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
+                [activityIndicator startAnimating];
+                
+                [activityIndicator release];
+                [barButtonItem release];
+            }
         } else {
             UIImage *image = nil;
             
@@ -218,12 +220,12 @@
             else
                 image = [UIImage imageNamed: @"sync_ok_icon"];
             
-            UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithImage: image 
-                                                                              style: UIBarButtonItemStyleBordered 
-                                                                             target: nil
-                                                                             action: nil];
+            UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
+            UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
             
             navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
+            
+            [imageView release];
             [barButtonItem release];
         }
     }

@@ -19,6 +19,7 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 @synthesize pollingPlace;
 @synthesize settings;
 @synthesize isCancelling;
+@synthesize latestActiveResponder;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -48,14 +49,17 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
  
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone 
-                                                                                            target: self
-                                                                                            action: @selector(handleDoneButton:)] autorelease];
-    self.navigationItem.rightBarButtonItem.tag = 12;
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Сохранить"
+                                                                               style: UIBarButtonItemStyleDone
+                                                                              target: self
+                                                                              action: @selector(handleDoneButton:)] autorelease];
     
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel
-                                                                                           target: self
-                                                                                           action: @selector(handleCancelButton:)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Отменить"
+                                                                              style: UIBarButtonItemStylePlain
+                                                                             target: self
+                                                                             action: @selector(handleCancelButton:)] autorelease];
+
+    self.navigationItem.rightBarButtonItem.tag = 12;
     self.navigationItem.leftBarButtonItem.tag = 13;
     
     self.title = @"Участок";
@@ -103,10 +107,11 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 
 - (void) handleDoneButton: (id) sender {
     if ( self.pollingPlace.type.length && self.pollingPlace.number.intValue ) {
+        [self.latestActiveResponder resignFirstResponder];
         [pollingPlaceControllerDelegate watcherPollingPlaceController: self didSavePollingPlace: self.pollingPlace];
     } else {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
-                                                            message: @"Не заполнено обязательное поле" 
+                                                            message: @"Не заполнены обязательные поля" 
                                                            delegate: nil 
                                                   cancelButtonTitle: @"OK" 
                                                   otherButtonTitles: nil];
@@ -117,6 +122,8 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 }
 
 - (void) handleCancelButton: (id) sender {
+    [self.latestActiveResponder resignFirstResponder];
+    
     self.isCancelling = YES;
     [pollingPlaceControllerDelegate watcherPollingPlaceControllerDidCancel: self];
 }

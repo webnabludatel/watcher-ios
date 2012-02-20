@@ -52,9 +52,16 @@ static NSString *settingsSections[] = { @"personal_info" };
                                                             ofType: @"plist"];
     self.settings = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
     
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel target: self action: @selector(handleCancelButton:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Сохранить"
+                                                                               style: UIBarButtonItemStyleDone
+                                                                              target: self
+                                                                              action: @selector(handleDoneButton:)] autorelease];
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target: self action: @selector(handleDoneButton:)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Отменить"
+                                                                              style: UIBarButtonItemStylePlain
+                                                                             target: self
+                                                                             action: @selector(handleCancelButton:)] autorelease];
+
 }
 
 - (void)viewDidUnload
@@ -158,10 +165,13 @@ static NSString *settingsSections[] = { @"personal_info" };
 #pragma mark - Button handlers
 
 - (void) handleCancelButton: (id) sender {
+    [self.latestActiveResponder resignFirstResponder];
     [self.profileControllerDelegate watcherManualProfileControllerDidCancel: self];
 }
 
 - (void) handleDoneButton: (id) sender {
+    [self.latestActiveResponder resignFirstResponder];
+    
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [self.profileControllerDelegate watcherManualProfileController: self 
                                                     didSaveProfile: appDelegate.watcherProfile];

@@ -738,32 +738,14 @@
 
 
 - (void) pickerCancelled: (id) sender {
+    [self.control resignFirstResponder];
 }
 
 #pragma mark -
 #pragma mark UITextField events
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    if ( [self.saveDelegate isCancelling] )
-        return YES;
-    
-    if ( [[self.itemInfo objectForKey: @"required"] boolValue] ) {
-        if ( textField.text.length ) {
-            return YES;
-        } else {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
-                                                                message: @"Не заполнено обязательное поле" 
-                                                               delegate: nil 
-                                                      cancelButtonTitle: @"OK" 
-                                                      otherButtonTitles: nil];
-            
-            [alertView show];
-            [alertView release];
-            return NO;
-        }
-    } else {
-        return YES;
-    }
+    return YES;
 }
 
 - (void) textFieldDidEndEditing:(UITextField *)textField {
@@ -784,8 +766,9 @@
     if ( [self.itemInfo objectForKey: @"possible_values"] == nil ) {
         return YES;
     } else {
+        [textField resignFirstResponder];
         [self popupPicker: textField];
-        return NO;
+        return YES;
     }
 }
 
@@ -852,8 +835,8 @@
                             forState: UIControlStateNormal];
     }
     
-    if ( slider.value != 0 )
-        [self saveItem];
+//    if ( slider.value != 0 )
+    [self saveItem];
 }
 
 @end

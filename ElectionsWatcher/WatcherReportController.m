@@ -84,7 +84,7 @@
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
-        [NSString stringWithFormat: @"Отчет по %@ № %@", 
+        [NSString stringWithFormat: @"%@ № %@", 
          appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
         @"Отчет";
 }

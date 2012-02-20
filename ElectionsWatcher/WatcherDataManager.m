@@ -69,6 +69,9 @@
         [self.managedObjectContext save: &error];
         if ( error )
             NSLog(@"error saving data manager context: %@", error.description);
+        
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     }
 }
 

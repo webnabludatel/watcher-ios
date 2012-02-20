@@ -25,7 +25,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
     
     if ( self ) {
         self.tabBarItem.image = [UIImage imageNamed:@"sos"];
-        self.tabBarItem.title = @"Меня удаляют";
+        self.tabBarItem.title = @"S.O.S.";
     }
     
     return self;
@@ -66,7 +66,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
-        [NSString stringWithFormat: @"Меня удаляют: %@ № %@", 
+        [NSString stringWithFormat: @"%@ № %@", 
          appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
         @"Меня удаляют";
     
