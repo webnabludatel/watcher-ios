@@ -44,6 +44,7 @@
         <attribute name="fbNickname" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serverSecret" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="twAccessExpires" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="twAccessToken" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="twNickname" optional="YES" attributeType="String" syncable="YES"/>
@@ -64,6 +65,6 @@
         <element name="ChecklistItem" positionX="-27" positionY="-384" width="128" height="240"/>
         <element name="MediaItem" positionX="-54" positionY="72" width="128" height="135"/>
         <element name="PollingPlace" positionX="351" positionY="-144" width="128" height="225"/>
-        <element name="WatcherProfile" positionX="160" positionY="192" width="128" height="225"/>
+        <element name="WatcherProfile" positionX="160" positionY="192" width="128" height="240"/>
     </elements>
 </model>
