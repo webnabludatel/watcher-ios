@@ -320,7 +320,7 @@
     
     switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
         case INPUT_CONSTANT:
-            // do not touch the value
+            self.checklistItem.synchronized = [NSNumber numberWithBool: YES]; // never synchronize constant items
             break;
         case INPUT_TEXT:
         case INPUT_EMAIL:

@@ -32,5 +32,7 @@
 - (NSArray *) executeFetchRequest: (NSString *) request forEntity: (NSString *) entity withParameters: (NSDictionary *) params;
 - (void) setupTwitterAccountForUsername: (NSString *) username withCompletionHandler: (void (^)(void)) completionHandler;
 - (void) updateSynchronizationStatus;
+- (void) showNetworkActivity;
+- (void) hideNetworkActivity;
 
 @end

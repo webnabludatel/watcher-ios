@@ -12,6 +12,7 @@
 #import "WatcherTwitterSetupController.h"
 #import "WatcherProfile.h"
 #import "AppDelegate.h"
+#import "WatcherDataManager.h"
 
 @implementation WatcherSettingsController
 
@@ -76,7 +77,15 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
                                     options: NSKeyValueObservingOptionNew 
                                     context: nil];
     
+    [appDelegate.watcherProfile addObserver: self 
+                                 forKeyPath: @"userId" 
+                                    options: NSKeyValueObservingOptionNew 
+                                    context: nil];
+    
     [self.tableView reloadData];
+ 
+    if ( ! appDelegate.watcherProfile.userId.length )
+        [appDelegate.dataManager registerCurrentDevice];
 }
 
 - (void)viewDidUnload
