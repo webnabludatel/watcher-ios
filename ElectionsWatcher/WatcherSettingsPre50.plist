@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>auth_selection</key>
+	<dict>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>facebook</string>
+				<key>title</key>
+				<string>Facebook</string>
+			</dict>
+			<dict>
+				<key>name</key>
+				<string>manual</string>
+				<key>title</key>
+				<string>ФИО + Email</string>
+			</dict>
+		</array>
+	</dict>
+	<key>observer_status</key>
+	<dict>
+		<key>title</key>
+		<string>Статус наблюдателя</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>registration_status</string>
+			</dict>
+		</array>
+	</dict>
+	<key>observer_info</key>
+	<dict>
+		<key>title</key>
+		<string>Официальный наблюдатель</string>
+		<key>items</key>
+		<array>
+			<dict>
+				<key>name</key>
+				<string>official_observer</string>
+				<key>title</key>
+				<string>Загрузите фото удостоверения</string>
+				<key>control</key>
+				<integer>4</integer>
+				<key>hint</key>
+				<string>Сфотографировать</string>
+			</dict>
+		</array>
+	</dict>
+</dict>
+</plist>
