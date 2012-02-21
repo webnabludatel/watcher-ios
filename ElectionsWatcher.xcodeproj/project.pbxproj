@@ -119,11 +119,15 @@
 		5F689D6E14DFB96900223832 /* golos_pr_2_7.html in Resources */ = {isa = PBXBuildFile; fileRef = 5F689D1714DFB96900223832 /* golos_pr_2_7.html */; };
 		5F689D6F14DFB96900223832 /* golos_pr_2_8.html in Resources */ = {isa = PBXBuildFile; fileRef = 5F689D1814DFB96900223832 /* golos_pr_2_8.html */; };
 		5F689D7014DFB96900223832 /* golos_pr_2_9.html in Resources */ = {isa = PBXBuildFile; fileRef = 5F689D1914DFB96900223832 /* golos_pr_2_9.html */; };
-		5F7130AE14F27029007CEAC7 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7130AD14F27029007CEAC7 /* MediaItem.m */; };
 		5F7130B014F29B93007CEAC7 /* PollingPlaceList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F7130AF14F29B92007CEAC7 /* PollingPlaceList.plist */; };
 		5F7130B414F2A048007CEAC7 /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7130B314F2A048007CEAC7 /* UIImage+Resize.m */; };
 		5F7130B914F2A334007CEAC7 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7130B614F2A334007CEAC7 /* UIImage+Alpha.m */; };
 		5F7130BA14F2A334007CEAC7 /* UIImage+RoundedCorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7130B814F2A334007CEAC7 /* UIImage+RoundedCorner.m */; };
+		5F7130BC14F34970007CEAC7 /* WatcherSettingsPre50.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F7130BB14F34970007CEAC7 /* WatcherSettingsPre50.plist */; };
+		5F7130BF14F37C0C007CEAC7 /* WatcherProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7130BE14F37C0C007CEAC7 /* WatcherProfile.m */; };
+		5F7130C214F37C0C007CEAC7 /* PollingPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7130C114F37C0C007CEAC7 /* PollingPlace.m */; };
+		5F7130C514F37C0C007CEAC7 /* MediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7130C414F37C0C007CEAC7 /* MediaItem.m */; };
+		5F7130C814F37C0C007CEAC7 /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F7130C714F37C0C007CEAC7 /* ChecklistItem.m */; };
 		5F73515D14DEF89F00C8D5F1 /* traverseresponderchain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */; };
 		5F7AD6C014EB8F950099FE53 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */; };
 		5F7AD6C114EB8F950099FE53 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5F7AD6BD14EB8F950099FE53 /* README.txt */; };
@@ -192,8 +196,6 @@
 		5F974D0D14CED7B400598945 /* ActionSheetDistancePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F974D0614CED7B400598945 /* ActionSheetDistancePicker.m */; };
 		5F974D0E14CED7B400598945 /* ActionSheetStringPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F974D0814CED7B400598945 /* ActionSheetStringPicker.m */; };
 		5F974D0F14CED7B400598945 /* DistancePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F974D0A14CED7B400598945 /* DistancePickerView.m */; };
-		5FA5E15614F01A2000030487 /* ChecklistItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15514F01A2000030487 /* ChecklistItem.m */; };
-		5FA5E15C14F01A2000030487 /* PollingPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E15B14F01A2000030487 /* PollingPlace.m */; };
 		5FA5E16614F12E8700030487 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA5E16514F12E8700030487 /* Twitter.framework */; };
 		5FA5E16814F130BD00030487 /* report_graph_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E16714F130BD00030487 /* report_graph_bg.png */; };
 		5FA5E16A14F1358B00030487 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA5E16914F1358B00030487 /* Accounts.framework */; };
@@ -206,7 +208,6 @@
 		5FA5E17A14F1A1C500030487 /* sync_ok_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17814F1A1C500030487 /* sync_ok_icon@2x.png */; };
 		5FA5E17D14F1A3FE00030487 /* sync_errors_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17B14F1A3FE00030487 /* sync_errors_icon.png */; };
 		5FA5E17E14F1A3FE00030487 /* sync_ok_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17C14F1A3FE00030487 /* sync_ok_icon.png */; };
-		5FA5E18114F237C200030487 /* WatcherProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA5E18014F237C200030487 /* WatcherProfile.m */; };
 		5FA5E18314F24AA200030487 /* AWSiOSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FA5E18214F24AA100030487 /* AWSiOSSDK.framework */; };
 		5FC6C0DB14CBF8970078AD8E /* WatcherChecklist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */; };
 		5FC6C0DE14CC1C270078AD8E /* WatcherChecklistSectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DD14CC1C270078AD8E /* WatcherChecklistSectionController.m */; };
@@ -360,8 +361,6 @@
 		5F689D1714DFB96900223832 /* golos_pr_2_7.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = golos_pr_2_7.html; sourceTree = "<group>"; };
 		5F689D1814DFB96900223832 /* golos_pr_2_8.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = golos_pr_2_8.html; sourceTree = "<group>"; };
 		5F689D1914DFB96900223832 /* golos_pr_2_9.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = golos_pr_2_9.html; sourceTree = "<group>"; };
-		5F7130AC14F27029007CEAC7 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
-		5F7130AD14F27029007CEAC7 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
 		5F7130AF14F29B92007CEAC7 /* PollingPlaceList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PollingPlaceList.plist; sourceTree = "<group>"; };
 		5F7130B214F2A048007CEAC7 /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		5F7130B314F2A048007CEAC7 /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
@@ -369,6 +368,15 @@
 		5F7130B614F2A334007CEAC7 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Alpha.m"; sourceTree = "<group>"; };
 		5F7130B714F2A334007CEAC7 /* UIImage+RoundedCorner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+RoundedCorner.h"; sourceTree = "<group>"; };
 		5F7130B814F2A334007CEAC7 /* UIImage+RoundedCorner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedCorner.m"; sourceTree = "<group>"; };
+		5F7130BB14F34970007CEAC7 /* WatcherSettingsPre50.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherSettingsPre50.plist; sourceTree = "<group>"; };
+		5F7130BD14F37C0C007CEAC7 /* WatcherProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherProfile.h; sourceTree = "<group>"; };
+		5F7130BE14F37C0C007CEAC7 /* WatcherProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherProfile.m; sourceTree = "<group>"; };
+		5F7130C014F37C0C007CEAC7 /* PollingPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingPlace.h; sourceTree = "<group>"; };
+		5F7130C114F37C0C007CEAC7 /* PollingPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingPlace.m; sourceTree = "<group>"; };
+		5F7130C314F37C0C007CEAC7 /* MediaItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaItem.h; sourceTree = "<group>"; };
+		5F7130C414F37C0C007CEAC7 /* MediaItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaItem.m; sourceTree = "<group>"; };
+		5F7130C614F37C0C007CEAC7 /* ChecklistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistItem.h; sourceTree = "<group>"; };
+		5F7130C714F37C0C007CEAC7 /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
 		5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = traverseresponderchain.m; sourceTree = "<group>"; };
 		5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		5F7AD6BD14EB8F950099FE53 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -469,10 +477,6 @@
 		5F974D0814CED7B400598945 /* ActionSheetStringPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetStringPicker.m; sourceTree = "<group>"; };
 		5F974D0914CED7B400598945 /* DistancePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistancePickerView.h; sourceTree = "<group>"; };
 		5F974D0A14CED7B400598945 /* DistancePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistancePickerView.m; sourceTree = "<group>"; };
-		5FA5E15414F01A2000030487 /* ChecklistItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChecklistItem.h; sourceTree = "<group>"; };
-		5FA5E15514F01A2000030487 /* ChecklistItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChecklistItem.m; sourceTree = "<group>"; };
-		5FA5E15A14F01A2000030487 /* PollingPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingPlace.h; sourceTree = "<group>"; };
-		5FA5E15B14F01A2000030487 /* PollingPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingPlace.m; sourceTree = "<group>"; };
 		5FA5E16514F12E8700030487 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		5FA5E16714F130BD00030487 /* report_graph_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = report_graph_bg.png; sourceTree = "<group>"; };
 		5FA5E16914F1358B00030487 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
@@ -487,8 +491,6 @@
 		5FA5E17814F1A1C500030487 /* sync_ok_icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sync_ok_icon@2x.png"; sourceTree = "<group>"; };
 		5FA5E17B14F1A3FE00030487 /* sync_errors_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_errors_icon.png; sourceTree = "<group>"; };
 		5FA5E17C14F1A3FE00030487 /* sync_ok_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_ok_icon.png; sourceTree = "<group>"; };
-		5FA5E17F14F237C200030487 /* WatcherProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherProfile.h; sourceTree = "<group>"; };
-		5FA5E18014F237C200030487 /* WatcherProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherProfile.m; sourceTree = "<group>"; };
 		5FA5E18214F24AA100030487 /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSiOSSDK.framework; path = "../aws-ios-sdk-1.1.1/AWSiOSSDK.framework"; sourceTree = "<group>"; };
 		5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherChecklist.plist; sourceTree = "<group>"; };
 		5FC6C0DC14CC1C270078AD8E /* WatcherChecklistSectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistSectionController.h; sourceTree = "<group>"; };
@@ -821,6 +823,7 @@
 				5F7ADDCD14C1AE4100A8E955 /* Supporting Files */,
 				5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */,
 				5F8892B214E68C5F0067F2DD /* WatcherSettings.plist */,
+				5F7130BB14F34970007CEAC7 /* WatcherSettingsPre50.plist */,
 				5FD5978A14EFF29F00E27620 /* WatcherProfile.plist */,
 				5F7DDA3814EBCDCA005857D3 /* WatcherPollingPlace.plist */,
 				5F8892D214E7CD800067F2DD /* WatcherSOS.plist */,
@@ -896,15 +899,15 @@
 		5F91F20514C1C3BC00446C86 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5FA5E17F14F237C200030487 /* WatcherProfile.h */,
-				5FA5E18014F237C200030487 /* WatcherProfile.m */,
-				5F7130AC14F27029007CEAC7 /* MediaItem.h */,
-				5F7130AD14F27029007CEAC7 /* MediaItem.m */,
 				5F7DDA2D14EBBAC7005857D3 /* ElectionsWatcherDataModel.xcdatamodeld */,
-				5FA5E15414F01A2000030487 /* ChecklistItem.h */,
-				5FA5E15514F01A2000030487 /* ChecklistItem.m */,
-				5FA5E15A14F01A2000030487 /* PollingPlace.h */,
-				5FA5E15B14F01A2000030487 /* PollingPlace.m */,
+				5F7130BD14F37C0C007CEAC7 /* WatcherProfile.h */,
+				5F7130BE14F37C0C007CEAC7 /* WatcherProfile.m */,
+				5F7130C314F37C0C007CEAC7 /* MediaItem.h */,
+				5F7130C414F37C0C007CEAC7 /* MediaItem.m */,
+				5F7130C614F37C0C007CEAC7 /* ChecklistItem.h */,
+				5F7130C714F37C0C007CEAC7 /* ChecklistItem.m */,
+				5F7130C014F37C0C007CEAC7 /* PollingPlace.h */,
+				5F7130C114F37C0C007CEAC7 /* PollingPlace.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1185,6 +1188,7 @@
 				5FA5E17D14F1A3FE00030487 /* sync_errors_icon.png in Resources */,
 				5FA5E17E14F1A3FE00030487 /* sync_ok_icon.png in Resources */,
 				5F7130B014F29B93007CEAC7 /* PollingPlaceList.plist in Resources */,
+				5F7130BC14F34970007CEAC7 /* WatcherSettingsPre50.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1247,14 +1251,14 @@
 				5FD5979A14EFFAC700E27620 /* FBLoginDialog.m in Sources */,
 				5FD5979B14EFFAC700E27620 /* FBRequest.m in Sources */,
 				5FD597A914EFFBF300E27620 /* NSObject+SBJSON.m in Sources */,
-				5FA5E15614F01A2000030487 /* ChecklistItem.m in Sources */,
-				5FA5E15C14F01A2000030487 /* PollingPlace.m in Sources */,
 				5FA5E16E14F137D200030487 /* WatcherTwitterSetupController.m in Sources */,
-				5FA5E18114F237C200030487 /* WatcherProfile.m in Sources */,
-				5F7130AE14F27029007CEAC7 /* MediaItem.m in Sources */,
 				5F7130B414F2A048007CEAC7 /* UIImage+Resize.m in Sources */,
 				5F7130B914F2A334007CEAC7 /* UIImage+Alpha.m in Sources */,
 				5F7130BA14F2A334007CEAC7 /* UIImage+RoundedCorner.m in Sources */,
+				5F7130BF14F37C0C007CEAC7 /* WatcherProfile.m in Sources */,
+				5F7130C214F37C0C007CEAC7 /* PollingPlace.m in Sources */,
+				5F7130C514F37C0C007CEAC7 /* MediaItem.m in Sources */,
+				5F7130C814F37C0C007CEAC7 /* ChecklistItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1341,7 +1345,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
@@ -1359,6 +1363,7 @@
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XMPSoft Ltd.";
+				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../aws-ios-sdk-1.1.1\"",
@@ -1366,7 +1371,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
