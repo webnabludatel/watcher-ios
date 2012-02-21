@@ -11,6 +11,5 @@
 @interface WatcherChecklistSectionController : UITableViewController
 
 @property (nonatomic, retain) NSDictionary *sectionData;
-@property (nonatomic) NSInteger sectionIndex;
 
 @end

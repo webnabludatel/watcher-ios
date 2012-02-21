@@ -19,7 +19,7 @@
 @synthesize settings = _settings;
 @synthesize HUD = _HUD;
 
-static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
+static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @"observer_info" };
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,9 +52,15 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-    NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSettings" 
-                                                            ofType: @"plist"];
+    
+    NSString *defaultPath = nil;
+    if ( [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString: @"."] objectAtIndex: 0] intValue] >= 5 )
+        defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSettings" 
+                                                      ofType: @"plist"];
+    else
+        defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSettingsPre50" 
+                                                      ofType: @"plist"];
+    
     self.settings = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
 }
 
@@ -85,7 +91,8 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
     [self.tableView reloadData];
  
     if ( ! appDelegate.watcherProfile.userId.length )
-        [appDelegate.dataManager registerCurrentDevice];
+        [appDelegate.dataManager performSelector: @selector(registerCurrentDevice) withObject: nil afterDelay: 10];
+//        [appDelegate.dataManager registerCurrentDevice];
 }
 
 - (void)viewDidUnload
@@ -119,6 +126,8 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ( indexPath.section == 0 ) {
+        return 42;
+    } else if ( indexPath.section == 1 ) {
         return 42;
     } else {
         NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
@@ -167,6 +176,21 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
             
             cell.imageView.image = [UIImage imageNamed: @"twitter_icon"];
         }
+    } else if ( indexPath.section == 1 ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        
+        if ( appDelegate.watcherProfile.userId.length == 0 ) {
+            cell.textLabel.text = @"Регистрация на сервере";
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            UIActivityIndicatorView *iv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
+            cell.accessoryView = iv;
+            [iv startAnimating];
+            [iv release];
+        } else {
+            cell.textLabel.text = @"Зарегистрирован";
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            cell.accessoryView = nil;
+        }
     } else {
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: [itemInfo objectForKey: @"name"], @"ITEM_NAME", nil];
@@ -193,6 +217,9 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
             cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleValue1 reuseIdentifier: cellId] autorelease];
         
         cell.textLabel.text = nil;
+    } else if ( indexPath.section == 1 ) {
+        if ( cell == nil )
+            cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleValue1 reuseIdentifier: cellId] autorelease];
     } else {
         NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
         NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
@@ -258,6 +285,41 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_info" };
             [profileController release];
             [nc release];
             
+        }
+    }
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    
+    if ( [@"twitter" isEqualToString: [itemInfo objectForKey: @"name"]] || [@"facebook" isEqualToString: [itemInfo objectForKey: @"name"]] )
+        return @"Выйти";
+    else
+        return nil;
+}
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    return [@"twitter" isEqualToString: [itemInfo objectForKey: @"name"]] || [@"facebook" isEqualToString: [itemInfo objectForKey: @"name"]];
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ( editingStyle == UITableViewCellEditingStyleDelete ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        
+        NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+        NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+        
+        if ( [@"twitter" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
+            appDelegate.watcherProfile.twNickname = nil;
+            appDelegate.watcherProfile.twAccessExpires = nil;
+            appDelegate.watcherProfile.twAccessToken = nil;
+        }
+        
+        if ( [@"facebook" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
+            [appDelegate.facebook logout];
         }
     }
 }

@@ -30,6 +30,16 @@
 			</dict>
 			<dict>
 				<key>name</key>
+				<string>middle_name</string>
+				<key>title</key>
+				<string>Отчество</string>
+				<key>control</key>
+				<integer>0</integer>
+				<key>hint</key>
+				<string>отчество</string>
+			</dict>
+			<dict>
+				<key>name</key>
 				<string>email</string>
 				<key>title</key>
 				<string>E-mail</string>
@@ -44,7 +54,7 @@
 				<key>title</key>
 				<string>Телефон</string>
 				<key>control</key>
-				<integer>8</integer>
+				<integer>9</integer>
 				<key>hint</key>
 				<string>введите телефон</string>
 			</dict>

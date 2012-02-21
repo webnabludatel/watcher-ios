@@ -377,6 +377,7 @@
 }
 
 -(void)fbDidLogout {
+    _watcherProfile.fbNickname = nil;
     _watcherProfile.fbAccessToken = nil;
     _watcherProfile.fbAccessExpires = nil;
     
@@ -397,6 +398,7 @@
 }
 
 -(void)fbDidNotLogin:(BOOL)cancelled {
+    _watcherProfile.fbNickname = nil;
     _watcherProfile.fbAccessToken = nil;
     _watcherProfile.fbAccessExpires = nil;
     
@@ -407,6 +409,7 @@
 }
 
 -(void)fbSessionInvalidated {
+    _watcherProfile.fbNickname = nil;
     _watcherProfile.fbAccessToken = nil;
     _watcherProfile.fbAccessExpires = nil;
     
@@ -459,8 +462,8 @@
         
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         
-        NSURL *url = [NSURL URLWithString: @"https://api.twitter.com/1/account/verify_credentials.json"];
-        TWRequest *twRequest = [[TWRequest alloc] initWithURL: url parameters: nil requestMethod: TWRequestMethodGET];
+        NSURL *profileInfoUrl = [NSURL URLWithString: @"https://api.twitter.com/1/account/verify_credentials.json"];
+        TWRequest *twRequest = [[TWRequest alloc] initWithURL: profileInfoUrl parameters: nil requestMethod: TWRequestMethodGET];
         [twRequest setAccount: [[twitterAccount retain] autorelease]];
         [twRequest performRequestWithHandler: ^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
             if ( responseData ) {
@@ -482,6 +485,48 @@
                 NSLog(@"twitter request error: %@", error);
             }
         }];
+        
+        /*
+        CFUUIDRef uuidRef = CFUUIDCreate(NULL);
+        CFStringRef uuidString = CFUUIDCreateString(NULL, uuidRef);
+        
+        NSDictionary *step1Params = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                     @"bSH90XRI1NR4iNlx7tMcQ", @"oauth_consumer_key", 
+                                     (NSString *) uuidString, @"oauth_nonce", 
+                                     @"HMAC-SHA1", @"oauth_signature_method", 
+                                     [NSString stringWithFormat: @"%d", [[NSDate date] timeIntervalSince1970]], @"oauth_timestamp", 
+                                     @"1.0", @"oauth_version", 
+                                     @"reverse_auth", @"x_auth_mode", 
+                                     nil];
+        
+        CFRelease(uuidString);
+        CFRelease(uuidRef);
+        
+        TWRequest *reverseAuthStep1 = [[TWRequest alloc] initWithURL: [NSURL URLWithString: @"https://api.twitter.com/oauth/request_token"] 
+                                                          parameters: step1Params 
+                                                       requestMethod: TWRequestMethodPOST];
+        [reverseAuthStep1 setAccount: [[twitterAccount retain] autorelease]];
+        [reverseAuthStep1 performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+            NSString *response1 = [[[NSString alloc] initWithData: responseData encoding: NSUTF8StringEncoding] autorelease];
+            NSLog(@"step 1 response: %@", response1);
+            NSDictionary *step2Params = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                         @"bSH90XRI1NR4iNlx7tMcQ", @"x_reverse_auth_target", 
+                                         response1, @"x_reverse_auth_parameters", 
+                                         nil];
+            TWRequest *reverseAuthStep2 = [[TWRequest alloc] initWithURL: [NSURL URLWithString: @"https://api.twitter.com/oauth/access_token"] 
+                                                              parameters: step2Params 
+                                                           requestMethod: TWRequestMethodPOST];
+            [reverseAuthStep2 performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+                NSString *response2 = [[[NSString alloc] initWithData: responseData encoding: NSUTF8StringEncoding] autorelease];
+                NSLog(@"step 2 response: %@", response2);
+            }];
+            
+            [reverseAuthStep2 release];
+        }];
+        
+        [reverseAuthStep1 release];
+         */
+        
         
         [twRequest release];
         [store release];

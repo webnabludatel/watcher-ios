@@ -69,9 +69,6 @@
         [self.managedObjectContext save: &error];
         if ( error )
             NSLog(@"error saving data manager context: %@", error.description);
-        
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     }
 }
 
@@ -247,6 +244,7 @@
     
     [_objectsInProgress removeObject: checklistItem];
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) sendMediaItem: (MediaItem *) mediaItem {
@@ -297,6 +295,7 @@
     
     [_objectsInProgress removeObject: mediaItem];
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) uploadMediaItem: (MediaItem *) mediaItem {
@@ -326,6 +325,7 @@
     }
     
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) sendDeviceRegistration {
@@ -349,18 +349,20 @@
             
             if ( [@"ok" isEqualToString: [registrationInfo objectForKey: @"status"]] ) {
                 NSDictionary *result = [registrationInfo objectForKey: @"result"];
-                NSDictionary *useridChecklistParams = [NSDictionary dictionaryWithObjectsAndKeys: @"user_id", @"ITEM_NAME", nil];
+//                NSDictionary *useridChecklistParams = [NSDictionary dictionaryWithObjectsAndKeys: @"user_id", @"ITEM_NAME", nil];
                 WatcherProfile *watcherProfile = [[appDelegate executeFetchRequest: @"findProfile" 
                                                                          forEntity: @"WatcherProfile" 
                                                                        withContext: self.managedObjectContext
                                                                     withParameters: [NSDictionary dictionary]] lastObject];
-                
+
+                /*
                 ChecklistItem *useridChecklistItem = [[appDelegate executeFetchRequest: @"findItemByName" 
                                                                              forEntity: @"ChecklistItem" 
                                                                            withContext: self.managedObjectContext
                                                                         withParameters: useridChecklistParams] lastObject];
                 
                 useridChecklistItem.value   = [NSString stringWithFormat: @"%@", [result objectForKey: @"user_id"]];
+                 */
                 watcherProfile.userId       = [NSString stringWithFormat: @"%@", [result objectForKey: @"user_id"]];
                 watcherProfile.serverSecret = [result objectForKey: @"secret"];
                 
@@ -373,6 +375,7 @@
     }
     
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
+//    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) startProcessing {

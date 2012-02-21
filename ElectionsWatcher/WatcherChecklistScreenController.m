@@ -15,7 +15,7 @@
 @implementation WatcherChecklistScreenController
 
 @synthesize screenIndex;
-@synthesize sectionIndex;
+@synthesize sectionName;
 @synthesize screenInfo;
 @synthesize isCancelling;
 @synthesize latestActiveResponder;
@@ -41,6 +41,7 @@
 
 -(void)dealloc {
     [screenInfo release];
+    [sectionName release];
     
     [super dealloc];
 }
@@ -149,8 +150,8 @@
     NSDictionary *itemInfo      = [items objectAtIndex: indexPath.row];
     AppDelegate *appDelegate    = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSArray *checklistItems     = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
-    NSPredicate *itemPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d && SELF.screenIndex == %d && SELF.name LIKE %@", 
-                                   self.sectionIndex, self.screenIndex, [itemInfo objectForKey: @"name"]];
+    NSPredicate *itemPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@ && SELF.screenIndex == %d && SELF.name LIKE %@", 
+                                   self.sectionName, self.screenIndex, [itemInfo objectForKey: @"name"]];
     
     NSArray *existingItems = [checklistItems filteredArrayUsingPredicate: itemPredicate];
     ChecklistItem *checklistItem = nil;
@@ -182,7 +183,7 @@
         WatcherChecklistScreenCell *watcherCell = (WatcherChecklistScreenCell *) cell;
         watcherCell.saveDelegate = self;
         watcherCell.checklistCellDelegate = self;
-        watcherCell.sectionIndex = self.sectionIndex;
+        watcherCell.sectionName = self.sectionName;
         watcherCell.screenIndex = self.screenIndex;
     }
 

@@ -15,7 +15,6 @@
 @implementation WatcherChecklistSectionController
 
 @synthesize sectionData;
-@synthesize sectionIndex;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -132,8 +131,8 @@
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
-    NSPredicate *screenPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d && SELF.screenIndex == %d", 
-                                    self.sectionIndex, indexPath.row];
+    NSPredicate *screenPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@ && SELF.screenIndex == %d", 
+                                    [self.sectionData objectForKey: @"name"], indexPath.row];
     NSArray *screenItems = [checklistItems filteredArrayUsingPredicate: screenPredicate];
     
     cell.textLabel.text = [screenInfo objectForKey: @"title"];
@@ -165,7 +164,7 @@
     WatcherChecklistScreenController *screenController = [[WatcherChecklistScreenController alloc] initWithStyle: UITableViewStyleGrouped];
     screenController.screenInfo = [screens objectAtIndex: indexPath.row];
     screenController.screenIndex = indexPath.row;
-    screenController.sectionIndex = self.sectionIndex;
+    screenController.sectionName = [self.sectionData objectForKey: @"name"];
     
     [self.navigationController pushViewController: screenController animated: YES];
     [screenController release];

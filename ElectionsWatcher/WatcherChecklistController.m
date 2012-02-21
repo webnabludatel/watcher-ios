@@ -98,6 +98,19 @@
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
 }
 
+#pragma mark - Helper methods
+
+- (NSArray *) sortedAndFilteredSections {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSArray *sortDescriptors = [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" ascending: YES]];
+    NSArray *sortedSections  = [[watcherChecklist allValues] sortedArrayUsingDescriptors: sortDescriptors];
+    
+    NSPredicate *pollingPlaceTypePredicate = [NSPredicate predicateWithFormat: @"ANY SELF.district_types LIKE %@", 
+                                              appDelegate.watcherProfile.currentPollingPlace.type];
+    
+    return [sortedSections filteredArrayUsingPredicate: pollingPlaceTypePredicate];
+}
+
 #pragma mark - UITableView
 
 - (NSInteger) numberOfSectionsInTableView: (UITableView *) tableView {
@@ -114,7 +127,7 @@
                                                    withParameters: nil];
         return [pollingPlaces count]+1;
     } else {
-        return appDelegate.watcherProfile.currentPollingPlace ? [watcherChecklist count] : 0;
+        return [[self sortedAndFilteredSections] count];
     }
 }
 
@@ -129,17 +142,15 @@
 - (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     if ( indexPath.section == 1 && appDelegate.watcherProfile.currentPollingPlace ) {
-        NSArray *values = [watcherChecklist allValues];
-        NSArray *sortedValues = [values sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" 
-                                                                                                                             ascending: YES]]];
-        NSDictionary *screenInfo = [sortedValues objectAtIndex: indexPath.row];
+        
+        NSDictionary *sectionInfo = [[self sortedAndFilteredSections] objectAtIndex: indexPath.row];
         
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
-        NSPredicate *sectionPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionIndex == %d", indexPath.row];
+        NSPredicate *sectionPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@", [sectionInfo objectForKey: @"name"]];
         NSArray *sectionItems = [checklistItems filteredArrayUsingPredicate: sectionPredicate];
         
-        cell.textLabel.text = [screenInfo objectForKey: @"title"];
+        cell.textLabel.text = [sectionInfo objectForKey: @"title"];
         cell.detailTextLabel.text = [sectionItems count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [sectionItems count]] : @"Отметок нет";
     }
 }
@@ -216,12 +227,8 @@
             [nc release];
         }
     } else {
-        NSArray *values = [watcherChecklist allValues];
-        NSArray *sortedValues = [values sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" 
-                                                                                                                             ascending: YES]]];
         WatcherChecklistSectionController *sectionController = [[WatcherChecklistSectionController alloc] initWithStyle: UITableViewStyleGrouped];
-        sectionController.sectionData = [sortedValues objectAtIndex: indexPath.row];
-        sectionController.sectionIndex = indexPath.row;
+        sectionController.sectionData = [[self sortedAndFilteredSections] objectAtIndex: indexPath.row];
         
         [self.navigationController pushViewController: sectionController animated: YES];
         [sectionController release];
@@ -238,29 +245,31 @@
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                    forEntity: @"PollingPlace" 
-                                               withParameters: nil];
-    PollingPlace *pollingPlaceToRemove = [pollingPlaces objectAtIndex: indexPath.row];
-    
-    if ( pollingPlaceToRemove == appDelegate.watcherProfile.currentPollingPlace ) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
-                                                            message: @"Нельзя удалить активный избирательный участок" 
-                                                           delegate: nil 
-                                                  cancelButtonTitle: @"OK" 
-                                                  otherButtonTitles: nil];
-        [alertView show];
-        [alertView release];
-    } else {
-        [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
+    if ( editingStyle == UITableViewCellEditingStyleDelete ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                        forEntity: @"PollingPlace" 
+                                                   withParameters: nil];
+        PollingPlace *pollingPlaceToRemove = [pollingPlaces objectAtIndex: indexPath.row];
         
-        NSError *error = nil;
-        [appDelegate.managedObjectContext save: &error];
-        if ( error ) 
-            NSLog(@"error removing polling place: %@", error.description);
-        
-        [self.tableView reloadData];
+        if ( pollingPlaceToRemove == appDelegate.watcherProfile.currentPollingPlace ) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
+                                                                message: @"Нельзя удалить активный избирательный участок" 
+                                                               delegate: nil 
+                                                      cancelButtonTitle: @"OK" 
+                                                      otherButtonTitles: nil];
+            [alertView show];
+            [alertView release];
+        } else {
+            [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
+            
+            NSError *error = nil;
+            [appDelegate.managedObjectContext save: &error];
+            if ( error ) 
+                NSLog(@"error removing polling place: %@", error.description);
+            
+            [self.tableView reloadData];
+        }
     }
 }
 

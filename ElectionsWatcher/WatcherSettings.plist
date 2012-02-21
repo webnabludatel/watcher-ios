@@ -26,31 +26,33 @@
 			</dict>
 		</array>
 	</dict>
-	<key>observer_info</key>
+	<key>observer_status</key>
 	<dict>
 		<key>title</key>
-		<string>Наблюдатель</string>
+		<string>Статус наблюдателя</string>
 		<key>items</key>
 		<array>
 			<dict>
 				<key>name</key>
-				<string>user_id</string>
-				<key>title</key>
-				<string>ID пользователя</string>
-				<key>control</key>
-				<integer>7</integer>
-				<key>hint</key>
-				<string>вы не прошли регистрацию</string>
+				<string>registration_status</string>
 			</dict>
+		</array>
+	</dict>
+	<key>observer_info</key>
+	<dict>
+		<key>title</key>
+		<string>Официальный наблюдатель</string>
+		<key>items</key>
+		<array>
 			<dict>
 				<key>name</key>
 				<string>official_observer</string>
 				<key>title</key>
-				<string>Вы официальный наблюдатель?</string>
+				<string>Загрузите фото удостоверения</string>
 				<key>control</key>
 				<integer>4</integer>
 				<key>hint</key>
-				<string>Фото удостоверения</string>
+				<string>Сфотографировать</string>
 			</dict>
 		</array>
 	</dict>

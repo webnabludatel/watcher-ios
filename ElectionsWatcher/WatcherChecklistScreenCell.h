@@ -21,6 +21,7 @@
 #define INPUT_COMMENT       6
 #define INPUT_CONSTANT      7
 #define INPUT_EMAIL         8
+#define INPUT_PHONE         9
 
 @class ChecklistItem;
 @class MBProgressHUD;
@@ -31,7 +32,7 @@
 @property (nonatomic, assign) UIView *control;
 @property (nonatomic, assign) UILabel *itemLabel;
 @property (nonatomic, retain) ChecklistItem *checklistItem;
-@property (nonatomic) NSInteger sectionIndex;
+@property (nonatomic, retain) NSString *sectionName;
 @property (nonatomic) NSInteger screenIndex;
 @property (nonatomic, retain) NSMutableArray *mwBrowserItems;
 @property (nonatomic, assign) id<WatcherSaveAttributeDelegate> saveDelegate;

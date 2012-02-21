@@ -69,8 +69,8 @@
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSArray *checklistItems = [appDelegate.watcherProfile.currentPollingPlace.checklistItems allObjects];
     
-    NSPredicate *badPredicate   = [NSPredicate predicateWithFormat: @"SELF.sectionIndex >= 0 && SELF.screenIndex >= 0 && SELF.violationFlag == 1"];
-    NSPredicate *goodPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionIndex >= 0 && SELF.screenIndex >= 0 && SELF.violationFlag == 0"];
+    NSPredicate *badPredicate   = [NSPredicate predicateWithFormat: @"SELF.sectionName != NIL && SELF.screenIndex >= 0 && SELF.violationFlag == 1"];
+    NSPredicate *goodPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionName != NIL && SELF.screenIndex >= 0 && SELF.violationFlag == 0"];
     
     self.goodItems = [checklistItems filteredArrayUsingPredicate: goodPredicate];
     self.badItems = [checklistItems filteredArrayUsingPredicate: badPredicate];
@@ -118,7 +118,7 @@
                 [NSString stringWithFormat: @"На %@ № %@ не отмечено нарушений", 
                  appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] ;
         else
-            return @"Нет данных";
+            return @"Информация появится после заполнения раздела «Наблюдение»";
     } else {
         return nil;
     }
@@ -179,11 +179,7 @@
     if ( indexPath.section == 1 ) {
         ChecklistItem *item = [self.badItems objectAtIndex: indexPath.row];
         
-        NSArray *values = [watcherChecklist allValues];
-        NSArray *sortedValues = [values sortedArrayUsingDescriptors: [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" 
-                                                                                                                             ascending: YES]]];
-        
-        NSDictionary *sectionInfo = [sortedValues objectAtIndex: [item.sectionIndex intValue]];
+        NSDictionary *sectionInfo = [watcherChecklist objectForKey: item.sectionName];
         NSArray *sectionScreens = [sectionInfo objectForKey: @"screens"];
         NSDictionary *screenInfo = [sectionScreens objectAtIndex: [item.screenIndex intValue]];
         NSArray *screenItems = [screenInfo objectForKey: @"items"];

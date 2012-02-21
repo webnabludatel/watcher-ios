@@ -18,6 +18,7 @@
 #import "MWMoviePreview.h"
 #import "MWMovieBrowser.h"
 #import "UIImage+Resize.h"
+#import "RegexKitLite.h"
 
 @implementation WatcherChecklistScreenCell
 
@@ -25,12 +26,20 @@
 @synthesize control;
 @synthesize itemLabel;
 @synthesize checklistItem;
-@synthesize sectionIndex;
+@synthesize sectionName;
 @synthesize screenIndex;
 @synthesize mwBrowserItems;
 @synthesize saveDelegate;
 @synthesize checklistCellDelegate;
 @synthesize HUD;
+
+-(void)dealloc {
+    [sectionName release];
+    [mwBrowserItems release];
+    [checklistItem release];
+    
+    [super dealloc];
+}
 
 #pragma mark -
 #pragma mark Cell implementation
@@ -52,8 +61,8 @@
             [[self.itemInfo objectForKey: @"title"] stringByAppendingString: @" (*)"] :
             [self.itemInfo objectForKey: @"title"] ;
         
-        self.sectionIndex   = -1;
-        self.screenIndex    = -1;
+        self.sectionName   = nil;
+        self.screenIndex   = -1;
         
         int controlType = [[self.itemInfo objectForKey: @"control"] intValue];
 
@@ -72,22 +81,30 @@
                 textField.placeholder = [self.itemInfo objectForKey: @"hint"];
                 textField.delegate = self;
                 textField.font = [UIFont systemFontOfSize: 14];
+//                textField.borderStyle = UITextBorderStyleRoundedRect;
                 
                 if ( controlType == INPUT_CONSTANT ) 
                     textField.userInteractionEnabled = NO;
+                
+                if ( controlType == INPUT_EMAIL ) {
+                    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                    textField.autocorrectionType = UITextAutocorrectionTypeNo;
+                }
             }
                 break;
                 
+            case INPUT_PHONE:
             case INPUT_NUMBER: {
                 self.control = [[[UITextField alloc] init] autorelease];
                 
                 UITextField *textField = (UITextField *) self.control;
                 textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-                textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+                textField.keyboardType = ( controlType == INPUT_PHONE ) ? UIKeyboardTypePhonePad : UIKeyboardTypeNumberPad;
                 textField.returnKeyType = UIReturnKeyDone;
                 textField.placeholder = [self.itemInfo objectForKey: @"hint"];
                 textField.delegate = self;
                 textField.font = [UIFont systemFontOfSize: 14];
+//                textField.borderStyle = UITextBorderStyleRoundedRect;
                 
             }
                 break;
@@ -102,6 +119,7 @@
                 textField.placeholder = [self.itemInfo objectForKey: @"hint"];
                 textField.delegate = self;
                 textField.font = [UIFont systemFontOfSize: 14];
+//                textField.borderStyle = UITextBorderStyleRoundedRect;
             }
                 break;
                 
@@ -236,12 +254,13 @@
         case INPUT_EMAIL:
         case INPUT_NUMBER:
         case INPUT_CONSTANT:
+        case INPUT_PHONE:
         case INPUT_DROPDOWN: {
             UITextField *textField = (UITextField *) self.control;
             textField.text = self.checklistItem.value;
             
-            if ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_CONSTANT )
-                [self saveItem];
+//            if ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_CONSTANT )
+//                [self saveItem];
         }
             break;
             
@@ -311,7 +330,7 @@
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
     self.checklistItem.name = [self.itemInfo objectForKey: @"name"];
-    self.checklistItem.sectionIndex = [NSNumber numberWithInt: self.sectionIndex];
+    self.checklistItem.sectionName = self.sectionName;
     self.checklistItem.screenIndex = [NSNumber numberWithInt: self.screenIndex];
     
     self.checklistItem.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
@@ -321,11 +340,12 @@
     
     switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
         case INPUT_CONSTANT:
-            self.checklistItem.synchronized = [NSNumber numberWithBool: YES]; // never synchronize constant items
-            break;
+//            self.checklistItem.synchronized = [NSNumber numberWithBool: YES]; // never synchronize constant items
+//            break;
         case INPUT_TEXT:
         case INPUT_EMAIL:
         case INPUT_NUMBER:
+        case INPUT_PHONE:
         case INPUT_DROPDOWN: {
             UITextField *textField = (UITextField *) self.control;
             self.checklistItem.value = textField.text;

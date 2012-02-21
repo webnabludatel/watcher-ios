@@ -119,22 +119,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.twitterAccounts.count+1;
+    return self.twitterAccounts.count;
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ( indexPath.row > 0 ) {
-        ACAccount *twitterAccount = [self.twitterAccounts objectAtIndex: indexPath.row-1]; 
-        cell.textLabel.text = twitterAccount.username;
-        
-        if ( [self.selectedUsername isEqualToString: twitterAccount.username] )
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-        else
-            cell.accessoryType = UITableViewCellAccessoryNone;
-    } else {
-        cell.textLabel.text = @"не использовать";
-        cell.accessoryType = self.selectedUsername.length ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
-    }
+    ACAccount *twitterAccount = [self.twitterAccounts objectAtIndex: indexPath.row]; 
+    cell.textLabel.text = twitterAccount.username;
+    
+    if ( [self.selectedUsername isEqualToString: twitterAccount.username] )
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    else
+        cell.accessoryType = UITableViewCellAccessoryNone;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -155,11 +150,7 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ( indexPath.row > 0 ) {
-        self.selectedUsername = [[self.twitterAccounts objectAtIndex: indexPath.row-1] username]; 
-    } else {
-        self.selectedUsername = nil;
-    }
+    self.selectedUsername = [[self.twitterAccounts objectAtIndex: indexPath.row] username]; 
     
     [self.tableView reloadData];
 }
