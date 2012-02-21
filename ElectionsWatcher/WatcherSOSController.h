@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "WatcherSaveAttributeDelegate.h"
 #import "WatcherChecklistScreenCellDelegate.h"
+#import "MBProgressHUD.h"
 
-@interface WatcherSOSController : UITableViewController <WatcherSaveAttributeDelegate, WatcherChecklistScreenCellDelegate>
+@interface WatcherSOSController : UITableViewController <WatcherSaveAttributeDelegate, WatcherChecklistScreenCellDelegate, MBProgressHUDDelegate>
 
 @property (nonatomic, retain) NSDictionary *sosReport;
+@property (nonatomic, retain) NSMutableSet *sosItems;
 @property (nonatomic, assign) UIResponder *latestActiveResponder;
+@property (nonatomic, assign) MBProgressHUD *HUD;
 
 @end

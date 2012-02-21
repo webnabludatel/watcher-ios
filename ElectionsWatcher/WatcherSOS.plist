@@ -5,14 +5,14 @@
 	<key>sos_report</key>
 	<dict>
 		<key>title</key>
-		<string>Сообщите нам об удалении</string>
+		<string>Меня удаляют. Что делать?</string>
 		<key>items</key>
 		<array>
 			<dict>
 				<key>name</key>
 				<string>sos_report_text</string>
 				<key>title</key>
-				<string>Текст сообщения</string>
+				<string>Сообщите нам об удалении</string>
 				<key>hint</key>
 				<string>введите сообщение</string>
 				<key>control</key>

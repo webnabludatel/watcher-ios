@@ -107,29 +107,71 @@
 
 #pragma mark - Table view data source
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if ( section == 1 ) {
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return ( section == 1 ) ? 50 : 0;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if  ( section == 1 ) {
+        NSString *summary = nil;
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        
         if ( appDelegate.watcherProfile.currentPollingPlace )
-            return self.badItems.count ?
+            summary = self.badItems.count ?
                 [NSString stringWithFormat: @"Нарушения на %@ № %@", 
-                 appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
+                    appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
                 [NSString stringWithFormat: @"На %@ № %@ не отмечено нарушений", 
-                 appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] ;
+                     appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] ;
         else
-            return @"Информация появится после заполнения раздела «Наблюдение»";
-    } else {
-        return nil;
+            summary = @"Информация появится после заполнения раздела «Наблюдение»";
+        
+
+        CGRect headerFrame = CGRectMake(10, 0, tableView.bounds.size.width-20, 60);
+        UIView *headerView = [[[UIView alloc] initWithFrame: headerFrame] autorelease];
+        
+        UIButton *linkButton = [UIButton buttonWithType: UIButtonTypeRoundedRect];
+        UIButton *facebookButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        UIButton *twitterButton = [UIButton buttonWithType: UIButtonTypeCustom];
+        UILabel *summaryLabel = [[[UILabel alloc] initWithFrame: CGRectZero] autorelease];
+        
+        [linkButton setTitle: @"Ваш отчет на сайте" forState: UIControlStateNormal];
+        [linkButton setTitleColor: [UIColor darkTextColor] forState: UIControlStateNormal];
+        [linkButton setTitleColor: [UIColor lightTextColor] forState: UIControlStateSelected];
+        [facebookButton setImage: [UIImage imageNamed: @"facebook_icon"] forState: UIControlStateNormal];
+        [twitterButton setImage: [UIImage imageNamed: @"twitter_icon"] forState: UIControlStateNormal];
+        
+        summaryLabel.text = summary;
+        summaryLabel.backgroundColor = [UIColor clearColor];
+        summaryLabel.textColor = [UIColor darkTextColor];
+        summaryLabel.font = [UIFont boldSystemFontOfSize: 15];
+        summaryLabel.numberOfLines = 2;
+        summaryLabel.lineBreakMode = UILineBreakModeWordWrap;
+        
+        linkButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
+        linkButton.titleLabel.textAlignment = UITextAlignmentLeft;
+        
+        [headerView addSubview: summaryLabel];
+        [headerView addSubview: linkButton];
+        [headerView addSubview: facebookButton];
+        [headerView addSubview: twitterButton];
+        
+        linkButton.frame = CGRectMake(10, 0, headerFrame.size.width*2/3, 30);
+        twitterButton.frame = CGRectMake(headerFrame.size.width*2/3+20, 0, 30, 30);
+        facebookButton.frame = CGRectMake(headerFrame.size.width*2/3+60, 0, 30, 30);
+        
+        summaryLabel.frame = CGRectMake(10, 30, headerFrame.size.width, 40);
+        
+        return headerView;
     }
+    
+    return nil;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return ( section == 1 && self.badItems.count ) ? 100 : 0;
+    return ( section == 2 && self.badItems.count ) ? 100 : 0;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if ( section == 1 && self.badItems.count ) {
+    if ( section == 2 && self.badItems.count ) {
         UIView *footerView = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 100)] autorelease];
         
         CGRect labelFrame = CGRectMake(15, 10, footerView.bounds.size.width-30, 20);
@@ -152,22 +194,25 @@
         label4.text = @"3. Оставьте один экземпляр у себя.";
         
         return footerView;
-    } else {
-        return nil;
     }
+        
+    return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ( section == 0 ) {
-        return 1;
-    } else {
-        return self.badItems.count;
+    switch ( section) {
+        case 0:
+            return 1;
+        case 1:
+            return 0;
+        default:
+            return self.badItems.count;
     }
 }
 
@@ -176,7 +221,7 @@
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ( indexPath.section == 1 ) {
+    if ( indexPath.section == 2 ) {
         ChecklistItem *item = [self.badItems objectAtIndex: indexPath.row];
         
         NSDictionary *sectionInfo = [watcherChecklist objectForKey: item.sectionName];

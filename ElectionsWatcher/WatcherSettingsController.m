@@ -220,6 +220,8 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     } else if ( indexPath.section == 1 ) {
         if ( cell == nil )
             cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleValue1 reuseIdentifier: cellId] autorelease];
+        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else {
         NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
         NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];

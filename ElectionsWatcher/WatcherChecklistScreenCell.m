@@ -802,17 +802,6 @@
     return YES;
 }
 
-/*
--(BOOL)textViewShouldEndEditing:(UITextView *)textView {
-    return YES;
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    [textView resignFirstResponder];
-    if ( textView.text.length )
-        [self saveItem];
-}*/
-
 -(void) cancelTextView {
     UITextView *textView = (UITextView *) self.control;
     [textView resignFirstResponder];
@@ -821,8 +810,7 @@
 
 -(void) saveTextView {
     UITextView *textView = (UITextView *) self.control;
-    if ( textView.text.length )
-        [self saveItem];
+    [self saveItem];
     [textView resignFirstResponder];
 }
 
