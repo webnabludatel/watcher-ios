@@ -159,6 +159,9 @@
         twitterButton.frame = CGRectMake(headerFrame.size.width*2/3+20, 0, 30, 30);
         facebookButton.frame = CGRectMake(headerFrame.size.width*2/3+60, 0, 30, 30);
         
+        twitterButton.enabled = appDelegate.watcherProfile.twNickname != nil;
+        facebookButton.enabled = appDelegate.watcherProfile.fbNickname != nil;
+        
         [linkButton addTarget: self action: @selector(openWebsite:) forControlEvents: UIControlEventTouchUpInside];
         [twitterButton addTarget: self action: @selector(shareWithTwitter:) forControlEvents: UIControlEventTouchUpInside];
         [facebookButton addTarget: self action: @selector(shareWithFacebook:) forControlEvents: UIControlEventTouchUpInside];

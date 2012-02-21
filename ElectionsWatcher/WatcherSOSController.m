@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
+#import "TSAlertView.h"
 
 @implementation WatcherSOSController
 
@@ -297,11 +298,13 @@ static NSString *sosReportSections[] = { @"sos_report" };
 #pragma mark - Instructions
 
 - (void) showInstructions {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Инструкции" 
-                                                        message: @"Вашингтонский обком рекомендует\n\n1. Накрывайтесь белой простыней\n2. Ползите в направлениии кладбища\n3. Все равно мы все умрем.\n" 
+    TSAlertView *alertView = [[TSAlertView alloc] initWithTitle: @"Инструкции" 
+                                                        message: @"Если Вас удаляют с участка:\n1. Попросите объяснить, чем конкретно Вы \"препятствуете работе\" комиссии\n2. Получите письменное решение комиссии со ссылкой на пункт закона о выборах и печатью комиссии\n3. Добейтесь составления акта об административном правонарушении\n4. Помните, если вы член комиссии, вас не имеют право удалить, только отстранить от работы\n5. Если вас удалили, сообщите об этом нам." 
                                                        delegate: nil 
                                               cancelButtonTitle: @"OK" 
                                               otherButtonTitles: nil];
+    
+    alertView.usesMessageTextView = YES;
     
     [alertView show];
     [alertView release];
