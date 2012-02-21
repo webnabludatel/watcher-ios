@@ -12,6 +12,7 @@
 #import "ChecklistItem.h"
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
+#import "Facebook.h"
 
 @implementation WatcherReportController
 
@@ -158,6 +159,10 @@
         twitterButton.frame = CGRectMake(headerFrame.size.width*2/3+20, 0, 30, 30);
         facebookButton.frame = CGRectMake(headerFrame.size.width*2/3+60, 0, 30, 30);
         
+        [linkButton addTarget: self action: @selector(openWebsite:) forControlEvents: UIControlEventTouchUpInside];
+        [twitterButton addTarget: self action: @selector(shareWithTwitter:) forControlEvents: UIControlEventTouchUpInside];
+        [facebookButton addTarget: self action: @selector(shareWithFacebook:) forControlEvents: UIControlEventTouchUpInside];
+        
         summaryLabel.frame = CGRectMake(10, 30, headerFrame.size.width, 40);
         
         return headerView;
@@ -303,6 +308,41 @@
     cell.textLabel.text = nil;
 
     return cell;
+}
+
+#pragma mark - Report sharing
+
+- (void) openWebsite: (id) sender {
+    [[UIApplication sharedApplication] openURL: [NSURL URLWithString: @"http://webnabludatel.org/"]];
+}
+
+- (void) shareWithTwitter: (id) sender {
+    if ( [TWTweetComposeViewController canSendTweet] ) {
+        TWTweetComposeViewController *controller = [[TWTweetComposeViewController alloc] init];
+        [controller setInitialText: @"Отчет о нарушениях"];
+        [controller addURL: [NSURL URLWithString: @"http://webnabludatel.org/"]];
+        [self presentModalViewController: controller animated: YES];
+        [controller release];
+    } else {
+        // FIXME
+    }
+}
+
+- (void) shareWithFacebook: (id) sender {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    if ( [appDelegate.facebook isSessionValid] ) {
+        NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       @"308722072498316", @"app_id",
+                                       @"http://webnabludatel.org/", @"link",
+                                       /* @"http://fbrell.com/f8.jpg", @"picture", */
+                                       @"Отчет о нарушениях", @"name",
+                                       @"Отчет о нарушениях", @"caption",
+                                       @"Текст отчета о нарушениях", @"description",
+                                       @"Текст отчета о нарушениях",  @"message",
+                                       nil];
+        
+        [appDelegate.facebook dialog: @"feed" andParams: params andDelegate: self];        
+    }
 }
 
 @end

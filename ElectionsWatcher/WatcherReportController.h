@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Facebook.h"
 
-@interface WatcherReportController : UITableViewController
+@interface WatcherReportController : UITableViewController <FBDialogDelegate>
 
 @property (nonatomic, retain) NSArray *goodItems;
 @property (nonatomic, retain) NSArray *badItems;
