@@ -5,7 +5,7 @@
         <attribute name="lng" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="screenIndex" optional="YES" attributeType="Integer 32" defaultValueString="-1" syncable="YES"/>
-        <attribute name="sectionIndex" optional="YES" attributeType="Integer 32" defaultValueString="-1" syncable="YES"/>
+        <attribute name="sectionName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="serverRecordId" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="synchronized" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
@@ -65,7 +65,7 @@
     <fetchRequest name="listPollingPlaces" entity="PollingPlace"/>
     <elements>
         <element name="ChecklistItem" positionX="-27" positionY="-384" width="128" height="240"/>
-        <element name="MediaItem" positionX="-54" positionY="72" width="128" height="165"/>
+        <element name="MediaItem" positionX="-54" positionY="72" width="128" height="135"/>
         <element name="PollingPlace" positionX="351" positionY="-144" width="128" height="225"/>
         <element name="WatcherProfile" positionX="160" positionY="192" width="128" height="240"/>
     </elements>
