@@ -29,8 +29,8 @@
         <attribute name="chairman" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <attribute name="lng" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="number" optional="YES" attributeType="Integer 32" defaultValueString="0" indexed="YES" syncable="YES"/>
+        <attribute name="nameOrNumber" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="region" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="secretary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="totalObservers" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
