@@ -45,12 +45,19 @@
 {
     [super viewDidLoad];
     
-
-    NSString *indexPath = [[NSBundle mainBundle] pathForResource: @"golos_index" 
-                                                          ofType: @"html"];
+    self.watcherGuideView.delegate = self;
     
-    NSURL *indexUrl = [NSURL fileURLWithPath: indexPath];
-    [self.watcherGuideView loadRequest: [NSURLRequest requestWithURL: indexUrl]];
+    UIImage * prevImage   = [UIImage imageNamed:@"guide_back"];
+    UIImage * nextImage   = [UIImage imageNamed:@"guide_forward"];
+    UISegmentedControl *prevNextControl = [[[UISegmentedControl alloc] initWithItems: 
+                                            [NSArray arrayWithObjects: prevImage, nextImage, nil]] autorelease];
+    prevNextControl.momentary = YES;
+    prevNextControl.segmentedControlStyle = UISegmentedControlStyleBar;
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView: prevNextControl] autorelease];
+    [prevNextControl addTarget: self action: @selector(navigateBackOrForward:) forControlEvents: UIControlEventValueChanged];
+
+    [prevNextControl setEnabled: self.watcherGuideView.canGoBack forSegmentAtIndex:0];
+    [prevNextControl setEnabled: self.watcherGuideView.canGoForward forSegmentAtIndex:1];    
 }
 
 - (void)viewDidUnload
@@ -68,6 +75,12 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    NSString *indexPath = [[NSBundle mainBundle] pathForResource: @"golos_index" 
+                                                          ofType: @"html"];
+    
+    NSURL *indexUrl = [NSURL fileURLWithPath: indexPath];
+    [self.watcherGuideView loadRequest: [NSURLRequest requestWithURL: indexUrl]];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -168,5 +181,26 @@
     self.searchResults = [NSMutableArray array];
 }
 
+#pragma mark - Back/forward navigation
+
+- (void) navigateBackOrForward: (id) sender {
+    UISegmentedControl *segmentedControl = (UISegmentedControl *) sender;
+    
+    if ( segmentedControl.selectedSegmentIndex == 0 )
+        [self.watcherGuideView goBack];
+    
+    if ( segmentedControl.selectedSegmentIndex == 1 )
+        [self.watcherGuideView goForward];
+    
+}
+
+#pragma mark - UIWebView delegate
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView {
+    UISegmentedControl *prevNextControl = (UISegmentedControl *) self.navigationItem.leftBarButtonItem.customView;
+    [prevNextControl setEnabled: webView.canGoBack forSegmentAtIndex:0];
+    [prevNextControl setEnabled: webView.canGoForward forSegmentAtIndex:1];    
+    
+}
 
 @end

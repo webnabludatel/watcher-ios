@@ -156,7 +156,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
                 cell.detailTextLabel.text = [NSString stringWithFormat: @"%@ %@", 
                                              appDelegate.watcherProfile.firstName, appDelegate.watcherProfile.lastName];
             
-            cell.imageView.image = [UIImage imageNamed: @"manualuser_icon"];
+            cell.imageView.image = [UIImage imageNamed: @"tag_user"];
         }
         
         if ( [@"facebook" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
@@ -165,7 +165,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
             else
                 cell.detailTextLabel.text = nil;
             
-            cell.imageView.image = [UIImage imageNamed: @"facebook_icon"];
+            cell.imageView.image = [UIImage imageNamed: @"tag_facebook"];
         }
         
         if ( [@"twitter" isEqualToString: [itemInfo objectForKey: @"name"]] ) {
@@ -174,7 +174,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
             else
                 cell.detailTextLabel.text = nil;
             
-            cell.imageView.image = [UIImage imageNamed: @"twitter_icon"];
+            cell.imageView.image = [UIImage imageNamed: @"tag_twitter"];
         }
     } else if ( indexPath.section == 1 ) {
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -282,6 +282,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
             profileController.profileControllerDelegate = self;
             
             UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: profileController];
+            nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             nc.navigationBar.tintColor = [UIColor blackColor];
             [self presentModalViewController: nc animated: YES];
             [profileController release];

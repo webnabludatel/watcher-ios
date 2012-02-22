@@ -10,13 +10,562 @@
 		<array>
 			<dict>
 				<key>name</key>
+				<string>district_region</string>
+				<key>title</key>
+				<string>Субъект федерации</string>
+				<key>control</key>
+				<integer>2</integer>
+				<key>hint</key>
+				<string>выберите регион</string>
+				<key>possible_values</key>
+				<array>
+					<dict>
+						<key>value</key>
+						<string>1</string>
+						<key>title</key>
+						<string>Республика Адыгея</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>2</string>
+						<key>title</key>
+						<string>Республика Башкортостан</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>3</string>
+						<key>title</key>
+						<string>Республика Бурятия</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>4</string>
+						<key>title</key>
+						<string>Республика Алтай</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>5</string>
+						<key>title</key>
+						<string>Республика Дагестан</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>6</string>
+						<key>title</key>
+						<string>Республика Ингушетия</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>7</string>
+						<key>title</key>
+						<string>Кабардино-Балкарская Республика</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>8</string>
+						<key>title</key>
+						<string>Республика Калмыкия</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>9</string>
+						<key>title</key>
+						<string>Карачаево-Черкесская Республика</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>10</string>
+						<key>title</key>
+						<string>Республика Карелия</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>11</string>
+						<key>title</key>
+						<string>Республика Коми</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>12</string>
+						<key>title</key>
+						<string>Республика Марий Эл</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>13</string>
+						<key>title</key>
+						<string>Республика Мордовия</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>14</string>
+						<key>title</key>
+						<string>Республика Саха (Якутия)</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>15</string>
+						<key>title</key>
+						<string>Республика Северная Осетия - Алания</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>16</string>
+						<key>title</key>
+						<string>Республика Татарстан (Татарстан)</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>17</string>
+						<key>title</key>
+						<string>Республика Тыва</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>18</string>
+						<key>title</key>
+						<string>Удмуртская Республика</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>19</string>
+						<key>title</key>
+						<string>Республика Хакасия</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>20</string>
+						<key>title</key>
+						<string>Чеченская Республика</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>21</string>
+						<key>title</key>
+						<string>Чувашская Республика - Чувашия</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>22</string>
+						<key>title</key>
+						<string>Алтайский край</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>23</string>
+						<key>title</key>
+						<string>Краснодарский край</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>24</string>
+						<key>title</key>
+						<string>Красноярский край</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>25</string>
+						<key>title</key>
+						<string>Приморский край</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>26</string>
+						<key>title</key>
+						<string>Ставропольский край</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>27</string>
+						<key>title</key>
+						<string>Хабаровский край</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>28</string>
+						<key>title</key>
+						<string>Амурская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>29</string>
+						<key>title</key>
+						<string>Архангельская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>30</string>
+						<key>title</key>
+						<string>Астраханская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>31</string>
+						<key>title</key>
+						<string>Белгородская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>32</string>
+						<key>title</key>
+						<string>Брянская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>33</string>
+						<key>title</key>
+						<string>Владимирская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>34</string>
+						<key>title</key>
+						<string>Волгоградская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>35</string>
+						<key>title</key>
+						<string>Вологодская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>36</string>
+						<key>title</key>
+						<string>Воронежская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>37</string>
+						<key>title</key>
+						<string>Ивановская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>38</string>
+						<key>title</key>
+						<string>Иркутская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>39</string>
+						<key>title</key>
+						<string>Калининградская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>40</string>
+						<key>title</key>
+						<string>Калужская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>41</string>
+						<key>title</key>
+						<string>Камчатский край</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>42</string>
+						<key>title</key>
+						<string>Кемеровская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>43</string>
+						<key>title</key>
+						<string>Кировская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>44</string>
+						<key>title</key>
+						<string>Костромская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>45</string>
+						<key>title</key>
+						<string>Курганская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>46</string>
+						<key>title</key>
+						<string>Курская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>47</string>
+						<key>title</key>
+						<string>Ленинградская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>48</string>
+						<key>title</key>
+						<string>Липецкая область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>49</string>
+						<key>title</key>
+						<string>Магаданская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>50</string>
+						<key>title</key>
+						<string>Московская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>51</string>
+						<key>title</key>
+						<string>Мурманская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>52</string>
+						<key>title</key>
+						<string>Нижегородская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>53</string>
+						<key>title</key>
+						<string>Новгородская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>54</string>
+						<key>title</key>
+						<string>Новосибирская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>55</string>
+						<key>title</key>
+						<string>Омская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>56</string>
+						<key>title</key>
+						<string>Оренбургская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>57</string>
+						<key>title</key>
+						<string>Орловская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>58</string>
+						<key>title</key>
+						<string>Пензенская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>59</string>
+						<key>title</key>
+						<string>Пермская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>60</string>
+						<key>title</key>
+						<string>Псковская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>61</string>
+						<key>title</key>
+						<string>Ростовская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>62</string>
+						<key>title</key>
+						<string>Рязанская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>63</string>
+						<key>title</key>
+						<string>Самарская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>64</string>
+						<key>title</key>
+						<string>Саратовская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>65</string>
+						<key>title</key>
+						<string>Сахалинская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>66</string>
+						<key>title</key>
+						<string>Свердловская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>67</string>
+						<key>title</key>
+						<string>Смоленская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>68</string>
+						<key>title</key>
+						<string>Тамбовская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>69</string>
+						<key>title</key>
+						<string>Тверская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>70</string>
+						<key>title</key>
+						<string>Томская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>71</string>
+						<key>title</key>
+						<string>Тульская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>72</string>
+						<key>title</key>
+						<string>Тюменская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>73</string>
+						<key>title</key>
+						<string>Ульяновская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>74</string>
+						<key>title</key>
+						<string>Челябинская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>75</string>
+						<key>title</key>
+						<string>Забайкальский край</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>76</string>
+						<key>title</key>
+						<string>Ярославская область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>77</string>
+						<key>title</key>
+						<string>Город Москва</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>78</string>
+						<key>title</key>
+						<string>Город Санкт-Петербург</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>79</string>
+						<key>title</key>
+						<string>Еврейская автономная область</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>80</string>
+						<key>title</key>
+						<string>Агинский Бурятский АО</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>81</string>
+						<key>title</key>
+						<string>Коми-Пермятский АО</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>82</string>
+						<key>title</key>
+						<string>Корякский АО</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>83</string>
+						<key>title</key>
+						<string>Ненецкий АО</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>84</string>
+						<key>title</key>
+						<string>Таймырский (Долгано-Ненецкий) АО</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>85</string>
+						<key>title</key>
+						<string>Усть-Ордынский Бурятский АО</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>86</string>
+						<key>title</key>
+						<string>Ханты-Мансийский автономный округ - Югра</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>87</string>
+						<key>title</key>
+						<string>Чукотский автономный округ</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>88</string>
+						<key>title</key>
+						<string>Эвенкийский автономный округ</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>89</string>
+						<key>title</key>
+						<string>Ямало-Ненецкий автономный округ</string>
+					</dict>
+				</array>
+				<key>required</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>name</key>
 				<string>district_type</string>
 				<key>title</key>
 				<string>Тип участка</string>
 				<key>control</key>
 				<integer>2</integer>
 				<key>hint</key>
-				<string>выберите</string>
+				<string>выберите тип участка </string>
 				<key>possible_values</key>
 				<array>
 					<dict>
@@ -31,12 +580,6 @@
 						<key>title</key>
 						<string>ТИК</string>
 					</dict>
-					<dict>
-						<key>value</key>
-						<string>ikmo</string>
-						<key>title</key>
-						<string>ИКМО</string>
-					</dict>
 				</array>
 				<key>required</key>
 				<true/>
@@ -45,11 +588,11 @@
 				<key>name</key>
 				<string>district_number</string>
 				<key>title</key>
-				<string>Номер</string>
+				<string>Номер УИК/название ТИК</string>
 				<key>control</key>
-				<integer>1</integer>
+				<integer>0</integer>
 				<key>hint</key>
-				<string></string>
+				<string>введите номер УИК или название ТИК</string>
 				<key>required</key>
 				<true/>
 			</dict>

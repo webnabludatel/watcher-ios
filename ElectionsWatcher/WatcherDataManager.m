@@ -58,6 +58,7 @@
                                                userInfo: nil 
                                                 repeats: YES];
         
+        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
         [[NSRunLoop currentRunLoop] run];
     }
@@ -206,6 +207,8 @@
     NSString *json = [payload JSONRepresentation];
     NSString *deviceId = [[UIDevice currentDevice] uniqueIdentifier];
     NSString *digest = [self md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
+    
+    NSLog(@"server secret: %@, digest: %@",appDelegate.watcherProfile.serverSecret, digest);
     
     NSURL *url = [checklistItem.serverRecordId doubleValue] > 0 ? 
         [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@.json?digest=%@", 

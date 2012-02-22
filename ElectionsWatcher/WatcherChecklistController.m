@@ -76,10 +76,8 @@
     [self.tableView reloadData];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
-        [NSString stringWithFormat: @"%@ № %@", 
-         appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] : 
-        @"Наблюдение";
+    self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ? 
+    appDelegate.watcherProfile.currentPollingPlace.titleString : @"Наблюдение";
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -171,7 +169,7 @@
         
         if ( indexPath.row < pollingPlaces.count ) {
             PollingPlace *pollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
-            cell.textLabel.text = [NSString stringWithFormat: @"%@ № %@", pollingPlace.type, pollingPlace.number];
+            cell.textLabel.text = pollingPlace.titleString;
             cell.textLabel.textAlignment = UITextAlignmentLeft;
             
             if ( pollingPlace == appDelegate.watcherProfile.currentPollingPlace ) 
@@ -192,6 +190,7 @@
         if ( cell == nil ) {
             cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleSubtitle reuseIdentifier: cellId] autorelease];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.detailTextLabel.textColor = [UIColor darkGrayColor];
         }
         
         cell.textLabel.text = nil;
@@ -214,6 +213,10 @@
             if ( error ) 
                 NSLog(@"error saving current polling place: %@", error.description);
             [self.tableView reloadData];
+            
+            // update title
+            self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
+            appDelegate.watcherProfile.currentPollingPlace.titleString : @"Наблюдение";
         } else {
             WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
             pollingPlaceController.pollingPlaceControllerDelegate = self;
@@ -222,6 +225,7 @@
             
             UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: pollingPlaceController];
             nc.navigationBar.tintColor = [UIColor blackColor];
+            nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
             [self presentModalViewController: nc animated: YES];
             [pollingPlaceController release];
             [nc release];

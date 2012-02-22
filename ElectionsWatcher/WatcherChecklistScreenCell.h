@@ -33,6 +33,7 @@
 @property (nonatomic, assign) UILabel *itemLabel;
 @property (nonatomic, retain) ChecklistItem *checklistItem;
 @property (nonatomic, retain) NSString *sectionName;
+@property (nonatomic, retain) NSString *pickerSelectedValue;
 @property (nonatomic) NSInteger screenIndex;
 @property (nonatomic, retain) NSMutableArray *mwBrowserItems;
 @property (nonatomic, assign) id<WatcherSaveAttributeDelegate> saveDelegate;
@@ -46,5 +47,6 @@
 - (void) loadItem;
 - (void) saveItem;
 - (NSArray *) mediaItemsOfType: (NSString *) mediaType;
+- (NSString *) valueListTitleFromValue: (NSString *) value;
 
 @end

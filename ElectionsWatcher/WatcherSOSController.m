@@ -71,9 +71,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
-        [NSString stringWithFormat: @"%@ № %@", 
-         appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
-        @"Меня удаляют";
+    appDelegate.watcherProfile.currentPollingPlace.titleString : @"Меня удаляют";
     
 }
 

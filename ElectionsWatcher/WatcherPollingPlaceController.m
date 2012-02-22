@@ -106,7 +106,7 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 #pragma mark - Save/cancel handlers
 
 - (void) handleDoneButton: (id) sender {
-    if ( self.pollingPlace.type.length && self.pollingPlace.number.intValue ) {
+    if ( self.pollingPlace.type.length && self.pollingPlace.nameOrNumber.length && self.pollingPlace.region.intValue ) {
         [self.latestActiveResponder resignFirstResponder];
         [pollingPlaceControllerDelegate watcherPollingPlaceController: self didSavePollingPlace: self.pollingPlace];
     } else {
@@ -200,7 +200,10 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];    
     
     if ( [@"district_number" isEqualToString: item.name] )
-        pollingPlace.number = [nf numberFromString: item.value];
+        pollingPlace.nameOrNumber = item.value;
+    
+    if ( [@"district_region" isEqualToString: item.name] )
+        pollingPlace.region = [nf numberFromString: item.value];
     
     if ( [@"district_type" isEqualToString: item.name] ) 
         pollingPlace.type = item.value;

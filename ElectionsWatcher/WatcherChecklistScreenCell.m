@@ -27,6 +27,7 @@
 @synthesize itemLabel;
 @synthesize checklistItem;
 @synthesize sectionName;
+@synthesize pickerSelectedValue;
 @synthesize screenIndex;
 @synthesize mwBrowserItems;
 @synthesize saveDelegate;
@@ -37,6 +38,7 @@
     [sectionName release];
     [mwBrowserItems release];
     [checklistItem release];
+    [pickerSelectedValue release];
     
     [super dealloc];
 }
@@ -256,11 +258,15 @@
         case INPUT_CONSTANT:
         case INPUT_PHONE:
         case INPUT_DROPDOWN: {
-            UITextField *textField = (UITextField *) self.control;
-            textField.text = self.checklistItem.value;
             
-//            if ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_CONSTANT )
-//                [self saveItem];
+            UITextField *textField = (UITextField *) self.control;
+            
+            if ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_DROPDOWN ) {
+                self.pickerSelectedValue = self.checklistItem.value;
+                textField.text = [self valueListTitleFromValue: self.checklistItem.value];
+            } else {
+                textField.text = self.checklistItem.value;
+            }
         }
             break;
             
@@ -345,12 +351,15 @@
         case INPUT_TEXT:
         case INPUT_EMAIL:
         case INPUT_NUMBER:
-        case INPUT_PHONE:
-        case INPUT_DROPDOWN: {
+        case INPUT_PHONE: {
             UITextField *textField = (UITextField *) self.control;
             self.checklistItem.value = textField.text;
             self.checklistItem.violationFlag = nil;
         }
+            break;
+        case INPUT_DROPDOWN:
+            self.checklistItem.value = self.pickerSelectedValue;
+            self.checklistItem.violationFlag = nil;
             break;
         case INPUT_SWITCH: {
             UISlider *slider = (UISlider *) self.control;
@@ -438,6 +447,7 @@
             [NSArray arrayWithObjects: (NSString *) kUTTypeMovie, nil] ;
         
         UIViewController *parentController = [self firstAvailableUIViewController];
+        imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [parentController presentModalViewController: imagePicker animated: YES];
     }
     
@@ -451,6 +461,7 @@
             [NSArray arrayWithObjects: (NSString *) kUTTypeMovie, nil] ;
         
         UIViewController *parentController = [self firstAvailableUIViewController];
+        imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [parentController presentModalViewController: imagePicker animated: YES];
     }
     
@@ -729,18 +740,34 @@
 }
 
 #pragma mark -
-#pragma mark Popup picker events
+#pragma mark Popup picker
+
+- (NSString *) valueListTitleFromValue: (NSString *) value {
+    NSArray *possibleValues = [self.itemInfo objectForKey: @"possible_values"];
+    
+    for ( NSDictionary *valueInfo in possibleValues ) 
+        if ( [value isEqualToString: [valueInfo objectForKey: @"value"]] )
+            return [valueInfo objectForKey: @"title"];
+
+    return nil;
+}
 
 - (void) popupPicker: (id) sender {
     NSArray *possibleValues = [self.itemInfo objectForKey: @"possible_values"];
     NSMutableArray *strings = [NSMutableArray array];
+    NSDictionary *selectedValueInfo = nil;
     
-    for ( NSDictionary *valueInfo in possibleValues )
+    for ( NSDictionary *valueInfo in possibleValues ) {
         [strings addObject: [valueInfo objectForKey: @"title"]];
+        
+        if ( [self.pickerSelectedValue isEqualToString: [valueInfo objectForKey: @"value"]] )
+            selectedValueInfo = valueInfo;
+    }
+    
     
     [ActionSheetStringPicker showPickerWithTitle: [self.itemInfo objectForKey: @"title"] 
                                             rows: strings 
-                                initialSelection: 0 
+                                initialSelection: selectedValueInfo ? [possibleValues indexOfObject: selectedValueInfo] : 0
                                           target: self 
                                     sucessAction: @selector(pickerSelected:element:) 
                                     cancelAction: @selector(pickerCancelled:) 
@@ -753,6 +780,7 @@
     NSDictionary *selectedValue = [possibleValues objectAtIndex: [selectedIndex intValue]];
     
     field.text = [selectedValue objectForKey: @"title"];
+    self.pickerSelectedValue = [selectedValue objectForKey: @"value"];
     [field resignFirstResponder];
     [self saveItem];
 }

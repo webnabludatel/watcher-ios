@@ -85,9 +85,7 @@
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
-        [NSString stringWithFormat: @"%@ № %@", 
-         appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
-        @"Отчет";
+    appDelegate.watcherProfile.currentPollingPlace.titleString : @"Отчет";
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -118,15 +116,13 @@
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         if ( appDelegate.watcherProfile.currentPollingPlace )
             summary = self.badItems.count ?
-                [NSString stringWithFormat: @"Нарушения на %@ № %@", 
-                    appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] :
-                [NSString stringWithFormat: @"На %@ № %@ не отмечено нарушений", 
-                     appDelegate.watcherProfile.currentPollingPlace.type, appDelegate.watcherProfile.currentPollingPlace.number] ;
+                [NSString stringWithFormat: @"Нарушения на %@", appDelegate.watcherProfile.currentPollingPlace.titleString] :
+                [NSString stringWithFormat: @"На %@ не отмечено нарушений", appDelegate.watcherProfile.currentPollingPlace.titleString] ;
         else
             summary = @"Информация появится после заполнения раздела «Наблюдение»";
         
 
-        CGRect headerFrame = CGRectMake(10, 0, tableView.bounds.size.width-20, 60);
+        CGRect headerFrame = CGRectMake(10, 0, tableView.bounds.size.width-10, 60);
         UIView *headerView = [[[UIView alloc] initWithFrame: headerFrame] autorelease];
         
         UIButton *linkButton = [UIButton buttonWithType: UIButtonTypeRoundedRect];
@@ -137,8 +133,8 @@
         [linkButton setTitle: @"Ваш отчет на сайте" forState: UIControlStateNormal];
         [linkButton setTitleColor: [UIColor darkTextColor] forState: UIControlStateNormal];
         [linkButton setTitleColor: [UIColor lightTextColor] forState: UIControlStateSelected];
-        [facebookButton setImage: [UIImage imageNamed: @"facebook_icon"] forState: UIControlStateNormal];
-        [twitterButton setImage: [UIImage imageNamed: @"twitter_icon"] forState: UIControlStateNormal];
+        [facebookButton setImage: [UIImage imageNamed: @"button_facebook"] forState: UIControlStateNormal];
+        [twitterButton setImage: [UIImage imageNamed: @"button_twitter"] forState: UIControlStateNormal];
         
         summaryLabel.text = summary;
         summaryLabel.backgroundColor = [UIColor clearColor];
@@ -155,9 +151,10 @@
         [headerView addSubview: facebookButton];
         [headerView addSubview: twitterButton];
         
-        linkButton.frame = CGRectMake(10, 0, headerFrame.size.width*2/3, 30);
-        twitterButton.frame = CGRectMake(headerFrame.size.width*2/3+20, 0, 30, 30);
-        facebookButton.frame = CGRectMake(headerFrame.size.width*2/3+60, 0, 30, 30);
+        
+        linkButton.frame = CGRectMake(10, 0, headerFrame.size.width-90, 30);
+        twitterButton.frame = CGRectMake(headerFrame.size.width-70, 0, 30, 30);
+        facebookButton.frame = CGRectMake(headerFrame.size.width-30, 0, 30, 30);
         
         twitterButton.enabled = appDelegate.watcherProfile.twNickname != nil;
         facebookButton.enabled = appDelegate.watcherProfile.fbNickname != nil;
@@ -322,6 +319,7 @@
 - (void) shareWithTwitter: (id) sender {
     if ( [TWTweetComposeViewController canSendTweet] ) {
         TWTweetComposeViewController *controller = [[TWTweetComposeViewController alloc] init];
+        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [controller setInitialText: @"Отчет о нарушениях"];
         [controller addURL: [NSURL URLWithString: @"http://webnabludatel.org/"]];
         [self presentModalViewController: controller animated: YES];

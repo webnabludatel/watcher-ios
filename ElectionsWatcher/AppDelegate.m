@@ -18,6 +18,7 @@
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
 #import "NSObject+SBJSON.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation AppDelegate
 
@@ -190,7 +191,18 @@
 #pragma mark -
 #pragma mark Navigation controller delegate
 
--(void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+/*
+-(void)navigationController:(UINavigationController *)navigationController 
+      didShowViewController:(UIViewController *)viewController 
+                   animated:(BOOL)animated {
+    
+    [self updateSynchronizationStatus];
+}
+ */
+
+-(void)navigationController:(UINavigationController *)navigationController 
+     willShowViewController:(UIViewController *)viewController 
+                   animated:(BOOL)animated {
     
     [self updateSynchronizationStatus];
 }
@@ -205,6 +217,29 @@
         UINavigationController *navController = (UINavigationController *) viewController;
         
         if ( self.dataManager.active ) {
+            if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 666 ) {
+                UIImageView *imageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"sync_refresh"]];
+                imageView.tag = 666;
+
+                CAKeyframeAnimation *rotation = [CAKeyframeAnimation animation];
+                rotation.duration = 1.5f;
+                rotation.repeatCount = HUGE_VALF;
+                rotation.values = [NSArray arrayWithObjects:
+                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(0.0f, 0.0f, 0.0f, 1.0f)],
+                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI/2, 0.0f, 0.0f, 1.0f)],
+                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI, 0.0f, 0.0f, 1.0f)],
+                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI*3/2, 0.0f, 0.0f, 1.0f)],
+                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI*2, 0.0f, 0.0f, 1.0f)], 
+                                   nil];
+                
+                [imageView.layer addAnimation:rotation forKey:@"transform"];
+                
+                navController.topViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
+
+                [imageView release];
+            }
+            
+            /*
             if ( ! [navController.topViewController.navigationItem.rightBarButtonItem.customView isKindOfClass: [UIActivityIndicatorView class]] ) {
                 UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
                 UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: activityIndicator];
@@ -214,13 +249,14 @@
                 [activityIndicator release];
                 [barButtonItem release];
             }
+            */
         } else {
             UIImage *image = nil;
             
             if ( self.dataManager.hasErrors )
-                image = [UIImage imageNamed: @"sync_errors_icon"];
+                image = [UIImage imageNamed: @"sync_alert"];
             else
-                image = [UIImage imageNamed: @"sync_ok_icon"];
+                image = [UIImage imageNamed: @"sync_success"];
             
             UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
             UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
@@ -422,21 +458,78 @@
 -(void)request:(FBRequest *)request didLoad:(id)result {
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
-    _watcherProfile.fbNickname = [result objectForKey: @"username"];
+    if ( [[request.url lastPathComponent] isEqualToString: @"me"] ) {
+    
+        _watcherProfile.fbNickname = [result objectForKey: @"username"];
 
-    if ( ! _watcherProfile.email.length )
-        _watcherProfile.email = [result objectForKey: @"email"];
-    
-    if ( ! _watcherProfile.firstName.length )
-        _watcherProfile.firstName = [result objectForKey: @"first_name"];
-    
-    if ( ! _watcherProfile.lastName.length )
-        _watcherProfile.lastName = [result objectForKey: @"last_name"];
-    
-    NSError *error = nil;
-    [_managedObjectContext save: &error];
-    if ( error )
-        NSLog(@"Core Data Error: %@", error.description);
+        if ( ! _watcherProfile.email.length )
+            _watcherProfile.email = [result objectForKey: @"email"];
+        
+        if ( ! _watcherProfile.firstName.length )
+            _watcherProfile.firstName = [result objectForKey: @"first_name"];
+        
+        if ( ! _watcherProfile.lastName.length )
+            _watcherProfile.lastName = [result objectForKey: @"last_name"];
+        
+        
+        NSPredicate *firstNamePredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", @"first_name"];
+        NSPredicate *lastNamePredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", @"last_name"];
+        NSPredicate *emailPredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", @"email"];
+        
+        ChecklistItem *firstNameItem = [[[_watcherProfile.profileChecklistItems allObjects] filteredArrayUsingPredicate: firstNamePredicate] lastObject];
+        ChecklistItem *lastNameItem = [[[_watcherProfile.profileChecklistItems allObjects] filteredArrayUsingPredicate: lastNamePredicate] lastObject];
+        ChecklistItem *emailItem = [[[_watcherProfile.profileChecklistItems allObjects] filteredArrayUsingPredicate: emailPredicate] lastObject];
+
+        if ( firstNameItem == nil ) {
+            firstNameItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                          inManagedObjectContext: self.managedObjectContext];
+            [_watcherProfile addProfileChecklistItemsObject: firstNameItem];
+        }
+        
+        if ( lastNameItem == nil ) {
+            lastNameItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                         inManagedObjectContext: self.managedObjectContext];
+            [_watcherProfile addProfileChecklistItemsObject: lastNameItem];
+        }
+        
+        if ( emailItem == nil ) {
+            emailItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                      inManagedObjectContext: self.managedObjectContext];
+            [_watcherProfile addProfileChecklistItemsObject: emailItem];
+        }
+        
+        if ( ! [_watcherProfile.firstName isEqualToString: firstNameItem.value] ) {
+            firstNameItem.name = @"first_name";
+            firstNameItem.value = _watcherProfile.firstName;
+            firstNameItem.lat = [NSNumber numberWithDouble: _currentLocation.coordinate.latitude];
+            firstNameItem.lng = [NSNumber numberWithDouble: _currentLocation.coordinate.longitude];
+            firstNameItem.timestamp = [NSDate date];
+            firstNameItem.synchronized = [NSNumber numberWithBool: NO];
+        }
+
+        if ( ! [_watcherProfile.lastName isEqualToString: lastNameItem.value] ) {
+            lastNameItem.name = @"last_name";
+            lastNameItem.value = _watcherProfile.lastName;
+            lastNameItem.lat = [NSNumber numberWithDouble: _currentLocation.coordinate.latitude];
+            lastNameItem.lng = [NSNumber numberWithDouble: _currentLocation.coordinate.longitude];
+            lastNameItem.timestamp = [NSDate date];
+            lastNameItem.synchronized = [NSNumber numberWithBool: NO];
+        }
+
+        if ( ! [_watcherProfile.email isEqualToString: emailItem.value] ) {
+            emailItem.name = @"email";
+            emailItem.value = _watcherProfile.email;
+            emailItem.lat = [NSNumber numberWithDouble: _currentLocation.coordinate.latitude];
+            emailItem.lng = [NSNumber numberWithDouble: _currentLocation.coordinate.longitude];
+            emailItem.timestamp = [NSDate date];
+            emailItem.synchronized = [NSNumber numberWithBool: NO];
+        }
+        
+        NSError *error = nil;
+        [_managedObjectContext save: &error];
+        if ( error )
+            NSLog(@"Core Data Error: %@", error.description);
+    }
     
     [TestFlight passCheckpoint: @"Facebook login"];
 
