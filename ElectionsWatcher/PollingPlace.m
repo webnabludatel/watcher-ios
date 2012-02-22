@@ -17,14 +17,35 @@
 @dynamic chairman;
 @dynamic lat;
 @dynamic lng;
-@dynamic name;
-@dynamic number;
+@dynamic nameOrNumber;
 @dynamic secretary;
 @dynamic timestamp;
 @dynamic totalObservers;
 @dynamic type;
+@dynamic region;
 @dynamic checklistItems;
 @dynamic mediaItems;
 @dynamic watcherProfile;
+
+- (NSString *) typeString {
+    if ( [self.type isEqualToString: @"uik"] )
+        return @"УИК";
+    
+    if ( [self.type isEqualToString: @"tik"] )
+        return @"ТИК";
+    
+    return nil;
+}
+
+- (NSString *) titleString {
+    if ( [self.type isEqualToString: @"uik"] )
+        return [@"УИК № " stringByAppendingString: self.nameOrNumber];
+    
+    if ( [self.type isEqualToString: @"tik"] )
+        return [@"ТИК " stringByAppendingString: self.nameOrNumber];
+    
+    return self.nameOrNumber;
+    
+}
 
 @end
