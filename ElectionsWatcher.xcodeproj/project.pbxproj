@@ -156,6 +156,7 @@
 		5F71310514F57B92007CEAC7 /* PrivateSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F71310414F57B8F007CEAC7 /* PrivateSettings.plist */; };
 		5F71310814F5827F007CEAC7 /* WatcherTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F71310714F58226007CEAC7 /* WatcherTools.m */; };
 		5F71310F14F61B9A007CEAC7 /* Watcher3PosSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F71310E14F61B90007CEAC7 /* Watcher3PosSwitch.m */; };
+		5F71311414F67197007CEAC7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71311314F67195007CEAC7 /* Default.png */; };
 		5F73515D14DEF89F00C8D5F1 /* traverseresponderchain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */; };
 		5F7AD6C014EB8F950099FE53 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */; };
 		5F7AD6C114EB8F950099FE53 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5F7AD6BD14EB8F950099FE53 /* README.txt */; };
@@ -433,7 +434,8 @@
 		5F71310714F58226007CEAC7 /* WatcherTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherTools.m; sourceTree = "<group>"; };
 		5F71310D14F61B8C007CEAC7 /* Watcher3PosSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Watcher3PosSwitch.h; sourceTree = "<group>"; };
 		5F71310E14F61B90007CEAC7 /* Watcher3PosSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Watcher3PosSwitch.m; sourceTree = "<group>"; };
-		5F71311014F632D5007CEAC7 /* ElectionsWatcherDataModel_2.xcdatamodel */ = {isa = PBXFileReference; path = ElectionsWatcherDataModel_2.xcdatamodel; sourceTree = "<group>"; };
+		5F71311014F632D5007CEAC7 /* ElectionsWatcherDataModel_2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ElectionsWatcherDataModel_2.xcdatamodel; sourceTree = "<group>"; };
+		5F71311314F67195007CEAC7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = traverseresponderchain.m; sourceTree = "<group>"; };
 		5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		5F7AD6BD14EB8F950099FE53 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -458,7 +460,7 @@
 		5F7ADDF514C1AF9700A8E955 /* WatcherSettingsController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherSettingsController.xib; sourceTree = "<group>"; };
 		5F7ADDF914C1B0E700A8E955 /* WatcherGuideController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WatcherGuideController.xib; sourceTree = "<group>"; };
 		5F7ADDFB14C1B0FD00A8E955 /* WatcherChecklistController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WatcherChecklistController.xib; sourceTree = "<group>"; };
-		5F7DDA2E14EBBAC7005857D3 /* ElectionsWatcherDataModel_1.xcdatamodel */ = {isa = PBXFileReference; path = ElectionsWatcherDataModel_1.xcdatamodel; sourceTree = "<group>"; };
+		5F7DDA2E14EBBAC7005857D3 /* ElectionsWatcherDataModel_1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ElectionsWatcherDataModel_1.xcdatamodel; sourceTree = "<group>"; };
 		5F7DDA3314EBC42B005857D3 /* WatcherPollingPlaceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherPollingPlaceController.h; sourceTree = "<group>"; };
 		5F7DDA3414EBC42B005857D3 /* WatcherPollingPlaceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherPollingPlaceController.m; sourceTree = "<group>"; };
 		5F7DDA3514EBC42B005857D3 /* WatcherPollingPlaceController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WatcherPollingPlaceController.xib; sourceTree = "<group>"; };
@@ -921,6 +923,7 @@
 		5F7ADDF114C1AEB200A8E955 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				5F71311314F67195007CEAC7 /* Default.png */,
 				5F7130EC14F5458D007CEAC7 /* button_facebook.png */,
 				5F7130ED14F5458E007CEAC7 /* button_facebook@2x.png */,
 				5F7130EE14F5458E007CEAC7 /* button_twitter.png */,
@@ -1301,6 +1304,7 @@
 				5F71310214F54952007CEAC7 /* guide_back.png in Resources */,
 				5F71310314F54952007CEAC7 /* guide_forward.png in Resources */,
 				5F71310514F57B92007CEAC7 /* PrivateSettings.plist in Resources */,
+				5F71311414F67197007CEAC7 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
