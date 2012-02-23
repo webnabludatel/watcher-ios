@@ -32,6 +32,7 @@
 @synthesize dataManager = _dataManager;
 @synthesize facebook = _facebook;
 @synthesize watcherProfile = _watcherProfile;
+@synthesize privateSettings = _privateSettings;
 
 - (void)dealloc
 {
@@ -41,14 +42,19 @@
     [_dataManager release];
     [_facebook release];
     [_watcherProfile release];
+    [_privateSettings release];
     
     [super dealloc];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // private settings and access keys
+    _privateSettings = [[NSDictionary alloc] initWithContentsOfFile: 
+                        [[NSBundle mainBundle] pathForResource: @"PrivateSettings" ofType: @"plist"]];
+    
     // TestFlight
-    [TestFlight takeOff: @"3e01d5e6faba63f16c5fa20704571f7a_NjI1NTIyMDEyLTAyLTE0IDE1OjA5OjIxLjE3NzczMw"];
+    [TestFlight takeOff: [[_privateSettings objectForKey: @"testflight"] objectForKey: @"team_token"]];
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
@@ -584,7 +590,7 @@
         CFStringRef uuidString = CFUUIDCreateString(NULL, uuidRef);
         
         NSDictionary *step1Params = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                     @"bSH90XRI1NR4iNlx7tMcQ", @"oauth_consumer_key", 
+                                     @"", @"oauth_consumer_key", 
                                      (NSString *) uuidString, @"oauth_nonce", 
                                      @"HMAC-SHA1", @"oauth_signature_method", 
                                      [NSString stringWithFormat: @"%d", [[NSDate date] timeIntervalSince1970]], @"oauth_timestamp", 
@@ -603,7 +609,7 @@
             NSString *response1 = [[[NSString alloc] initWithData: responseData encoding: NSUTF8StringEncoding] autorelease];
             NSLog(@"step 1 response: %@", response1);
             NSDictionary *step2Params = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                         @"bSH90XRI1NR4iNlx7tMcQ", @"x_reverse_auth_target", 
+                                         @"", @"x_reverse_auth_target", 
                                          response1, @"x_reverse_auth_parameters", 
                                          nil];
             TWRequest *reverseAuthStep2 = [[TWRequest alloc] initWithURL: [NSURL URLWithString: @"https://api.twitter.com/oauth/access_token"] 

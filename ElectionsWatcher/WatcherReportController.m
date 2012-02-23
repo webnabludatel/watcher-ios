@@ -13,6 +13,7 @@
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
 #import "Facebook.h"
+#import "WatcherTools.h"
 
 @implementation WatcherReportController
 
@@ -255,11 +256,11 @@
         
         goodCountLabel.frame = CGRectMake(10, 0, cb.size.width-20, 30);
         goodCountLabel.text = self.goodItems.count ? 
-            [NSString stringWithFormat: @"%d требований выполнено", self.goodItems.count] : @"Нет отметок";
+            [WatcherTools countOfConformances: self.goodItems.count] : @"Нет отметок";
         
         badCountLabel.frame = CGRectMake(10, cb.size.height-30, cb.size.width-20, 30);
         badCountLabel.text = self.badItems.count ? 
-            [NSString stringWithFormat: @"%d нарушений", self.badItems.count] : @"Нет отметок";
+            [WatcherTools countOfViolations: self.badItems.count] : @"Нет отметок";
     }
 }
 

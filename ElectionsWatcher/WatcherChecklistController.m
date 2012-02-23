@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
+#import "WatcherTools.h"
 
 @implementation WatcherChecklistController
 
@@ -145,11 +146,11 @@
         
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
-        NSPredicate *sectionPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@", [sectionInfo objectForKey: @"name"]];
+        NSPredicate *sectionPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@ && SELF.value != NULL", [sectionInfo objectForKey: @"name"]];
         NSArray *sectionItems = [checklistItems filteredArrayUsingPredicate: sectionPredicate];
         
         cell.textLabel.text = [sectionInfo objectForKey: @"title"];
-        cell.detailTextLabel.text = [sectionItems count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [sectionItems count]] : @"Отметок нет";
+        cell.detailTextLabel.text = [sectionItems count] ? [WatcherTools countOfMarksString: [sectionItems count]] : @"Отметок нет";
     }
 }
 
@@ -164,7 +165,7 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
         
         if ( cell == nil ) {
-            cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleDefault reuseIdentifier: cellId] autorelease];
+            cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleValue1 reuseIdentifier: cellId] autorelease];
         }
         
         if ( indexPath.row < pollingPlaces.count ) {
@@ -172,11 +173,19 @@
             cell.textLabel.text = pollingPlace.titleString;
             cell.textLabel.textAlignment = UITextAlignmentLeft;
             
-            if ( pollingPlace == appDelegate.watcherProfile.currentPollingPlace ) 
+            if ( pollingPlace == appDelegate.watcherProfile.currentPollingPlace ) {
                 cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            else
+                cell.detailTextLabel.text = @"активен";
+            } else {
                 cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.detailTextLabel.text = nil;
+            }
             
+            UILongPressGestureRecognizer *gr = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(editPollingPlace:)];
+            gr.minimumPressDuration = 2;
+            
+            [cell.contentView addGestureRecognizer: gr];
+            [gr release];
         } else {
             cell.textLabel.text = @"Добавить участок...";
             cell.textLabel.textAlignment = UITextAlignmentLeft;
@@ -218,17 +227,27 @@
             self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
             appDelegate.watcherProfile.currentPollingPlace.titleString : @"Наблюдение";
         } else {
-            WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
-            pollingPlaceController.pollingPlaceControllerDelegate = self;
-            pollingPlaceController.pollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
-                                                                                inManagedObjectContext: [appDelegate managedObjectContext]];
-            
-            UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: pollingPlaceController];
-            nc.navigationBar.tintColor = [UIColor blackColor];
-            nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-            [self presentModalViewController: nc animated: YES];
-            [pollingPlaceController release];
-            [nc release];
+            if ( appDelegate.watcherProfile.userId != nil ) {
+                WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
+                pollingPlaceController.pollingPlaceControllerDelegate = self;
+                pollingPlaceController.pollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
+                                                                                    inManagedObjectContext: [appDelegate managedObjectContext]];
+                
+                UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: pollingPlaceController];
+                nc.navigationBar.tintColor = [UIColor blackColor];
+                nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                [self presentModalViewController: nc animated: YES];
+                [pollingPlaceController release];
+                [nc release];
+            } else {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
+                                                                    message: @"Приложение должно пройти регистрацию на сервере прежде, чем можно будет вести наблюдение. При подключении к сети WiFi или GPRS регистрация будет выполнена автоматически."  
+                                                                   delegate: nil 
+                                                          cancelButtonTitle: @"OK" 
+                                                          otherButtonTitles: nil];
+                [alertView show];
+                [alertView release];
+            }
         }
     } else {
         WatcherChecklistSectionController *sectionController = [[WatcherChecklistSectionController alloc] initWithStyle: UITableViewStyleGrouped];
@@ -255,7 +274,8 @@
                                                         forEntity: @"PollingPlace" 
                                                    withParameters: nil];
         PollingPlace *pollingPlaceToRemove = [pollingPlaces objectAtIndex: indexPath.row];
-        
+
+        /*
         if ( pollingPlaceToRemove == appDelegate.watcherProfile.currentPollingPlace ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
                                                                 message: @"Нельзя удалить активный избирательный участок" 
@@ -265,14 +285,41 @@
             [alertView show];
             [alertView release];
         } else {
-            [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
+         */
+        [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
+        
+        NSError *error = nil;
+        [appDelegate.managedObjectContext save: &error];
+        if ( error ) 
+            NSLog(@"error removing polling place: %@", error.description);
+        
+        [self.tableView reloadData];
+//        }
+    }
+}
+
+#pragma mark - Edit polling place
+
+- (void) editPollingPlace: (UIGestureRecognizer *) sender {
+    if ( sender.state == UIGestureRecognizerStateBegan ) {
+        CGPoint gestureLocation = [sender locationInView: self.tableView];
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint: gestureLocation];
+        
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                        forEntity: @"PollingPlace" 
+                                                   withParameters: nil];
+        if ( indexPath.row < pollingPlaces.count ) {
+            WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
+            pollingPlaceController.pollingPlaceControllerDelegate = self;
+            pollingPlaceController.pollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
             
-            NSError *error = nil;
-            [appDelegate.managedObjectContext save: &error];
-            if ( error ) 
-                NSLog(@"error removing polling place: %@", error.description);
-            
-            [self.tableView reloadData];
+            UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: pollingPlaceController];
+            nc.navigationBar.tintColor = [UIColor blackColor];
+            nc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [self presentModalViewController: nc animated: YES];
+            [pollingPlaceController release];
+            [nc release];
         }
     }
 }
@@ -281,7 +328,8 @@
 
 -(void)watcherPollingPlaceController:(WatcherPollingPlaceController *)controller didSavePollingPlace:(PollingPlace *)pollinngPlace {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    appDelegate.watcherProfile.currentPollingPlace = controller.pollingPlace;
+    if ( ! appDelegate.watcherProfile.currentPollingPlace )
+        appDelegate.watcherProfile.currentPollingPlace = controller.pollingPlace;
 
     NSError *error = nil;
     [appDelegate.managedObjectContext save: &error];
@@ -296,7 +344,8 @@
 
 -(void)watcherPollingPlaceControllerDidCancel:(WatcherPollingPlaceController *)controller {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate.managedObjectContext deleteObject: controller.pollingPlace];
+    if ( controller.pollingPlace.isInserted )
+        [appDelegate.managedObjectContext deleteObject: controller.pollingPlace];
     [self dismissModalViewControllerAnimated: YES];
     [self.tableView reloadData];
 }

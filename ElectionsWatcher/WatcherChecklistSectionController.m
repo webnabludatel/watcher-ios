@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
+#import "WatcherTools.h"
 
 @implementation WatcherChecklistSectionController
 
@@ -131,12 +132,12 @@
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
-    NSPredicate *screenPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@ && SELF.screenIndex == %d", 
+    NSPredicate *screenPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@ && SELF.screenIndex == %d && SELF.value != NULL", 
                                     [self.sectionData objectForKey: @"name"], indexPath.row];
     NSArray *screenItems = [checklistItems filteredArrayUsingPredicate: screenPredicate];
     
     cell.textLabel.text = [screenInfo objectForKey: @"title"];
-    cell.detailTextLabel.text = [screenItems count] ? [NSString stringWithFormat: @"Отмечено %d пунктов", [screenItems count]] : @"Отметок нет";
+    cell.detailTextLabel.text = [screenItems count] ? [WatcherTools countOfMarksString: [screenItems count]] : @"Отметок нет";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

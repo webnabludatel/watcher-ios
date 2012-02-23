@@ -180,14 +180,14 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
         if ( appDelegate.watcherProfile.userId.length == 0 ) {
-            cell.textLabel.text = @"Регистрация на сервере";
+            cell.textLabel.text = @"Регистрация в системе";
             cell.accessoryType = UITableViewCellAccessoryNone;
             UIActivityIndicatorView *iv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
             cell.accessoryView = iv;
             [iv startAnimating];
             [iv release];
         } else {
-            cell.textLabel.text = @"Зарегистрирован";
+            cell.textLabel.text = @"Участник голосования";
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             cell.accessoryView = nil;
         }

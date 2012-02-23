@@ -38,6 +38,13 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     // Release any cached data, images, etc that aren't in use.
 }
 
+-(void)dealloc {
+    [pollingPlace release];
+    [settings release];
+    
+    [super dealloc];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad

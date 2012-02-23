@@ -208,7 +208,7 @@
     NSString *deviceId = [[UIDevice currentDevice] uniqueIdentifier];
     NSString *digest = [self md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
     
-    NSLog(@"server secret: %@, digest: %@",appDelegate.watcherProfile.serverSecret, digest);
+//    NSLog(@"server secret: %@, digest: %@",appDelegate.watcherProfile.serverSecret, digest);
     
     NSURL *url = [checklistItem.serverRecordId doubleValue] > 0 ? 
         [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@.json?digest=%@", 
@@ -305,8 +305,10 @@
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
     
-    AmazonS3Client *s3Client = [[AmazonS3Client alloc] initWithAccessKey: @"AKIAIX6IT3CLX62LPWPA" 
-                                                           withSecretKey: @"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"];
+    NSDictionary *amazonSettings = [appDelegate.privateSettings objectForKey: @"amazon"];
+    
+    AmazonS3Client *s3Client = [[AmazonS3Client alloc] initWithAccessKey: [amazonSettings objectForKey: @"access_key"]
+                                                           withSecretKey: [amazonSettings objectForKey: @"secret_key"]];
 
     @try {
         S3PutObjectRequest *putRequest = [[S3PutObjectRequest alloc] initWithKey: [mediaItem.filePath lastPathComponent] 
@@ -325,6 +327,7 @@
     }
     @catch ( AmazonClientException *e ) {
         NSLog(@"Amazon client error: %@", e.message);
+        [_errors addObject: e];
     }
     
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
@@ -378,7 +381,7 @@
     }
     
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
-//    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) startProcessing {

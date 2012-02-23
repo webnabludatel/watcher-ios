@@ -11,6 +11,7 @@
 #import "WatcherSaveAttributeDelegate.h"
 #import "WatcherChecklistScreenCellDelegate.h"
 #import "MBProgressHUD.h"
+#import "Watcher3PosSwitch.h"
 
 #define INPUT_TEXT          0
 #define INPUT_NUMBER        1
@@ -26,7 +27,7 @@
 @class ChecklistItem;
 @class MBProgressHUD;
 
-@interface WatcherChecklistScreenCell : UITableViewCell <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, MWPhotoBrowserDelegate, MBProgressHUDDelegate>
+@interface WatcherChecklistScreenCell : UITableViewCell <UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate, MWPhotoBrowserDelegate, MBProgressHUDDelegate, Watcher3PosSwitchDelegate>
 
 @property (nonatomic, assign) NSDictionary *itemInfo;
 @property (nonatomic, assign) UIView *control;

@@ -28,6 +28,7 @@
 @property (nonatomic, retain) WatcherDataManager *dataManager;
 @property (nonatomic, retain) Facebook *facebook;
 @property (nonatomic, readonly) WatcherProfile *watcherProfile;
+@property (nonatomic, readonly) NSDictionary *privateSettings;
 
 - (NSArray *) executeFetchRequest: (NSString *) request 
                         forEntity: (NSString *) entity 

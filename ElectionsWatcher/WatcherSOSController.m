@@ -241,28 +241,39 @@ static NSString *sosReportSections[] = { @"sos_report" };
 
 - (void) handleSendButton: (id) sender {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", @"sos_report_text"];
-    ChecklistItem *sosReportText = [[[sosItems allObjects] filteredArrayUsingPredicate: itemPredicate] lastObject];
     
-    if ( sosReportText.value.length > 0 ) {
-        NSError *error = nil;
-        [appDelegate.managedObjectContext save: &error];
-        if ( error ) 
-            NSLog(@"error saving emergency message: %@", error.description);
+    if ( appDelegate.watcherProfile.userId != nil ) {
+        NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", @"sos_report_text"];
+        ChecklistItem *sosReportText = [[[sosItems allObjects] filteredArrayUsingPredicate: itemPredicate] lastObject];
         
-        [self.sosItems removeAllObjects];
+        if ( sosReportText.value.length > 0 ) {
+            NSError *error = nil;
+            [appDelegate.managedObjectContext save: &error];
+            if ( error ) 
+                NSLog(@"error saving emergency message: %@", error.description);
+            
+            [self.sosItems removeAllObjects];
 
-        HUD = [[MBProgressHUD alloc] initWithWindow: [UIApplication sharedApplication].keyWindow];
-        HUD.delegate = self;
-        HUD.labelText = @"Отправка";
-        
-        [[UIApplication sharedApplication].keyWindow addSubview: HUD];
-        
-        [HUD show: YES];
-        [self performSelector: @selector(cleanupSOSMessage) withObject: nil afterDelay: 5];
+            HUD = [[MBProgressHUD alloc] initWithWindow: [UIApplication sharedApplication].keyWindow];
+            HUD.delegate = self;
+            HUD.labelText = @"Отправка";
+            
+            [[UIApplication sharedApplication].keyWindow addSubview: HUD];
+            
+            [HUD show: YES];
+            [self performSelector: @selector(cleanupSOSMessage) withObject: nil afterDelay: 5];
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
+                                                                message: @"Не введен текст сообщения" 
+                                                               delegate: nil 
+                                                      cancelButtonTitle: @"OK" 
+                                                      otherButtonTitles: nil];
+            [alertView show];
+            [alertView release];
+        }
     } else {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
-                                                            message: @"Не введен текст сообщения" 
+                                                            message: @"Приложение должно пройти регистрацию на сервере прежде, чем можно будет вести наблюдение. При подключении к сети WiFi или GPRS регистрация будет выполнена автоматически."  
                                                            delegate: nil 
                                                   cancelButtonTitle: @"OK" 
                                                   otherButtonTitles: nil];

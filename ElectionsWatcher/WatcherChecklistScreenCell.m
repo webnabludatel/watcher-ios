@@ -19,6 +19,7 @@
 #import "MWMovieBrowser.h"
 #import "UIImage+Resize.h"
 #import "RegexKitLite.h"
+#import "WatcherProfile.h"
 
 @implementation WatcherChecklistScreenCell
 
@@ -126,29 +127,12 @@
                 break;
                 
             case INPUT_SWITCH: {
-                self.control = [[[UISlider alloc] init] autorelease];
-                
-                UISlider *slider = (UISlider *) self.control;
-                slider.minimumValue = -1;
-                slider.maximumValue = +1;
-                slider.continuous = NO;
-                slider.value = 0;
                 
                 NSDictionary *switchOptions = [self.itemInfo objectForKey: @"switch_options"];
-                slider.minimumValueImage = [self imageFromText: [switchOptions objectForKey: @"lo_text"]];
-                slider.maximumValueImage = [self imageFromText: [switchOptions objectForKey: @"hi_text"]];
-                
-                [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                                    forState: UIControlStateNormal];
-                
-                [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                                    forState: UIControlStateNormal];
-                
-                [slider setThumbImage: [UIImage imageNamed: @"slider_thumb"] forState: UIControlStateNormal];
-                
-                [slider addTarget: self 
-                           action: @selector(snapSliderToValue:) 
-                 forControlEvents: UIControlEventValueChanged];
+                self.control = [[[Watcher3PosSwitch alloc] initWithFrame: CGRectZero 
+                                                            withDelegate: self 
+                                                             withOptions: switchOptions 
+                                                       withChecklistItem: self.checklistItem] autorelease];
             }
                 break;
                 
@@ -224,7 +208,7 @@
     [super layoutSubviews];
     
     if ( self.itemInfo ) {
-        CGRect labelFrame, controlArea, controlFrame, timestampFrame;
+        CGRect labelFrame, controlArea; //, controlFrame, timestampFrame;
         NSString *itemTitle = [self.itemInfo objectForKey: @"title"];
         
         if ( itemTitle.length ) {
@@ -232,12 +216,23 @@
                                      constrainedToSize: CGSizeMake(280, 120) 
                                          lineBreakMode: UILineBreakModeWordWrap];
             CGRectDivide(CGRectInset(self.contentView.bounds, 10, 10), &labelFrame, &controlArea, labelSize.height, CGRectMinYEdge);
-            CGRectDivide(controlArea, &timestampFrame, &controlFrame, controlArea.size.width/3.0f, CGRectMinXEdge);
+//            CGRectDivide(controlArea, &timestampFrame, &controlFrame, controlArea.size.width/3.0f, CGRectMinXEdge);
             
             self.itemLabel.frame = labelFrame;
-            self.control.frame   = ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_SWITCH ) ?
-                CGRectMake(controlFrame.origin.x, controlFrame.origin.y+10, controlFrame.size.width, controlFrame.size.height-10) :
-                CGRectMake(controlArea.origin.x, controlArea.origin.y+10, controlArea.size.width, controlArea.size.height-10);
+            
+            if ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_SWITCH ) {
+                self.control.frame = CGRectMake(controlArea.origin.x+100, controlArea.origin.y+15, controlArea.size.width-100, controlArea.size.height-10);
+            } else {
+                self.control.frame = CGRectMake(controlArea.origin.x, controlArea.origin.y+10, controlArea.size.width, controlArea.size.height-10);
+            }
+            
+            if ( [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_PHOTO 
+                || [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_VIDEO ) {
+                
+                AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
+                UIButton *button = (UIButton *) self.control;
+                button.enabled = ( appDelegate.watcherProfile.userId != nil );
+            }
         } else {
             self.control.frame = CGRectInset(self.contentView.bounds, 10, 10);
         }
@@ -271,30 +266,10 @@
             break;
             
         case INPUT_SWITCH: {
-            UISlider *slider = (UISlider *) self.control;
-            NSDictionary *switchOptions = [self.itemInfo objectForKey: @"switch_options"];
-            if ( [[switchOptions objectForKey: @"lo_value"] isEqualToString: self.checklistItem.value] ) {
-                slider.value = -1;
-                
-                [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                                    forState: UIControlStateNormal];
-                [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                                    forState: UIControlStateNormal];
-            } else if ( [[switchOptions objectForKey: @"hi_value"] isEqualToString: self.checklistItem.value] ) {
-                slider.value = +1;
-                
-                [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                                    forState: UIControlStateNormal];
-                [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                                    forState: UIControlStateNormal];
-            } else {
-                slider.value = 0;
-                
-                [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                                    forState: UIControlStateNormal];
-                [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                                    forState: UIControlStateNormal];
-            }
+            Watcher3PosSwitch *watcherSwitch = (Watcher3PosSwitch *) self.control;
+            watcherSwitch.checklistItem = self.checklistItem;
+            watcherSwitch.switchOptions = [self.itemInfo objectForKey: @"switch_options"];
+            [watcherSwitch setNeedsLayout];
         }
             break;
             
@@ -362,22 +337,14 @@
             self.checklistItem.violationFlag = nil;
             break;
         case INPUT_SWITCH: {
-            UISlider *slider = (UISlider *) self.control;
             NSDictionary *switchOptions = [self.itemInfo objectForKey: @"switch_options"];
-            switch ( (int) slider.value ) {
-                case -1:
-                    self.checklistItem.value = [switchOptions objectForKey: @"lo_value"];
-                    self.checklistItem.violationFlag = [NSNumber numberWithInt: 0];
-                    break;
-                case 0:
-                    self.checklistItem.value = nil;
-                    self.checklistItem.violationFlag = nil;
-                    break;
-                case +1:
-                    self.checklistItem.value = [switchOptions objectForKey: @"hi_value"];
-                    self.checklistItem.violationFlag = [NSNumber numberWithInt: 1];
-                    break;
-            }
+            
+            if ( [self.checklistItem.value isEqualToString: [switchOptions objectForKey: @"lo_value"]] )
+                self.checklistItem.violationFlag = [NSNumber numberWithInt: 0];
+            else if ( [self.checklistItem.value isEqualToString: [switchOptions objectForKey: @"hi_value"]] )
+                self.checklistItem.violationFlag = [NSNumber numberWithInt: 1];
+            else
+                self.checklistItem.violationFlag = nil;
         }
             break;
         case INPUT_PHOTO:
@@ -462,6 +429,7 @@
         
         UIViewController *parentController = [self firstAvailableUIViewController];
         imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+ 
         [parentController presentModalViewController: imagePicker animated: YES];
     }
     
@@ -843,37 +811,13 @@
 }
 
 #pragma mark -
-#pragma mark Slider events
+#pragma mark 3-pos switch events
 
-- (void) snapSliderToValue: (id) sender {
-    UISlider *slider = (UISlider *) sender;
+-(void)switchDidChangeValueTo:(NSString *)value {
+    self.checklistItem.value = value;
     
-    if ( slider.value >= -1 && slider.value < -0.5 ) {
-        slider.value = -1;
-        [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                            forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                            forState: UIControlStateNormal];
-    }
-    
-    if ( slider.value >= -0.5 && slider.value < 0.5 ) {
-        slider.value = 0;
-        [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                            forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_neutral"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                            forState: UIControlStateNormal];
-    }
-    
-    if ( slider.value >= 0.5 && slider.value <= 1 ) {
-        slider.value = 1;
-        [slider setMinimumTrackImage: [[UIImage imageNamed: @"slider_bad"] stretchableImageWithLeftCapWidth: 52 topCapHeight: 0]
-                            forState: UIControlStateNormal];
-        [slider setMaximumTrackImage: [[UIImage imageNamed: @"slider_good"] stretchableImageWithLeftCapWidth: 62 topCapHeight: 0]
-                            forState: UIControlStateNormal];
-    }
-    
-//    if ( slider.value != 0 )
     [self saveItem];
 }
+
 
 @end
