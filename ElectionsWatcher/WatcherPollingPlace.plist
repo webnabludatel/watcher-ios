@@ -21,6 +21,18 @@
 				<array>
 					<dict>
 						<key>value</key>
+						<string>77</string>
+						<key>title</key>
+						<string>Город Москва</string>
+					</dict>
+					<dict>
+						<key>value</key>
+						<string>78</string>
+						<key>title</key>
+						<string>Город Санкт-Петербург</string>
+					</dict>
+					<dict>
+						<key>value</key>
 						<string>1</string>
 						<key>title</key>
 						<string>Республика Адыгея</string>
@@ -474,18 +486,6 @@
 						<string>76</string>
 						<key>title</key>
 						<string>Ярославская область</string>
-					</dict>
-					<dict>
-						<key>value</key>
-						<string>77</string>
-						<key>title</key>
-						<string>Город Москва</string>
-					</dict>
-					<dict>
-						<key>value</key>
-						<string>78</string>
-						<key>title</key>
-						<string>Город Санкт-Петербург</string>
 					</dict>
 					<dict>
 						<key>value</key>
