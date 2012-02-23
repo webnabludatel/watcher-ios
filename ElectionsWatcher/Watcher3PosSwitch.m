@@ -57,6 +57,11 @@
         _rightSideLabel.backgroundColor = [UIColor clearColor];
         
         _backgroundImageView.image = [UIImage imageNamed: @"slider_neutral"];
+        
+        [_backgroundImageView release];
+        [_leftSideLabel release];
+        [_rightSideLabel release];
+        [_slider release];
     }
 
     return self;

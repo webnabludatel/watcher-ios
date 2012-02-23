@@ -13,5 +13,6 @@
 + (NSString *) countOfMarksString: (NSInteger) count;
 + (NSString *) countOfConformances: (NSInteger) count;
 + (NSString *) countOfViolations: (NSInteger) count;
++ (NSString *) md5:(NSString *) input;
 
 @end

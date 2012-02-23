@@ -14,9 +14,9 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 #import "NSObject+SBJSON.h"
-#import <CommonCrypto/CommonDigest.h>
 #import <AWSiOSSDK/S3/AmazonS3Client.h>
 #import <MobileCoreServices/UTCoreTypes.h>
+#import "WatcherTools.h"
 
 @implementation WatcherDataManager
 
@@ -38,15 +38,25 @@
     [super dealloc];
 }
 
+#pragma mark - Thread & context management
+
 - (void) runDataManager {
     @autoreleasepool {
-        _uploadQueue = [[NSOperationQueue alloc] init];
-        _errors = [[NSMutableArray alloc] init];
-        _objectsInProgress = [[NSMutableSet alloc] init];
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
-        
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        [_managedObjectContext setPersistentStoreCoordinator: appDelegate.persistentStoreCoordinator];
+        
+        if ( _uploadQueue == nil ) 
+            _uploadQueue = [[NSOperationQueue alloc] init];
+        
+        if ( _errors == nil )
+            _errors = [[NSMutableArray alloc] init];
+        
+        if ( _objectsInProgress == nil ) 
+            _objectsInProgress = [[NSMutableSet alloc] init];
+        
+        if ( _managedObjectContext == nil ) {
+            _managedObjectContext = [[NSManagedObjectContext alloc] init];
+            [_managedObjectContext setPersistentStoreCoordinator: appDelegate.persistentStoreCoordinator];
+        }
         
         [[NSNotificationCenter defaultCenter] addObserver: self 
                                                  selector: @selector(mergeContextChanges:) 
@@ -80,35 +90,14 @@
                                                     waitUntilDone: YES];
 }
 
-- (void) registerCurrentDevice {
-    NSOperation *registerOperation = [[NSInvocationOperation alloc] initWithTarget: self 
-                                                                          selector: @selector(dequeueDeviceRegistration) 
-                                                                            object: nil];
-    
-    [_uploadQueue addOperation: registerOperation];
-    [registerOperation release];
-}
-
-- (NSString *) md5:(NSString *) input {
-    const char *cStr = [input UTF8String];
-    unsigned char digest[16];
-    CC_MD5( cStr, strlen(cStr), digest ); // This is the md5 call
-    
-    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-    
-    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
-        [output appendFormat:@"%02x", digest[i]];
-    
-    return  output;
-}
+#pragma mark - Processing
 
 - (void) processUnsentData {
-    if ( [[NSThread currentThread] isCancelled] )
+    if ( [[NSThread currentThread] isCancelled] ) {
         [NSThread exit];
+    }
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
-    
     
     NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentChecklistItems" 
                                                   forEntity: @"ChecklistItem" 
@@ -118,14 +107,14 @@
     NSLog(@"start processing cycle with %d unsent items and %d items in progress", unsentItems.count, _objectsInProgress.count);
     
     if ( unsentItems.count ) {
+        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
+        
         for ( ChecklistItem *checklistItem in unsentItems ) {
             if ( checklistItem.isInserted || checklistItem.isUpdated ) 
                 continue;
             
             if ( [_objectsInProgress containsObject: checklistItem] )
                 continue;
-            
-            [_objectsInProgress addObject: checklistItem];
             
             NSLog(@"processing checklist item [%@]", checklistItem.name);
             
@@ -134,66 +123,33 @@
                                                                                              object: checklistItem];
 
             [self.uploadQueue addOperation: checklistItemSendOperation];
-
-            for ( MediaItem *mediaItem in checklistItem.mediaItems ) {
-                if ( [_objectsInProgress containsObject: mediaItem] )
-                    continue;
-                
-                [_objectsInProgress addObject: mediaItem];
-                
-                NSLog(@"processing media item [%@]", mediaItem.filePath);
-                
-                NSOperation *mediaItemSendOperation = [[NSInvocationOperation alloc] initWithTarget: self 
-                                                                                           selector: @selector(dequeueMediaItem:) 
-                                                                                             object: mediaItem];
-                
-                [mediaItemSendOperation addDependency: checklistItemSendOperation];
-                
-                if ( ! mediaItem.serverUrl ) {
-                    NSOperation *mediaItemUploadOperation = [[NSInvocationOperation alloc] initWithTarget: self 
-                                                                                                 selector: @selector(dequeueMediaItemUpload:) 
-                                                                                                   object: mediaItem];
-                    [mediaItemSendOperation addDependency: mediaItemUploadOperation];
-                    [self.uploadQueue addOperation: mediaItemUploadOperation];
-                    [mediaItemUploadOperation release];
-                }
-                
-                [self.uploadQueue addOperation: mediaItemSendOperation];
-                [mediaItemSendOperation release];
-            }
-            
             [checklistItemSendOperation release];
         }
+        
+        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     }
     
     NSLog(@"completed processing cycle with %d items in progress", _objectsInProgress.count);
-    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     
     [TestFlight passCheckpoint: @"Scan for modified checklist items"];
 }
-
-/* threading: all core data operations should be performed on the same thread with managedObjectContext */
 
 - (void) dequeueChecklistItem: (ChecklistItem *) checklistItem {
     [self performSelector: @selector(sendChecklistItem:) onThread: _dataManagerThread withObject: checklistItem waitUntilDone: YES];
 }
 
-- (void) dequeueMediaItem: (MediaItem *) mediaItem {
-    [self performSelector: @selector(sendMediaItem:) onThread: _dataManagerThread withObject: mediaItem waitUntilDone: YES];
-}
+#pragma mark - Send operations
 
-- (void) dequeueMediaItemUpload: (MediaItem *) mediaItem {
-    [self performSelector: @selector(uploadMediaItem:) onThread: _dataManagerThread withObject: mediaItem waitUntilDone: YES];
+- (void) registerCurrentDevice {
+    [self performSelector: @selector(sendDeviceRegistration) onThread: _dataManagerThread withObject: nil waitUntilDone: NO];
 }
-
-- (void) dequeueDeviceRegistration {
-    [self performSelector: @selector(sendDeviceRegistration) onThread: _dataManagerThread withObject: nil waitUntilDone: YES];
-}
-
-/* threading: end this */
 
 - (void) sendChecklistItem: (ChecklistItem *) checklistItem {
+    [_objectsInProgress addObject: checklistItem];
+    
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
     
     NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys: 
@@ -206,9 +162,7 @@
     
     NSString *json = [payload JSONRepresentation];
     NSString *deviceId = [[UIDevice currentDevice] uniqueIdentifier];
-    NSString *digest = [self md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
-    
-//    NSLog(@"server secret: %@, digest: %@",appDelegate.watcherProfile.serverSecret, digest);
+    NSString *digest = [WatcherTools md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
     
     NSURL *url = [checklistItem.serverRecordId doubleValue] > 0 ? 
         [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@.json?digest=%@", 
@@ -233,8 +187,15 @@
                 NSDictionary *result = [messageInfo objectForKey: @"result"];
                 checklistItem.serverRecordId = [result objectForKey: @"message_id"];
                 checklistItem.synchronized = [NSNumber numberWithBool: YES];
-                [self.managedObjectContext refreshObject: checklistItem mergeChanges: YES];
-                [self saveManagedObjectContext];
+                
+                if ( checklistItem.managedObjectContext == self.managedObjectContext ) {
+                    [self.managedObjectContext refreshObject: checklistItem mergeChanges: YES];
+                    [self saveManagedObjectContext];
+                } else {
+                    [checklistItem.managedObjectContext save: &error];
+                    if ( error )
+                        NSLog(@"error saving checklist item: %@", error.description);
+                }
                 
                 NSLog(@"checklist item [%@] successfully synchronized", checklistItem.name);
             } else {
@@ -245,15 +206,21 @@
         }
     }
     
+    for ( MediaItem *mediaItem in checklistItem.mediaItems )
+        [self sendMediaItem: mediaItem];
+    
     [_objectsInProgress removeObject: checklistItem];
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) sendMediaItem: (MediaItem *) mediaItem {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
+    [_objectsInProgress addObject: mediaItem];
     
+    if ( ! mediaItem.serverUrl ) 
+        [self uploadMediaItem: mediaItem];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys: 
                              mediaItem.serverUrl, @"url", 
                              mediaItem.mediaType, @"type",
@@ -262,7 +229,7 @@
     
     NSString *json = [payload JSONRepresentation];
     NSString *deviceId = [[UIDevice currentDevice] uniqueIdentifier];
-    NSString *digest = [self md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
+    NSString *digest = [WatcherTools md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
     
     NSURL *url = [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@/media_items.json?digest=%@", 
                                         mediaItem.checklistItem.serverRecordId, digest]];
@@ -284,8 +251,15 @@
                 NSDictionary *result = [messageInfo objectForKey: @"result"];
                 mediaItem.serverRecordId = [result objectForKey: @"media_item_id"];
                 mediaItem.synchronized = [NSNumber numberWithBool: YES];
-                [self.managedObjectContext refreshObject: mediaItem mergeChanges: YES];
-                [self saveManagedObjectContext];
+                
+                if ( mediaItem.managedObjectContext == self.managedObjectContext ) {
+                    [self.managedObjectContext refreshObject: mediaItem mergeChanges: YES];
+                    [self saveManagedObjectContext];
+                } else {
+                    [mediaItem.managedObjectContext save: &error];
+                    if ( error )
+                        NSLog(@"error saving media item: %@", error.description);
+                }
                 
                 NSLog(@"media item [%@] successfully synchronized", mediaItem.filePath);
             } else {
@@ -297,14 +271,10 @@
     }    
     
     [_objectsInProgress removeObject: mediaItem];
-    [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
-    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) uploadMediaItem: (MediaItem *) mediaItem {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
-    
     NSDictionary *amazonSettings = [appDelegate.privateSettings objectForKey: @"amazon"];
     
     AmazonS3Client *s3Client = [[AmazonS3Client alloc] initWithAccessKey: [amazonSettings objectForKey: @"access_key"]
@@ -322,21 +292,26 @@
         mediaItem.serverUrl = [@"http://webnabludatel-media.s3.amazonaws.com/" stringByAppendingString: [mediaItem.filePath lastPathComponent]];
         NSLog(@"media item saved to server URL: %@", mediaItem.serverUrl);
         
-        [self.managedObjectContext refreshObject: mediaItem mergeChanges: YES];
-        [self saveManagedObjectContext];
+        if ( mediaItem.managedObjectContext == self.managedObjectContext ) {
+            [self.managedObjectContext refreshObject: mediaItem mergeChanges: YES];
+            [self saveManagedObjectContext];
+        } else {
+            NSError *error = nil;
+            [mediaItem.managedObjectContext save: &error];
+            if ( error )
+                NSLog(@"error saving media item: %@", error.description);
+        }
     }
     @catch ( AmazonClientException *e ) {
         NSLog(@"Amazon client error: %@", e.message);
         [_errors addObject: e];
     }
-    
-    [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
-    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) sendDeviceRegistration {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     
     NSURL *url = [NSURL URLWithString: @"http://webnabludatel.org/api/v1/authentications.json"];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
@@ -355,25 +330,22 @@
             
             if ( [@"ok" isEqualToString: [registrationInfo objectForKey: @"status"]] ) {
                 NSDictionary *result = [registrationInfo objectForKey: @"result"];
-//                NSDictionary *useridChecklistParams = [NSDictionary dictionaryWithObjectsAndKeys: @"user_id", @"ITEM_NAME", nil];
                 WatcherProfile *watcherProfile = [[appDelegate executeFetchRequest: @"findProfile" 
                                                                          forEntity: @"WatcherProfile" 
                                                                        withContext: self.managedObjectContext
                                                                     withParameters: [NSDictionary dictionary]] lastObject];
 
-                /*
-                ChecklistItem *useridChecklistItem = [[appDelegate executeFetchRequest: @"findItemByName" 
-                                                                             forEntity: @"ChecklistItem" 
-                                                                           withContext: self.managedObjectContext
-                                                                        withParameters: useridChecklistParams] lastObject];
-                
-                useridChecklistItem.value   = [NSString stringWithFormat: @"%@", [result objectForKey: @"user_id"]];
-                 */
                 watcherProfile.userId       = [NSString stringWithFormat: @"%@", [result objectForKey: @"user_id"]];
                 watcherProfile.serverSecret = [result objectForKey: @"secret"];
                 
-                [self.managedObjectContext refreshObject: watcherProfile mergeChanges: YES];
-                [self saveManagedObjectContext];
+                if ( watcherProfile.managedObjectContext == self.managedObjectContext ) {
+                    [self.managedObjectContext refreshObject: watcherProfile mergeChanges: YES];
+                    [self saveManagedObjectContext];
+                } else {
+                    [watcherProfile.managedObjectContext save: &error];
+                    if ( error ) 
+                        NSLog(@"error updating profile: %@", error.description);
+                }
             } else {
                 // TODO: process server-side errors (check spec)
             }
@@ -383,6 +355,8 @@
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
+
+#pragma mark - Data manager start/stop
 
 - (void) startProcessing {
     _dataManagerThread = [[NSThread alloc] initWithTarget: self selector: @selector(runDataManager) object: nil];
@@ -394,6 +368,8 @@
     [_dataManagerThread release];
     _dataManagerThread = nil;
 }
+
+#pragma mark - Data manager status
 
 - (BOOL) active {
     return ( _objectsInProgress.count > 0 );

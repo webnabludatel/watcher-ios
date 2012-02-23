@@ -12,6 +12,7 @@
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
 #import "TSAlertView.h"
+#import "WatcherDataManager.h"
 
 @implementation WatcherSOSController
 
@@ -252,16 +253,13 @@ static NSString *sosReportSections[] = { @"sos_report" };
             if ( error ) 
                 NSLog(@"error saving emergency message: %@", error.description);
             
-            [self.sosItems removeAllObjects];
-
             HUD = [[MBProgressHUD alloc] initWithWindow: [UIApplication sharedApplication].keyWindow];
             HUD.delegate = self;
             HUD.labelText = @"Отправка";
             
             [[UIApplication sharedApplication].keyWindow addSubview: HUD];
-            
-            [HUD show: YES];
-            [self performSelector: @selector(cleanupSOSMessage) withObject: nil afterDelay: 5];
+
+            [HUD showWhileExecuting: @selector(reallySendSOSMessage) onTarget: self withObject: nil animated: YES];
         } else {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
                                                                 message: @"Не введен текст сообщения" 
@@ -282,9 +280,21 @@ static NSString *sosReportSections[] = { @"sos_report" };
     }
 }
 
-- (void) cleanupSOSMessage {
+- (void) reallySendSOSMessage {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
+    for ( ChecklistItem *item in self.sosItems )
+        [appDelegate.dataManager performSelector: @selector(sendChecklistItem:) 
+                                        onThread: appDelegate.dataManager.dataManagerThread 
+                                      withObject: item 
+                                   waitUntilDone: YES];
+    
+    [self performSelectorOnMainThread: @selector(cleanupSOSMessage) withObject: nil waitUntilDone: YES];
+}
+
+- (void) cleanupSOSMessage {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+
     NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
     NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@", @"sos_report"];
     for ( ChecklistItem *item in [checklistItems filteredArrayUsingPredicate: itemPredicate] )
@@ -295,8 +305,8 @@ static NSString *sosReportSections[] = { @"sos_report" };
     if ( error ) 
         NSLog(@"error cleaning up emergency message: %@", error.description);
     
+    [self.sosItems removeAllObjects];
     
-    [HUD hide: YES];
     [self.tableView reloadData];
 }
 

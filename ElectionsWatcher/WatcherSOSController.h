@@ -18,4 +18,7 @@
 @property (nonatomic, assign) UIResponder *latestActiveResponder;
 @property (nonatomic, assign) MBProgressHUD *HUD;
 
+- (void) reallySendSOSMessage;
+- (void) cleanupSOSMessage;
+
 @end

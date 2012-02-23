@@ -96,7 +96,9 @@
     navigationController3.navigationBar.barStyle = UIBarStyleBlackOpaque;
     navigationController4.navigationBar.barStyle = UIBarStyleBlackOpaque;
     navigationController5.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleBlackOpaque;
+    [UIApplication sharedApplication].statusBarHidden = NO;
     
     // init tab bar controller
     self.tabBarController = [[[UITabBarController alloc] init] autorelease];
@@ -190,27 +192,20 @@
 #pragma mark Tab bar controller delegate
 
 -(void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    
-    [self updateSynchronizationStatus];
+
+    if ( _dataManager.active )
+        [self updateSynchronizationStatus];
 }
 
 #pragma mark -
 #pragma mark Navigation controller delegate
 
-/*
 -(void)navigationController:(UINavigationController *)navigationController 
       didShowViewController:(UIViewController *)viewController 
                    animated:(BOOL)animated {
     
-    [self updateSynchronizationStatus];
-}
- */
-
--(void)navigationController:(UINavigationController *)navigationController 
-     willShowViewController:(UIViewController *)viewController 
-                   animated:(BOOL)animated {
-    
-    [self updateSynchronizationStatus];
+    if ( _dataManager.active )
+        [self updateSynchronizationStatus];
 }
 
 #pragma mark -
@@ -240,39 +235,52 @@
                 
                 [imageView.layer addAnimation:rotation forKey:@"transform"];
                 
-                navController.topViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
+                UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
+                navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
 
+                [barButtonItem release];
                 [imageView release];
             }
             
-            /*
-            if ( ! [navController.topViewController.navigationItem.rightBarButtonItem.customView isKindOfClass: [UIActivityIndicatorView class]] ) {
-                UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhite];
-                UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: activityIndicator];
-                navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
-                [activityIndicator startAnimating];
-                
-                [activityIndicator release];
-                [barButtonItem release];
-            }
-            */
         } else {
             UIImage *image = nil;
+            UIImageView *imageView = nil;
             
-            if ( self.dataManager.hasErrors )
-                image = [UIImage imageNamed: @"sync_alert"];
-            else
-                image = [UIImage imageNamed: @"sync_success"];
-            
-            UIImageView *imageView = [[UIImageView alloc] initWithImage: image];
-            UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
-            
-            navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
+            if ( self.dataManager.hasErrors ) {
+                if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 888 ) {
+                    image = [UIImage imageNamed: @"sync_alert"];
+                    imageView = [[UIImageView alloc] initWithImage: image];
+                    imageView.tag = 888;
+                }
+            } else {
+                if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 999 ) {
+                    image = [UIImage imageNamed: @"sync_success"];
+                    imageView = [[UIImageView alloc] initWithImage: image];
+                    imageView.tag = 999;
+                }
+            }
+
+            if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != imageView.tag ) {
+                UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
+                navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
+                [barButtonItem release];
+                
+                [self performSelector: @selector(fadeStatusIndicator:) withObject: imageView afterDelay: 1];
+            }
             
             [imageView release];
-            [barButtonItem release];
         }
     }
+}
+
+- (void) fadeStatusIndicator: (UIView *) indicatorView {
+    CATransition *transition = [CATransition animation];
+    transition.type = kCATransitionFade;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName: kCAMediaTimingFunctionEaseOut];
+    transition.duration = 2.0f;
+    
+    [indicatorView.layer addAnimation: transition forKey: @"hidden"];
+    [indicatorView setHidden: YES];
 }
 
 - (void) showNetworkActivity {
