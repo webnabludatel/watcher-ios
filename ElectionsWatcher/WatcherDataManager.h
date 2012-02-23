@@ -29,5 +29,6 @@
 - (void) uploadMediaItem: (MediaItem *) mediaItem;
 - (void) processUnsentData;
 - (void) saveManagedObjectContext;
+- (void) processItemsSynchronously: (NSSet *) items;
 
 @end

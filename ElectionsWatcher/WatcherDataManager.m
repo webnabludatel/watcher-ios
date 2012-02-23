@@ -68,7 +68,6 @@
                                                userInfo: nil 
                                                 repeats: YES];
         
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSDefaultRunLoopMode];
         [[NSRunLoop currentRunLoop] run];
     }
@@ -92,6 +91,15 @@
 
 #pragma mark - Processing
 
+- (void) processItemsSynchronously: (NSSet *) items {
+    for ( id item in items ) 
+        [_objectsInProgress addObject: item];
+    
+    for ( id item in items ) 
+        if ( [item isKindOfClass: [ChecklistItem class]] )
+            [self sendChecklistItem: (ChecklistItem *) item];
+}
+
 - (void) processUnsentData {
     if ( [[NSThread currentThread] isCancelled] ) {
         [NSThread exit];
@@ -107,8 +115,6 @@
     NSLog(@"start processing cycle with %d unsent items and %d items in progress", unsentItems.count, _objectsInProgress.count);
     
     if ( unsentItems.count ) {
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
-        
         for ( ChecklistItem *checklistItem in unsentItems ) {
             if ( checklistItem.isInserted || checklistItem.isUpdated ) 
                 continue;
@@ -125,8 +131,6 @@
             [self.uploadQueue addOperation: checklistItemSendOperation];
             [checklistItemSendOperation release];
         }
-        
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     }
     
     NSLog(@"completed processing cycle with %d items in progress", _objectsInProgress.count);
@@ -196,8 +200,6 @@
                     if ( error )
                         NSLog(@"error saving checklist item: %@", error.description);
                 }
-                
-                NSLog(@"checklist item [%@] successfully synchronized", checklistItem.name);
             } else {
                 // TODO: process server-side errors (check spec)
             }
@@ -208,6 +210,8 @@
     
     for ( MediaItem *mediaItem in checklistItem.mediaItems )
         [self sendMediaItem: mediaItem];
+    
+    NSLog(@"checklist item [%@] successfully synchronized", checklistItem.name);
     
     [_objectsInProgress removeObject: checklistItem];
     [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];

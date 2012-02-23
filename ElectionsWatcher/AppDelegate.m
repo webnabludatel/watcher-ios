@@ -474,7 +474,10 @@
     
     if ( [[request.url lastPathComponent] isEqualToString: @"me"] ) {
     
-        _watcherProfile.fbNickname = [result objectForKey: @"username"];
+        if ( [result objectForKey: @"username"] ) 
+            _watcherProfile.fbNickname = [result objectForKey: @"username"];
+        else
+            _watcherProfile.fbNickname = [result objectForKey: @"id"];
 
         if ( ! _watcherProfile.email.length )
             _watcherProfile.email = [result objectForKey: @"email"];

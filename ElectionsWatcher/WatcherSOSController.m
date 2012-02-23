@@ -283,11 +283,10 @@ static NSString *sosReportSections[] = { @"sos_report" };
 - (void) reallySendSOSMessage {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    for ( ChecklistItem *item in self.sosItems )
-        [appDelegate.dataManager performSelector: @selector(sendChecklistItem:) 
-                                        onThread: appDelegate.dataManager.dataManagerThread 
-                                      withObject: item 
-                                   waitUntilDone: YES];
+    [appDelegate.dataManager performSelector: @selector(processItemsSynchronously:) 
+                                    onThread: appDelegate.dataManager.dataManagerThread 
+                                  withObject: self.sosItems 
+                               waitUntilDone: YES];
     
     [self performSelectorOnMainThread: @selector(cleanupSOSMessage) withObject: nil waitUntilDone: YES];
 }
