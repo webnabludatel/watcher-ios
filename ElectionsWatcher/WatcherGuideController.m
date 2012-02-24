@@ -75,9 +75,10 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    NSString *indexPath = [[NSBundle mainBundle] pathForResource: @"golos_index" 
-                                                          ofType: @"html"];
+
+    NSString *bundlePath = [[NSBundle mainBundle] pathForResource: @"WatcherGuide" ofType: @"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath: bundlePath];
+    NSString *indexPath = [bundle pathForResource: @"index" ofType: @"html"];
     
     NSURL *indexUrl = [NSURL fileURLWithPath: indexPath];
     [self.watcherGuideView loadRequest: [NSURLRequest requestWithURL: indexUrl]];
