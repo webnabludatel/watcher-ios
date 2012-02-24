@@ -60,6 +60,7 @@
     <fetchRequest name="findPollingPlace" entity="PollingPlace" predicateString="number == $NUMBER"/>
     <fetchRequest name="findProfile" entity="WatcherProfile"/>
     <fetchRequest name="findUnsentChecklistItems" entity="ChecklistItem" predicateString="synchronized != 1"/>
+    <fetchRequest name="findUnsentMediaItems" entity="MediaItem" predicateString="synchronized != 1"/>
     <fetchRequest name="listBadItems" entity="ChecklistItem" predicateString="sectionIndex >= 0 AND screenIndex >= 0 AND value == &quot;1&quot;"/>
     <fetchRequest name="listGoodItems" entity="ChecklistItem" predicateString="sectionIndex >= 0 AND screenIndex >= 0 AND value == &quot;-1&quot;"/>
     <fetchRequest name="listPollingPlaces" entity="PollingPlace"/>
