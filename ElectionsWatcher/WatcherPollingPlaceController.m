@@ -113,8 +113,9 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 #pragma mark - Save/cancel handlers
 
 - (void) handleDoneButton: (id) sender {
+    [self.latestActiveResponder resignFirstResponder];
+    
     if ( self.pollingPlace.type.length && self.pollingPlace.nameOrNumber.length && self.pollingPlace.region.intValue ) {
-        [self.latestActiveResponder resignFirstResponder];
         [pollingPlaceControllerDelegate watcherPollingPlaceController: self didSavePollingPlace: self.pollingPlace];
     } else {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
@@ -190,6 +191,7 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
                                                      withItemInfo: itemInfo] autorelease];
         
         [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
+        [(WatcherChecklistScreenCell *) cell setChecklistCellDelegate: self];
     }
     
     [(WatcherChecklistScreenCell *) cell setChecklistItem: [self findOrCreateItem: itemInfo]];

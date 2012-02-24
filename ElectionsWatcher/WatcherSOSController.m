@@ -183,16 +183,12 @@ static NSString *sosReportSections[] = { @"sos_report" };
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSDictionary *sectionInfo = [self.sosReport objectForKey: sosReportSections[indexPath.section]];
-    NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+    NSDictionary *sectionInfo   = [self.sosReport objectForKey: sosReportSections[indexPath.section]];
+    NSDictionary *itemInfo      = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *checklistItems = self.sosItems ? 
-        [self.sosItems allObjects] :
-        [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
-    
-    NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", [itemInfo objectForKey: @"name"]];
-    NSArray *existingItems = [checklistItems filteredArrayUsingPredicate: itemPredicate];
+    AppDelegate *appDelegate    = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSPredicate *itemPredicate  = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", [itemInfo objectForKey: @"name"]];
+    NSArray *existingItems      = [[self.sosItems allObjects] filteredArrayUsingPredicate: itemPredicate];
     
     if ( existingItems.count ) {
         [(WatcherChecklistScreenCell *) cell setChecklistItem: [existingItems lastObject]];
@@ -249,6 +245,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
         
         if ( sosReportText.value.length > 0 ) {
             NSError *error = nil;
+            
             [appDelegate.managedObjectContext save: &error];
             if ( error ) 
                 NSLog(@"error saving emergency message: %@", error.description);
@@ -259,7 +256,8 @@ static NSString *sosReportSections[] = { @"sos_report" };
             
             [[UIApplication sharedApplication].keyWindow addSubview: HUD];
 
-            [HUD showWhileExecuting: @selector(reallySendSOSMessage) onTarget: self withObject: nil animated: YES];
+            [HUD show: YES];
+            [self performSelector: @selector(cleanupSOSMessage) withObject: nil afterDelay: 5];
         } else {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
                                                                 message: @"Не введен текст сообщения" 
@@ -280,32 +278,9 @@ static NSString *sosReportSections[] = { @"sos_report" };
     }
 }
 
-- (void) reallySendSOSMessage {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    [appDelegate.dataManager performSelector: @selector(processItemsSynchronously:) 
-                                    onThread: appDelegate.dataManager.dataManagerThread 
-                                  withObject: self.sosItems 
-                               waitUntilDone: YES];
-    
-    [self performSelectorOnMainThread: @selector(cleanupSOSMessage) withObject: nil waitUntilDone: YES];
-}
-
 - (void) cleanupSOSMessage {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-
-    NSArray *checklistItems = [[appDelegate.watcherProfile.currentPollingPlace checklistItems] allObjects];
-    NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@", @"sos_report"];
-    for ( ChecklistItem *item in [checklistItems filteredArrayUsingPredicate: itemPredicate] )
-        [appDelegate.managedObjectContext deleteObject: item];
-    
-    NSError *error = nil;
-    [appDelegate.managedObjectContext save: &error];
-    if ( error ) 
-        NSLog(@"error cleaning up emergency message: %@", error.description);
-    
+    [HUD hide: YES];
     [self.sosItems removeAllObjects];
-    
     [self.tableView reloadData];
 }
 

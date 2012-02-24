@@ -405,32 +405,36 @@
 
 - (void) actionSheet: (UIActionSheet *) actionSheet clickedButtonAtIndex: (NSInteger) buttonIndex {
     if ( buttonIndex == 0 ) {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-        imagePicker.allowsEditing = NO;
-        imagePicker.delegate = self;
-        imagePicker.mediaTypes = [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_PHOTO ?
-            [NSArray arrayWithObjects: (NSString *) kUTTypeImage, nil] :
-            [NSArray arrayWithObjects: (NSString *) kUTTypeMovie, nil] ;
-        
-        UIViewController *parentController = [self firstAvailableUIViewController];
-        imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [parentController presentModalViewController: imagePicker animated: YES];
+        if ( [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera] ) {
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            imagePicker.allowsEditing = NO;
+            imagePicker.delegate = self;
+            imagePicker.mediaTypes = [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_PHOTO ?
+                [NSArray arrayWithObjects: (NSString *) kUTTypeImage, nil] :
+                [NSArray arrayWithObjects: (NSString *) kUTTypeMovie, nil] ;
+            
+            UIViewController *parentController = [self firstAvailableUIViewController];
+            imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+            [parentController presentModalViewController: imagePicker animated: YES];
+        }
     }
     
     if ( buttonIndex == 1 ) {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-        imagePicker.allowsEditing = NO;
-        imagePicker.delegate = self;
-        imagePicker.mediaTypes = [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_PHOTO ?
-            [NSArray arrayWithObjects: (NSString *) kUTTypeImage, nil] :
-            [NSArray arrayWithObjects: (NSString *) kUTTypeMovie, nil] ;
-        
-        UIViewController *parentController = [self firstAvailableUIViewController];
-        imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
- 
-        [parentController presentModalViewController: imagePicker animated: YES];
+        if ( [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypePhotoLibrary] ) {
+            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            imagePicker.allowsEditing = NO;
+            imagePicker.delegate = self;
+            imagePicker.mediaTypes = [[self.itemInfo objectForKey: @"control"] intValue] == INPUT_PHOTO ?
+                [NSArray arrayWithObjects: (NSString *) kUTTypeImage, nil] :
+                [NSArray arrayWithObjects: (NSString *) kUTTypeMovie, nil] ;
+            
+            UIViewController *parentController = [self firstAvailableUIViewController];
+            imagePicker.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+     
+            [parentController presentModalViewController: imagePicker animated: YES];
+        }
     }
     
     if ( ( buttonIndex == 2 ) && ( buttonIndex != actionSheet.cancelButtonIndex ) ) {
@@ -625,7 +629,6 @@
         CGFloat maxDim = 800.0f;
         CGFloat w, h;
         
-//        NSLog(@"original image: w=%f, h=%f", originalImage.size.width, originalImage.size.height);
         if ( originalImage.size.width > originalImage.size.height ) {
             w = maxDim;
             h = ( maxDim / originalImage.size.width ) * originalImage.size.height;
@@ -633,7 +636,6 @@
             w = ( maxDim / originalImage.size.height ) * originalImage.size.width;
             h = maxDim;
         }
-//        NSLog(@"target size: w=%f, h=%f", w, h);
         
         UIImage *resizedImage = [originalImage resizedImage: CGSizeMake(w, h) 
                                        interpolationQuality: kCGInterpolationHigh];
@@ -667,6 +669,7 @@
     }
     
     mediaItem.timestamp = [NSDate date];
+    mediaItem.synchronized = NO;
     
     [self.checklistItem addMediaItemsObject: mediaItem];
     [self saveItem];

@@ -189,6 +189,8 @@
         } else {
             cell.textLabel.text = @"Добавить участок...";
             cell.textLabel.textAlignment = UITextAlignmentLeft;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.detailTextLabel.text = nil;
         }
         
         return cell;
