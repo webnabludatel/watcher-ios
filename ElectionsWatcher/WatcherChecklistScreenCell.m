@@ -137,7 +137,6 @@
                 break;
                 
             case INPUT_PHOTO: {
-                // TODO: use hint attribute
                 self.control = [UIButton buttonWithType: UIButtonTypeRoundedRect];
                 
                 UIButton *button = (UIButton *) self.control;
@@ -367,7 +366,7 @@
     }
 
     [self.saveDelegate didSaveAttributeItem: self.checklistItem];
-    [TestFlight passCheckpoint: [NSString stringWithFormat: @"Save checklist item [%@]", self.checklistItem.name]];
+//    [TestFlight passCheckpoint: [NSString stringWithFormat: @"Save checklist item [%@]", self.checklistItem.name]];
 }
 
 #pragma mark -
@@ -544,7 +543,6 @@
 
 - (void) takePhoto: (id) sender {
     [[self.checklistCellDelegate latestActiveResponder] resignFirstResponder];
-    // TODO: check camera availability and media types
     
     NSArray *mediaItems = [self mediaItemsOfType: (NSString *) kUTTypeImage];
     
@@ -577,7 +575,6 @@
 
 - (void) takeVideo: (id) sender {
     [[self.checklistCellDelegate latestActiveResponder] resignFirstResponder];
-    // TODO: check camera availability and media types
     
     NSArray *mediaItems = [self mediaItemsOfType: (NSString *) kUTTypeMovie];
     

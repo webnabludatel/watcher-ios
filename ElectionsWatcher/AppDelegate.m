@@ -54,7 +54,7 @@
                         [[NSBundle mainBundle] pathForResource: @"PrivateSettings" ofType: @"plist"]];
     
     // TestFlight
-    [TestFlight takeOff: [[_privateSettings objectForKey: @"testflight"] objectForKey: @"team_token"]];
+//    [TestFlight takeOff: [[_privateSettings objectForKey: @"testflight"] objectForKey: @"team_token"]];
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     
@@ -141,7 +141,7 @@
     self.window.rootViewController = self.tabBarController;
     [self.window makeKeyAndVisible];
     
-    [TestFlight passCheckpoint: @"Application Init"];
+//    [TestFlight passCheckpoint: @"Application Init"];
     
     return YES;
 }
@@ -548,7 +548,7 @@
             NSLog(@"Core Data Error: %@", error.description);
     }
     
-    [TestFlight passCheckpoint: @"Facebook login"];
+//    [TestFlight passCheckpoint: @"Facebook login"];
 
 }
 
@@ -590,7 +590,7 @@
                 if ( error )
                     NSLog(@"Core Data Error: %@", error.description);
                 
-                [TestFlight passCheckpoint: @"Twitter login"];
+//                [TestFlight passCheckpoint: @"Twitter login"];
             } else {
                 NSLog(@"twitter request error: %@", error);
             }

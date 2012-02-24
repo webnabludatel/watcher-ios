@@ -1105,6 +1105,7 @@
 					armv6,
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
+				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../aws-ios-sdk-1.1.1\"",
@@ -1118,6 +1119,7 @@
 					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1130,7 +1132,7 @@
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XMPSoft Ltd.";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../aws-ios-sdk-1.1.1\"",
@@ -1144,7 +1146,8 @@
 					"\"$(SRCROOT)/ElectionsWatcher/TestFlightSDK0.8.3\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "8BFEEB10-E3FF-4D4F-9D28-9E7520D4701A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9D9751C-B22D-4E6F-9F85-2E065512DC3C";
+				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -209,7 +209,7 @@
         
         NSLog(@"completed processing cycle with %d items in progress", _objectsInProgress.count);
         
-        [TestFlight passCheckpoint: @"Scan for modified checklist items"];
+//        [TestFlight passCheckpoint: @"Scan for modified checklist items"];
     }
 }
 
