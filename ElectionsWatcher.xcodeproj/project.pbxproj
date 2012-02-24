@@ -71,6 +71,7 @@
 		5F71310F14F61B9A007CEAC7 /* Watcher3PosSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F71310E14F61B90007CEAC7 /* Watcher3PosSwitch.m */; };
 		5F71311414F67197007CEAC7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71311314F67195007CEAC7 /* Default.png */; };
 		5F71311B14F71BE5007CEAC7 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F71311A14F71BDE007CEAC7 /* Reachability.m */; };
+		5F71311D14F732E9007CEAC7 /* WatcherGuide.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5F71311C14F732E4007CEAC7 /* WatcherGuide.bundle */; };
 		5F73515D14DEF89F00C8D5F1 /* traverseresponderchain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */; };
 		5F7AD6C014EB8F950099FE53 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */; };
 		5F7AD6C114EB8F950099FE53 /* README.txt in Resources */ = {isa = PBXBuildFile; fileRef = 5F7AD6BD14EB8F950099FE53 /* README.txt */; };
@@ -264,6 +265,7 @@
 		5F71311314F67195007CEAC7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		5F71311914F71BD9007CEAC7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		5F71311A14F71BDE007CEAC7 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		5F71311C14F732E4007CEAC7 /* WatcherGuide.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WatcherGuide.bundle; sourceTree = "<group>"; };
 		5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = traverseresponderchain.m; sourceTree = "<group>"; };
 		5F7AD6BC14EB8F950099FE53 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		5F7AD6BD14EB8F950099FE53 /* README.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
@@ -586,6 +588,7 @@
 				5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */,
 				5F71311914F71BD9007CEAC7 /* Reachability.h */,
 				5F71311A14F71BDE007CEAC7 /* Reachability.m */,
+				5F71311C14F732E4007CEAC7 /* WatcherGuide.bundle */,
 				5F7ADDD514C1AE4100A8E955 /* AppDelegate.h */,
 				5F7ADDD614C1AE4100A8E955 /* AppDelegate.m */,
 				5F7ADDD814C1AE4100A8E955 /* WatcherChecklistController.h */,
@@ -949,6 +952,7 @@
 				5F71310314F54952007CEAC7 /* guide_forward.png in Resources */,
 				5F71310514F57B92007CEAC7 /* PrivateSettings.plist in Resources */,
 				5F71311414F67197007CEAC7 /* Default.png in Resources */,
+				5F71311D14F732E9007CEAC7 /* WatcherGuide.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

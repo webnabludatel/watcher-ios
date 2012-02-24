@@ -323,6 +323,7 @@
     self.checklistItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
     self.checklistItem.timestamp = [NSDate date];
     self.checklistItem.synchronized = [NSNumber numberWithBool: NO];
+//    self.checklistItem.pollingPlace = appDelegate.watcherProfile.currentPollingPlace;
     
     switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
         case INPUT_CONSTANT:

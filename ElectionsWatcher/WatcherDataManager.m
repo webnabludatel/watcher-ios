@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "ChecklistItem.h"
 #import "MediaItem.h"
+#import "PollingPlace.h"
 #import "WatcherProfile.h"
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
@@ -265,6 +266,8 @@
                                  checklistItem.value, @"value",
                                  checklistItem.lat, @"lat",
                                  checklistItem.lng, @"lng",
+                                 checklistItem.pollingPlace.nameOrNumber, @"polling_place_id",
+                                 checklistItem.pollingPlace.region, @"polling_place_region",
                                  [NSNumber numberWithDouble: [checklistItem.timestamp timeIntervalSince1970]], @"timestamp",
                                  nil];
         
