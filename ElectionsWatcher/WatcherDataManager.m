@@ -77,12 +77,12 @@
                                                      name: NSManagedObjectContextDidSaveNotification 
                                                    object: self.managedObjectContext];
         
-        NSTimer *timer = [NSTimer timerWithTimeInterval: 30.0 target: self 
+        NSTimer *timer = [NSTimer timerWithTimeInterval: 37.0 target: self 
                                                selector: @selector(processUnsentData) 
                                                userInfo: nil 
                                                 repeats: YES];
         
-        NSTimer *wifiCheck = [NSTimer timerWithTimeInterval: 10.0 target: self 
+        NSTimer *wifiCheck = [NSTimer timerWithTimeInterval: 43.0 target: self 
                                                    selector: @selector(processUnsentMediaItems) 
                                                    userInfo: nil 
                                                     repeats: YES];
@@ -117,9 +117,6 @@
     }
 
     @autoreleasepool {
-//        NSLog(@"checking for WiFi connection: status=%d, connectionRequired=%d, ReachableViaWiFi=%d", 
-//              _wifiReachability.currentReachabilityStatus, _wifiReachability.connectionRequired, ReachableViaWiFi);
-        
         if ( _wifiReachability.currentReachabilityStatus > 0 && ! _wifiReachability.connectionRequired ) {
             AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
             NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentMediaItems" 
@@ -145,6 +142,8 @@
     }
     
     @autoreleasepool {
+        [_errors removeAllObjects];
+        
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
         NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentChecklistItems" 
@@ -235,17 +234,24 @@
 }
 
 - (void) dequeueChecklistItem: (ChecklistItem *) checklistItem {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     [self performSelector: @selector(sendChecklistItem:) onThread: _dataManagerThread withObject: checklistItem waitUntilDone: YES];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) dequeueMediaItem: (MediaItem *) mediaItem {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     [self performSelector: @selector(sendMediaItem:) onThread: _dataManagerThread withObject: mediaItem waitUntilDone: YES];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) dequeueMediaItemUpload: (MediaItem *) mediaItem {
-//    NSLog(@">>>> start upload");
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     [self performSelector: @selector(uploadMediaItem:) onThread: _dataManagerThread withObject: mediaItem waitUntilDone: YES];
-//    NSLog(@"<<<< end upload");
+    [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 #pragma mark - Send operations
@@ -259,7 +265,6 @@
         NSLog(@"processing checklist item [%@]", checklistItem.name);
         
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
         
         NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys: 
                                  checklistItem.name, @"key", 
@@ -321,7 +326,6 @@
         
         [_objectsInProgress removeObject: checklistItem];
         [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     }
 }
 
@@ -331,7 +335,6 @@
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
         if ( mediaItem.serverUrl ) {
-            [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
             
             NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys: 
                                      mediaItem.serverUrl, @"url", 
@@ -395,7 +398,6 @@
         }
         
         [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     }
 }
 
@@ -403,7 +405,6 @@
     @autoreleasepool {
         NSLog(@"start uploading media item [%@]", mediaItem.filePath);
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
         
         NSDictionary *amazonSettings = [appDelegate.privateSettings objectForKey: @"amazon"];
         
@@ -473,7 +474,6 @@
         }
         
         [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     }
 }
 
@@ -482,7 +482,6 @@
         NSLog(@"sending device registration");
         
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
         
         NSURL *url = [NSURL URLWithString: @"http://webnabludatel.org/api/v1/authentications.json"];
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
@@ -527,7 +526,6 @@
         }
         
         [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
-        [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
     }
 }
 

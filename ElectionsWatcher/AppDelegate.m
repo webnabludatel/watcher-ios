@@ -195,6 +195,9 @@
 
     if ( _dataManager.active )
         [self updateSynchronizationStatus];
+    else
+        [self removeSynchronizationStatus];
+        
 }
 
 #pragma mark -
@@ -206,11 +209,22 @@
     
     if ( _dataManager.active )
         [self updateSynchronizationStatus];
+    else
+        [self removeSynchronizationStatus];
 }
 
 #pragma mark -
 #pragma mark Synchronization status
 
+-(void)removeSynchronizationStatus {
+    UIViewController *viewController = self.tabBarController.selectedViewController;
+    
+    if ( [viewController isKindOfClass: [UINavigationController class]] ) {
+        UINavigationController *navController = (UINavigationController *) viewController;
+        navController.topViewController.navigationItem.rightBarButtonItem = nil;
+    }
+    
+}
 -(void)updateSynchronizationStatus {
     UIViewController *viewController = self.tabBarController.selectedViewController;
     
