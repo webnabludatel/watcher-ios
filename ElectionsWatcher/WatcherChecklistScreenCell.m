@@ -283,6 +283,8 @@
                 [button setTitle: [self.itemInfo objectForKey: @"hint"] forState: UIControlStateNormal];
             }
             
+            button.enabled = [[UIImagePickerController availableMediaTypesForSourceType: UIImagePickerControllerSourceTypeCamera] 
+                              containsObject: (NSString *) kUTTypeImage];
         }
             break;
             
@@ -295,6 +297,9 @@
             } else {
                 [button setTitle: [self.itemInfo objectForKey: @"hint"] forState: UIControlStateNormal];
             }
+            
+            button.enabled = [[UIImagePickerController availableMediaTypesForSourceType: UIImagePickerControllerSourceTypeCamera] 
+                              containsObject: (NSString *) kUTTypeMovie];
         }
             break;
             
@@ -669,7 +674,7 @@
     }
     
     mediaItem.timestamp = [NSDate date];
-    mediaItem.synchronized = NO;
+    mediaItem.synchronized = [NSNumber numberWithBool: NO];
     
     [self.checklistItem addMediaItemsObject: mediaItem];
     [self saveItem];

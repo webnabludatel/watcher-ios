@@ -43,7 +43,6 @@
                 return [NSString stringWithFormat: @"Выполнено %d требований", count];
         }
     }
-    
 }
 
 + (NSString *) countOfViolations: (NSInteger) count {

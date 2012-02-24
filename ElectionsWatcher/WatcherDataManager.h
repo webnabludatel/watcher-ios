@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class ChecklistItem, MediaItem;
+@class ChecklistItem, MediaItem, Reachability;
 
 @interface WatcherDataManager : NSObject
 
@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSMutableArray *errors;
 @property (nonatomic, retain) NSMutableSet *objectsInProgress;
 @property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, readonly) Reachability *wifiReachability;
 
 @property (nonatomic) BOOL active;
 @property (nonatomic) BOOL hasErrors;
@@ -29,5 +30,7 @@
 - (void) uploadMediaItem: (MediaItem *) mediaItem;
 - (void) processUnsentData;
 - (void) saveManagedObjectContext;
+- (void) processUnsentMediaItems;
+- (void) enqueueMediaItem: (MediaItem *) mediaItem;
 
 @end

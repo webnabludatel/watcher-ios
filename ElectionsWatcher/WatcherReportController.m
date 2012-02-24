@@ -314,15 +314,20 @@
 #pragma mark - Report sharing
 
 - (void) openWebsite: (id) sender {
-    [[UIApplication sharedApplication] openURL: [NSURL URLWithString: @"http://webnabludatel.org/"]];
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSString *reportUrlString = [@"http://webnabludatel.org/user/" stringByAppendingString: appDelegate.watcherProfile.userId];
+    [[UIApplication sharedApplication] openURL: [NSURL URLWithString: reportUrlString]];
 }
 
 - (void) shareWithTwitter: (id) sender {
     if ( [TWTweetComposeViewController canSendTweet] ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSString *reportUrlString = [@"http://webnabludatel.org/user/" stringByAppendingString: appDelegate.watcherProfile.userId];
+        
         TWTweetComposeViewController *controller = [[TWTweetComposeViewController alloc] init];
         controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [controller setInitialText: @"Отчет о нарушениях"];
-        [controller addURL: [NSURL URLWithString: @"http://webnabludatel.org/"]];
+        [controller addURL: [NSURL URLWithString: reportUrlString]];
         [self presentModalViewController: controller animated: YES];
         [controller release];
     } else {
@@ -333,14 +338,15 @@
 - (void) shareWithFacebook: (id) sender {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     if ( [appDelegate.facebook isSessionValid] ) {
+        NSString *reportUrlString = [@"http://webnabludatel.org/user/" stringByAppendingString: appDelegate.watcherProfile.userId];
         NSMutableDictionary* params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        @"308722072498316", @"app_id",
-                                       @"http://webnabludatel.org/", @"link",
-                                       /* @"http://fbrell.com/f8.jpg", @"picture", */
+                                       reportUrlString, @"link",
+                                       @"http://webnabludatel.org/assets/logo-c9604203fd303189d1c58c87eff80da7.png", @"picture",
                                        @"Отчет о нарушениях", @"name",
-                                       @"Отчет о нарушениях", @"caption",
-                                       @"Текст отчета о нарушениях", @"description",
-                                       @"Текст отчета о нарушениях",  @"message",
+                                       // @"Отчет о нарушениях", @"caption",
+                                       @"Отчет о нарушениях на сайте webnabludatel.org", @"description",
+                                       @"Отчет о нарушениях на сайте webnabludatel.org",  @"message",
                                        nil];
         
         [appDelegate.facebook dialog: @"feed" andParams: params andDelegate: self];        

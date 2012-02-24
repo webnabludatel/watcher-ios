@@ -17,6 +17,7 @@
 #import <AWSiOSSDK/S3/AmazonS3Client.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "WatcherTools.h"
+#import "Reachability.h"
 
 @implementation WatcherDataManager
 
@@ -27,6 +28,7 @@
 @synthesize errors = _errors;
 @synthesize active = _active;
 @synthesize hasErrors = _hasErrors;
+@synthesize wifiReachability = _wifiReachability;
 
 -(void)dealloc {
     [_dataManagerThread release];
@@ -34,6 +36,7 @@
     [_errors release];
     [_objectsInProgress release];
     [_managedObjectContext release];
+    [_wifiReachability release];
     
     [super dealloc];
 }
@@ -58,6 +61,16 @@
             [_managedObjectContext setPersistentStoreCoordinator: appDelegate.persistentStoreCoordinator];
         }
         
+        if ( _wifiReachability == nil ) 
+            _wifiReachability = [[Reachability reachabilityForLocalWiFi] retain];
+        
+        [_wifiReachability startNotifier];
+        
+        [[NSNotificationCenter defaultCenter] addObserver: self 
+                                                 selector: @selector(processUnsentMediaItems) 
+                                                     name: kReachabilityChangedNotification 
+                                                   object: nil];
+        
         [[NSNotificationCenter defaultCenter] addObserver: self 
                                                  selector: @selector(mergeContextChanges:) 
                                                      name: NSManagedObjectContextDidSaveNotification 
@@ -68,7 +81,13 @@
                                                userInfo: nil 
                                                 repeats: YES];
         
+        NSTimer *wifiCheck = [NSTimer timerWithTimeInterval: 10.0 target: self 
+                                                   selector: @selector(processUnsentMediaItems) 
+                                                   userInfo: nil 
+                                                    repeats: YES];
+        
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSRunLoopCommonModes];
+        [[NSRunLoop currentRunLoop] addTimer: wifiCheck forMode: NSRunLoopCommonModes];
         [[NSRunLoop currentRunLoop] run];
     }
 }
@@ -90,6 +109,34 @@
 }
 
 #pragma mark - Processing
+
+- (void) processUnsentMediaItems {
+    if ( [[NSThread currentThread] isCancelled] ) {
+        [NSThread exit];
+    }
+
+    @autoreleasepool {
+//        NSLog(@"checking for WiFi connection: status=%d, connectionRequired=%d, ReachableViaWiFi=%d", 
+//              _wifiReachability.currentReachabilityStatus, _wifiReachability.connectionRequired, ReachableViaWiFi);
+        
+        if ( _wifiReachability.currentReachabilityStatus > 0 && ! _wifiReachability.connectionRequired ) {
+            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+            NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentMediaItems" 
+                                                          forEntity: @"MediaItem" 
+                                                        withContext: self.managedObjectContext
+                                                     withParameters: [NSDictionary dictionary]];
+            
+            NSLog(@"enqueue %d unsent media items", unsentItems.count);
+            
+            for ( MediaItem *mediaItem in unsentItems ) {
+                if ( [_objectsInProgress containsObject: mediaItem] )
+                    continue;
+                
+                [self enqueueMediaItem: mediaItem];
+            }
+        }
+    }
+}
 
 - (void) processUnsentData {
     if ( [[NSThread currentThread] isCancelled] ) {
@@ -125,8 +172,15 @@
                     if ( [_objectsInProgress containsObject: mediaItem] )
                         continue;
                     
-                    if ( mediaItem.synchronized )
+                    if ( [mediaItem.synchronized boolValue] )
                         continue;
+                    
+                    if ( [mediaItem.mediaType isEqualToString: (NSString *) kUTTypeMovie] ) {
+                        if ( _wifiReachability.currentReachabilityStatus == 0 ) {
+                            NSLog(@"media item [%@] will be uploaded only when WiFi becomes available", mediaItem.filePath);
+                            continue;
+                        }
+                    }
                     
                     NSOperation *mediaItemSendOperation = [[NSInvocationOperation alloc] initWithTarget: self 
                                                                                                selector: @selector(dequeueMediaItem:) 
