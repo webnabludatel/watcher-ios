@@ -226,63 +226,68 @@
     
 }
 -(void)updateSynchronizationStatus {
-    UIViewController *viewController = self.tabBarController.selectedViewController;
-    
-    if ( [viewController isKindOfClass: [UINavigationController class]] ) {
-        UINavigationController *navController = (UINavigationController *) viewController;
+    @synchronized ( self ) {
+        UIViewController *viewController = self.tabBarController.selectedViewController;
         
-        if ( self.dataManager.active ) {
-            if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 666 ) {
-                UIImageView *imageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"sync_refresh"]];
-                imageView.tag = 666;
-
-                CAKeyframeAnimation *rotation = [CAKeyframeAnimation animation];
-                rotation.duration = 1.5f;
-                rotation.repeatCount = HUGE_VALF;
-                rotation.values = [NSArray arrayWithObjects:
-                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(0.0f, 0.0f, 0.0f, 1.0f)],
-                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI/2, 0.0f, 0.0f, 1.0f)],
-                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI, 0.0f, 0.0f, 1.0f)],
-                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI*3/2, 0.0f, 0.0f, 1.0f)],
-                                   [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI*2, 0.0f, 0.0f, 1.0f)], 
-                                   nil];
-                
-                [imageView.layer addAnimation:rotation forKey:@"transform"];
-                
-                UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
-                navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
-
-                [barButtonItem release];
-                [imageView release];
-            }
+        if ( [viewController isKindOfClass: [UINavigationController class]] ) {
+            UINavigationController *navController = (UINavigationController *) viewController;
             
-        } else {
-            UIImage *image = nil;
-            UIImageView *imageView = nil;
-            
-            if ( self.dataManager.hasErrors ) {
-                if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 888 ) {
-                    image = [UIImage imageNamed: @"sync_alert"];
-                    imageView = [[UIImageView alloc] initWithImage: image];
-                    imageView.tag = 888;
+            if ( self.dataManager.active ) {
+                if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 666 ) {
+                    UIImageView *imageView = [[UIImageView alloc] initWithImage: [UIImage imageNamed: @"sync_refresh"]];
+                    imageView.tag = 666;
+
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
+                    navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
+
+                    [barButtonItem release];
+                    [imageView release];
+                }
+                
+                UIView *barButtonItemView = navController.topViewController.navigationItem.rightBarButtonItem.customView;
+                
+                if ( ! [barButtonItemView.layer animationForKey: @"transform"] ) {
+                    CAKeyframeAnimation *rotation = [CAKeyframeAnimation animation];
+                    rotation.duration = 1.5f;
+                    rotation.repeatCount = HUGE_VALF;
+                    rotation.values = [NSArray arrayWithObjects:
+                                       [NSValue valueWithCATransform3D:CATransform3DMakeRotation(0.0f, 0.0f, 0.0f, 1.0f)],
+                                       [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI/2, 0.0f, 0.0f, 1.0f)],
+                                       [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI, 0.0f, 0.0f, 1.0f)],
+                                       [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI*3/2, 0.0f, 0.0f, 1.0f)],
+                                       [NSValue valueWithCATransform3D:CATransform3DMakeRotation(M_PI*2, 0.0f, 0.0f, 1.0f)], 
+                                       nil];
+                    
+                    [barButtonItemView.layer addAnimation:rotation forKey:@"transform"];
                 }
             } else {
-                if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 999 ) {
-                    image = [UIImage imageNamed: @"sync_success"];
-                    imageView = [[UIImageView alloc] initWithImage: image];
-                    imageView.tag = 999;
-                }
-            }
-
-            if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != imageView.tag ) {
-                UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
-                navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
-                [barButtonItem release];
+                UIImage *image = nil;
+                UIImageView *imageView = nil;
                 
-                [self performSelector: @selector(fadeStatusIndicator:) withObject: imageView afterDelay: 1];
+                if ( self.dataManager.hasErrors ) {
+                    if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 888 ) {
+                        image = [UIImage imageNamed: @"sync_alert"];
+                        imageView = [[UIImageView alloc] initWithImage: image];
+                        imageView.tag = 888;
+                    }
+                } else {
+                    if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != 999 ) {
+                        image = [UIImage imageNamed: @"sync_success"];
+                        imageView = [[UIImageView alloc] initWithImage: image];
+                        imageView.tag = 999;
+                    }
+                }
+
+                if ( navController.topViewController.navigationItem.rightBarButtonItem.customView.tag != imageView.tag ) {
+                    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView: imageView];
+                    navController.topViewController.navigationItem.rightBarButtonItem = barButtonItem;
+                    [barButtonItem release];
+                    
+                    [self performSelector: @selector(fadeStatusIndicator:) withObject: imageView afterDelay: 1];
+                }
+                
+                [imageView release];
             }
-            
-            [imageView release];
         }
     }
 }
