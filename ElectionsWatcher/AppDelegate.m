@@ -297,13 +297,6 @@
     [indicatorView setHidden: YES];
 }
 
-- (void) showNetworkActivity {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-}
-
-- (void) hideNetworkActivity {
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-}
 
 #pragma mark -
 #pragma mark Location manager

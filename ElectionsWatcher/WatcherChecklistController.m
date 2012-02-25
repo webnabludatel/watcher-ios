@@ -182,7 +182,7 @@
             }
             
             UILongPressGestureRecognizer *gr = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(editPollingPlace:)];
-            gr.minimumPressDuration = 2;
+            gr.minimumPressDuration = 0.8f;
             
             [cell.contentView addGestureRecognizer: gr];
             [gr release];

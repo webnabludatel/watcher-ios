@@ -84,7 +84,6 @@
                 textField.placeholder = [self.itemInfo objectForKey: @"hint"];
                 textField.delegate = self;
                 textField.font = [UIFont systemFontOfSize: 14];
-//                textField.borderStyle = UITextBorderStyleRoundedRect;
                 
                 if ( controlType == INPUT_CONSTANT ) 
                     textField.userInteractionEnabled = NO;
@@ -107,7 +106,30 @@
                 textField.placeholder = [self.itemInfo objectForKey: @"hint"];
                 textField.delegate = self;
                 textField.font = [UIFont systemFontOfSize: 14];
-//                textField.borderStyle = UITextBorderStyleRoundedRect;
+                
+                UIToolbar *saveTextToolbar = [[UIToolbar alloc] initWithFrame: CGRectMake(0, 0, self.frame.size.width, 50)];
+                
+                UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemCancel 
+                                                                                            target: self 
+                                                                                            action: @selector(cancelTextField)];
+                
+                UIBarButtonItem *updateItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemDone 
+                                                                                            target: self 
+                                                                                            action: @selector(saveTextField)];
+                
+                UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem: UIBarButtonSystemItemFlexibleSpace 
+                                                                                        target: nil
+                                                                                        action: nil];
+                
+                [saveTextToolbar setTintColor: [UIColor blackColor]];
+                [saveTextToolbar setItems: [NSArray arrayWithObjects: cancelItem, spacer, updateItem, nil]];
+                
+                textField.inputAccessoryView = saveTextToolbar;
+                
+                [spacer release];
+                [cancelItem release];
+                [updateItem release];
+                [saveTextToolbar release];
                 
             }
                 break;
@@ -122,7 +144,6 @@
                 textField.placeholder = [self.itemInfo objectForKey: @"hint"];
                 textField.delegate = self;
                 textField.font = [UIFont systemFontOfSize: 14];
-//                textField.borderStyle = UITextBorderStyleRoundedRect;
             }
                 break;
                 
@@ -793,6 +814,18 @@
         [self popupPicker: textField];
         return YES;
     }
+}
+
+- (void) saveTextField {
+    UITextField *textField = (UITextField *) self.control;
+    [self saveItem];
+    [textField resignFirstResponder];
+}
+
+- (void) cancelTextField {
+    UITextField *textField = (UITextField *) self.control;
+    [textField resignFirstResponder];
+    [self loadItem];
 }
 
 #pragma mark -

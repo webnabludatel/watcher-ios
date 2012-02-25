@@ -15,10 +15,12 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 #import "NSObject+SBJSON.h"
-#import <AWSiOSSDK/S3/AmazonS3Client.h>
+//#import <AWSiOSSDK/S3/AmazonS3Client.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "WatcherTools.h"
 #import "Reachability.h"
+#import "ASIS3Request.h"
+#import "ASIS3ObjectRequest.h"
 
 @implementation WatcherDataManager
 
@@ -67,8 +69,11 @@
         
         [_wifiReachability startNotifier];
         
+        if ( ! _wifiReachability.currentReachabilityStatus ) 
+            _uploadQueue.maxConcurrentOperationCount = 3;
+        
         [[NSNotificationCenter defaultCenter] addObserver: self 
-                                                 selector: @selector(processUnsentMediaItems) 
+                                                 selector: @selector(handleReachabilityChange:) 
                                                      name: kReachabilityChangedNotification 
                                                    object: nil];
         
@@ -82,23 +87,31 @@
                                                userInfo: nil 
                                                 repeats: YES];
         
-        NSTimer *wifiCheck = [NSTimer timerWithTimeInterval: 43.0 target: self 
-                                                   selector: @selector(processUnsentMediaItems) 
-                                                   userInfo: nil 
-                                                    repeats: YES];
+        
+//        NSTimer *wifiCheck = [NSTimer timerWithTimeInterval: 43.0 target: self 
+//                                                   selector: @selector(processUnsentMediaItems) 
+//                                                   userInfo: nil 
+//                                                    repeats: YES];
         
         [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSRunLoopCommonModes];
-        [[NSRunLoop currentRunLoop] addTimer: wifiCheck forMode: NSRunLoopCommonModes];
+//        [[NSRunLoop currentRunLoop] addTimer: wifiCheck forMode: NSRunLoopCommonModes];
         [[NSRunLoop currentRunLoop] run];
     }
 }
 
-- (void) saveManagedObjectContext {
-    @synchronized ( self.managedObjectContext ) {
+- (void) saveManagedObject: (NSManagedObject *) managedObject {
+    if ( [NSThread currentThread] != _dataManagerThread )
+        @throw [NSException exceptionWithName: NSInternalInconsistencyException 
+                                       reason: @"this method should be called only on data manager thread" 
+                                     userInfo: nil];
+    
+    @synchronized ( _managedObjectContext ) {
         NSError *error = nil;
-        [self.managedObjectContext save: &error];
+        [_managedObjectContext refreshObject: managedObject mergeChanges: YES];
+        [_managedObjectContext save: &error];
+        
         if ( error )
-            NSLog(@"error saving data manager context: %@", error.description);
+            NSLog(@"error saving managed object %@: %@", managedObject.objectID, error.description);
     }
 }
 
@@ -107,6 +120,15 @@
     [appDelegate.managedObjectContext performSelectorOnMainThread: @selector(mergeChangesFromContextDidSaveNotification:) 
                                                        withObject: notification 
                                                     waitUntilDone: YES];
+}
+
+- (void) handleReachabilityChange: (NSNotification *) notification {
+    if ( _wifiReachability.currentReachabilityStatus > 0 )
+        _uploadQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
+    else
+        _uploadQueue.maxConcurrentOperationCount = 3;
+    
+    NSLog(@"network reachability changed, queue concurrent operations count set to %d", _uploadQueue.maxConcurrentOperationCount);
 }
 
 #pragma mark - Processing
@@ -144,6 +166,8 @@
     @autoreleasepool {
         [_errors removeAllObjects];
         
+        NSLog(@"queue concurrent operations count = %d", _uploadQueue.maxConcurrentOperationCount);
+        
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
         NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentChecklistItems" 
@@ -175,12 +199,12 @@
                     if ( [mediaItem.synchronized boolValue] )
                         continue;
                     
-                    if ( [mediaItem.mediaType isEqualToString: (NSString *) kUTTypeMovie] ) {
-                        if ( _wifiReachability.currentReachabilityStatus == 0 ) {
-                            NSLog(@"media item [%@] will be uploaded only when WiFi becomes available", mediaItem.filePath);
-                            continue;
-                        }
-                    }
+//                    if ( [mediaItem.mediaType isEqualToString: (NSString *) kUTTypeMovie] ) {
+//                        if ( _wifiReachability.currentReachabilityStatus == 0 ) {
+//                            NSLog(@"media item [%@] will be uploaded only when WiFi becomes available", mediaItem.filePath);
+//                            continue;
+//                        }
+//                    }
                     
                     NSOperation *mediaItemSendOperation = [[NSInvocationOperation alloc] initWithTarget: self 
                                                                                                selector: @selector(dequeueMediaItem:) 
@@ -236,21 +260,24 @@
 - (void) dequeueChecklistItem: (ChecklistItem *) checklistItem {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
-    [self performSelector: @selector(sendChecklistItem:) onThread: _dataManagerThread withObject: checklistItem waitUntilDone: YES];
+    [self sendChecklistItem: checklistItem];
+//    [self performSelector: @selector(sendChecklistItem:) onThread: _dataManagerThread withObject: checklistItem waitUntilDone: YES];
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) dequeueMediaItem: (MediaItem *) mediaItem {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
-    [self performSelector: @selector(sendMediaItem:) onThread: _dataManagerThread withObject: mediaItem waitUntilDone: YES];
+    [self sendMediaItem: mediaItem];
+//    [self performSelector: @selector(sendMediaItem:) onThread: _dataManagerThread withObject: mediaItem waitUntilDone: YES];
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
 - (void) dequeueMediaItemUpload: (MediaItem *) mediaItem {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
-    [self performSelector: @selector(uploadMediaItem:) onThread: _dataManagerThread withObject: mediaItem waitUntilDone: YES];
+    [self uploadMediaItem: mediaItem];
+//    [self performSelector: @selector(uploadMediaItem:) onThread: _dataManagerThread withObject: mediaItem waitUntilDone: YES];
     [appDelegate performSelectorOnMainThread: @selector(updateSynchronizationStatus) withObject: nil waitUntilDone: NO];
 }
 
@@ -285,11 +312,15 @@
             [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@.json?digest=%@", 
                                    checklistItem.serverRecordId, digest]] :
             [NSURL URLWithString: [@"http://webnabludatel.org/api/v1/messages.json?digest=" stringByAppendingString: digest]];
+
+        [ASIFormDataRequest setShouldThrottleBandwidthForWWAN: YES];
+        [ASIFormDataRequest throttleBandwidthForWWANUsingLimit: 21600];
+        
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
         if ( [checklistItem.serverRecordId doubleValue] > 0 ) [request setRequestMethod: @"PUT"];
+        [request setTimeOutSeconds: 60];
         [request setPostValue: deviceId forKey: @"device_id"];
         [request setPostValue: json forKey: @"payload"];
-        [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
         [request startSynchronous];
         
         NSError *error = [request error];
@@ -306,14 +337,10 @@
                     checklistItem.serverRecordId = [result objectForKey: @"message_id"];
                     checklistItem.synchronized = [NSNumber numberWithBool: YES];
                     
-                    if ( checklistItem.managedObjectContext == self.managedObjectContext ) {
-                        [self.managedObjectContext refreshObject: checklistItem mergeChanges: YES];
-                        [self saveManagedObjectContext];
-                    } else {
-                        [checklistItem.managedObjectContext save: &error];
-                        if ( error )
-                            NSLog(@"error saving checklist item: %@", error.description);
-                    }
+                    [self performSelector: @selector(saveManagedObject:) 
+                                 onThread: _dataManagerThread 
+                               withObject: checklistItem 
+                            waitUntilDone: NO];
                 } else {
                     // TODO: process server-side errors (check spec)
                 }
@@ -325,7 +352,6 @@
         NSLog(@"checklist item [%@] successfully synchronized", checklistItem.name);
         
         [_objectsInProgress removeObject: checklistItem];
-        [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
     }
 }
 
@@ -348,21 +374,24 @@
             
             NSURL *url = [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@/media_items.json?digest=%@", 
                                                 mediaItem.checklistItem.serverRecordId, digest]];
+
+            [ASIFormDataRequest setShouldThrottleBandwidthForWWAN: YES];
+            [ASIFormDataRequest throttleBandwidthForWWANUsingLimit: 21600];
+
             ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
+            [request setTimeOutSeconds: 60];
             [request setPostValue: deviceId forKey: @"device_id"];
             [request setPostValue: json forKey: @"payload"];
-            [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
             [request startSynchronous];
             
             NSError *error = [request error];
             
             if ( error ) {
-                NSLog(@"error sending media item: %@", error);
+                NSLog(@"error sending media item: %@, will retry", error);
                 [_errors addObject: error];
                 
                 [_objectsInProgress removeObject: mediaItem];
-                NSLog(@"retrying media item [%@]", mediaItem.filePath);
-                [self enqueueMediaItem: mediaItem];
+                [self performSelector: @selector(enqueueMediaItem:) withObject: mediaItem afterDelay: 31];
             } else {
                 if ( [request responseStatusCode] == 200 ) {
                     NSString *response = [request responseString];
@@ -372,14 +401,10 @@
                         mediaItem.serverRecordId = [result objectForKey: @"media_item_id"];
                         mediaItem.synchronized = [NSNumber numberWithBool: YES];
                         
-                        if ( mediaItem.managedObjectContext == self.managedObjectContext ) {
-                            [self.managedObjectContext refreshObject: mediaItem mergeChanges: YES];
-                            [self saveManagedObjectContext];
-                        } else {
-                            [mediaItem.managedObjectContext save: &error];
-                            if ( error )
-                                NSLog(@"error saving media item: %@", error.description);
-                        }
+                        [self performSelector: @selector(saveManagedObject:) 
+                                     onThread: _dataManagerThread 
+                                   withObject: mediaItem 
+                                waitUntilDone: NO];
                         
                         NSLog(@"media item [%@] successfully synchronized", mediaItem.filePath);
                     } else {
@@ -394,10 +419,8 @@
         } else {
             NSLog(@"looks like media item upload has failed, re-trying media item [%@]", mediaItem.filePath );
             [_objectsInProgress removeObject: mediaItem];
-            [self enqueueMediaItem: mediaItem];
+            [self performSelector: @selector(enqueueMediaItem:) withObject: mediaItem afterDelay: 31];
         }
-        
-        [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
     }
 }
 
@@ -407,73 +430,39 @@
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
         NSDictionary *amazonSettings = [appDelegate.privateSettings objectForKey: @"amazon"];
-        
-        AmazonS3Client *s3Client = [[AmazonS3Client alloc] initWithAccessKey: [amazonSettings objectForKey: @"access_key"]
-                                                               withSecretKey: [amazonSettings objectForKey: @"secret_key"]];
 
-        @try {
-            NSData *fileData = [NSData dataWithContentsOfFile: mediaItem.filePath];
-            
-            if ( fileData.length > 10 * 1024 * 1024 ) {
-                S3MultipartUpload *multipartUpload = [s3Client initiateMultipartUploadWithKey: [mediaItem.filePath lastPathComponent] 
-                                                                                   withBucket: @"webnabludatel-media"];
-                
-                S3CompleteMultipartUploadRequest *completeUploadRequest = [[S3CompleteMultipartUploadRequest alloc] 
-                                                                           initWithMultipartUpload: multipartUpload];
-                static NSUInteger kBufferSize = 5 * 1024 * 1024; NSUInteger counter = 1;
-                
-                for ( NSUInteger pos = 0; pos < fileData.length; pos += kBufferSize ) {
-                    NSLog(@"upload position=%d, part=%d", pos, counter);
-                    NSUInteger length = pos + kBufferSize > fileData.length ? fileData.length - pos : kBufferSize;
-                    NSData *fragmentData = [fileData subdataWithRange: NSMakeRange(pos, length)];
-                    
-                    S3UploadPartRequest *uploadPartRequest = [[S3UploadPartRequest alloc] initWithMultipartUpload: multipartUpload];
-                    uploadPartRequest.partNumber = counter;
-                    uploadPartRequest.data = fragmentData;
-                    
-                    [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
-                    S3UploadPartResponse *partResponse = [s3Client uploadPart: uploadPartRequest];
-                    NSLog(@"amazon response token to part upload: %@", partResponse.id2);
-                    [uploadPartRequest release];
-                    
-                    [completeUploadRequest addPartWithPartNumber: counter withETag: partResponse.etag];
-                    
-                    counter++;
-                }
-                
-                S3CompleteMultipartUploadResponse *completeUploadResponse = [s3Client completeMultipartUpload: completeUploadRequest];
-                NSLog(@"amazon response token to complete upload: %@", completeUploadResponse.id2);
-            } else {
-                S3PutObjectRequest *putRequest = [[S3PutObjectRequest alloc] initWithKey: [mediaItem.filePath lastPathComponent] 
-                                                                                inBucket: @"webnabludatel-media"];
-                
-                putRequest.contentType = [mediaItem.mediaType isEqualToString: (NSString *) kUTTypeImage] ? @"image/jpeg" : @"video/quicktime";
-                putRequest.data = [NSData dataWithContentsOfFile: mediaItem.filePath];
-                
-                [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
-                S3Response *response = [s3Client putObject: putRequest];
-                NSLog(@"amazon response token: %@", response.id2);
-            }
-            
+        [ASIS3Request setSharedSecretAccessKey:[amazonSettings objectForKey: @"secret_key"]];
+        [ASIS3Request setSharedAccessKey: [amazonSettings objectForKey: @"access_key"]];
+        [ASIS3Request setShouldThrottleBandwidthForWWAN: YES];
+        [ASIS3Request throttleBandwidthForWWANUsingLimit: 21600];
+        
+        ASIS3ObjectRequest *request = 
+        [ASIS3ObjectRequest PUTRequestForFile: mediaItem.filePath 
+                                   withBucket: @"webnabludatel-media" 
+                                          key: [mediaItem.filePath lastPathComponent]];
+        
+        request.mimeType        = [mediaItem.mediaType isEqualToString: (NSString *) kUTTypeImage] ? @"image/jpeg" : @"video/quicktime";
+        request.timeOutSeconds  = 60;
+        request.uploadProgressDelegate = self;
+        
+        NSLog(@"file size: %d", [[NSData dataWithContentsOfFile: mediaItem.filePath] length]);
+        
+        [request startSynchronous];
+        
+        NSLog(@"ASIS3Request response status: %@", request.responseStatusMessage);
+        
+        if ([request error]) {
+            NSLog(@"ASIS3Request error: %@, %@", [request error], [[request error] localizedDescription]);
+            [_errors addObject: [request error]];
+        } else {
             mediaItem.serverUrl = [@"http://webnabludatel-media.s3.amazonaws.com/" stringByAppendingString: [mediaItem.filePath lastPathComponent]];
             NSLog(@"media item uploaded to server URL: %@", mediaItem.serverUrl);
-            
-            if ( mediaItem.managedObjectContext == self.managedObjectContext ) {
-                [self.managedObjectContext refreshObject: mediaItem mergeChanges: YES];
-                [self saveManagedObjectContext];
-            } else {
-                NSError *error = nil;
-                [mediaItem.managedObjectContext save: &error];
-                if ( error )
-                    NSLog(@"error saving media item: %@", error.description);
-            }
+
+            [self performSelector: @selector(saveManagedObject:) 
+                         onThread: _dataManagerThread 
+                       withObject: mediaItem 
+                    waitUntilDone: NO];
         }
-        @catch ( AmazonClientException *e ) {
-            NSLog(@"Amazon client error: %@", e.message);
-            [_errors addObject: e];
-        }
-        
-        [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
     }
 }
 
@@ -486,7 +475,6 @@
         NSURL *url = [NSURL URLWithString: @"http://webnabludatel.org/api/v1/authentications.json"];
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
         [request setPostValue: [[UIDevice currentDevice] uniqueIdentifier] forKey: @"device_id"];
-        [appDelegate performSelectorOnMainThread: @selector(showNetworkActivity) withObject: nil waitUntilDone: NO];
         [request startSynchronous];
         
         NSError *error = [request error];
@@ -511,21 +499,15 @@
                     
                     NSLog(@"device registration completed");
                     
-                    if ( watcherProfile.managedObjectContext == self.managedObjectContext ) {
-                        [self.managedObjectContext refreshObject: watcherProfile mergeChanges: YES];
-                        [self saveManagedObjectContext];
-                    } else {
-                        [watcherProfile.managedObjectContext save: &error];
-                        if ( error ) 
-                            NSLog(@"error updating profile: %@", error.description);
-                    }
+                    [self performSelector: @selector(saveManagedObject:) 
+                                 onThread: _dataManagerThread 
+                               withObject: watcherProfile 
+                            waitUntilDone: NO];
                 } else {
                     // TODO: process server-side errors (check spec)
                 }
             }
         }
-        
-        [appDelegate performSelectorOnMainThread: @selector(hideNetworkActivity) withObject: nil waitUntilDone: NO];
     }
 }
 
@@ -550,6 +532,12 @@
 
 - (BOOL) hasErrors {
     return ( _errors.count > 0 );
+}
+
+#pragma mark - Progress delegate
+
+-(void)request:(ASIHTTPRequest *)request didSendBytes:(long long)bytes {
+//    NSLog(@"just sent %qu bytes", bytes);
 }
 
 @end

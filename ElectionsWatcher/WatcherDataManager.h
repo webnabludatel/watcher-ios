@@ -7,10 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
+#import "ASIProgressDelegate.h"
 
 @class ChecklistItem, MediaItem, Reachability;
 
-@interface WatcherDataManager : NSObject
+@interface WatcherDataManager : NSObject <ASIProgressDelegate>
 
 @property (nonatomic, retain) NSThread *dataManagerThread;
 @property (nonatomic, retain) NSOperationQueue *uploadQueue;
@@ -29,8 +31,8 @@
 - (void) sendMediaItem: (MediaItem *) mediaItem;
 - (void) uploadMediaItem: (MediaItem *) mediaItem;
 - (void) processUnsentData;
-- (void) saveManagedObjectContext;
 - (void) processUnsentMediaItems;
+- (void) saveManagedObject: (NSManagedObject *) managedObject;
 - (void) enqueueMediaItem: (MediaItem *) mediaItem;
 
 @end

@@ -20,27 +20,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Предъвлены пустые ящики и пустые КОИБы</string>
 						<key>violation_text</key>
 						<string>Пустые ящики не предъявлены</string>
-						<key>name</key>
-						<string>ballot_box_check_allowed</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -52,14 +37,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>ballot_box_check_allowed</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Ящики опечатали при вас</string>
 						<key>violation_text</key>
 						<string>Ящики опечатаны без свидетелей</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>ballot_box_sealed_in_your_presence</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -89,6 +89,12 @@
 				<key>items</key>
 				<array>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Вы смогли ознакомиться со списками</string>
+						<key>violation_text</key>
+						<string>Наблюдатели не смогли онакомиться со списками избирателей</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -100,16 +106,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Вы смогли ознакомиться со списками</string>
-						<key>violation_text</key>
-						<string>Наблюдатели не смогли онакомиться со списками избирателей</string>
 						<key>name</key>
 						<string>voters_lists_checked</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Пометки в списках избирателей</string>
+						<key>violation_text</key>
+						<string>В списках избирателей есть пометки</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -121,14 +127,8 @@
 							<key>hi_text</key>
 							<string>есть</string>
 						</dict>
-						<key>title</key>
-						<string>Пометки в списках избирателей</string>
-						<key>violation_text</key>
-						<string>В списках избирателей есть пометки</string>
 						<key>name</key>
 						<string>voters_lists_are_not_ok</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -148,6 +148,12 @@
 				<key>items</key>
 				<array>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Вы смогли узнать число избирателей</string>
+						<key>violation_text</key>
+						<string>Наблюдателям не сообщили число избирателей</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -159,14 +165,8 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Вы смогли узнать число избирателей</string>
-						<key>violation_text</key>
-						<string>Наблюдателям не сообщили число избирателей</string>
 						<key>name</key>
 						<string>known_voters_number</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -196,6 +196,12 @@
 				<key>items</key>
 				<array>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Бюллетени выдаются членам УИК под роспись</string>
+						<key>violation_text</key>
+						<string>Бюллентени выдаются членам УИК не по правилам</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -207,14 +213,8 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Бюллетени выдаются членам УИК под роспись</string>
-						<key>violation_text</key>
-						<string>Бюллентени выдаются членам УИК не по правилам</string>
 						<key>name</key>
 						<string>ballots_is_given_with_signage</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -297,27 +297,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>ТИК в здании местной администрации</string>
 						<key>violation_text</key>
 						<string>ТИК расположен не в здании местной администрации</string>
-						<key>name</key>
-						<string>tik_located_in_administration_building</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -329,16 +314,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>tik_located_in_administration_building</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>На сдачу протокола допущены все лица, имеющие на это право</string>
 						<key>violation_text</key>
 						<string>Допуск в здание осуществляется с нарушением правил</string>
-						<key>name</key>
-						<string>tik_building_addmittance_cleared</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -350,16 +335,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>tik_building_addmittance_cleared</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Вы можете свободно перемещаться по зданию, сопровождать представителей УИК</string>
 						<key>violation_text</key>
 						<string>Наблюдатели не могут свободно перемещаться по зданию</string>
-						<key>name</key>
-						<string>tik_other_watchers_admittance_cleared</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -371,16 +356,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>tik_other_watchers_admittance_cleared</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Прием протоколов в едином помещении с УФСТ</string>
 						<key>violation_text</key>
 						<string>Приём протоколов проходит в нескольких помещениях</string>
-						<key>name</key>
-						<string>tik_protocols_are_received_in_a_single_room</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -392,14 +377,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>tik_protocols_are_received_in_a_single_room</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Сотрудники администрации участвуют в приеме протоколов</string>
 						<key>violation_text</key>
 						<string>Сотрудники администрации не участвуют в приеме протоколов</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>tik_administation_personnel_participate_in_protocol_processing</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -419,27 +419,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Представители УИК сразу по прибытии проходят в помещени с УФСТ</string>
 						<key>violation_text</key>
 						<string>Представители УИК не сразу проходят в помещени с УФСТ</string>
-						<key>name</key>
-						<string>tik_intantly_to_UFST</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -451,16 +436,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>tik_intantly_to_UFST</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Данные занесены в УФТС</string>
 						<key>violation_text</key>
 						<string>Данные вообще не занесены в УФСТ</string>
-						<key>name</key>
-						<string>tik_entered_data_to_extended_table_properly</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -472,14 +457,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>tik_entered_data_to_extended_table_properly</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Данные занесены сразу по прибытии</string>
 						<key>violation_text</key>
 						<string>Данные не занесены в УФСТ сразу по прибытии</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>tik_entered_data_to_extended_table_immediately</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -501,6 +501,10 @@
 					<dict>
 						<key></key>
 						<string></string>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>ТИК объявил об отказе в приеме протокола</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -512,16 +516,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>ТИК объявил об отказе в приеме протокола</string>
 						<key>name</key>
 						<string>tik_announced_decline_of_uik_protocol</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key></key>
 						<string></string>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Первый экземпляр протокола остался в ТИК</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -533,14 +537,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Первый экземпляр протокола остался в ТИК</string>
 						<key>name</key>
 						<string>tik_held_first_copy_of_protocol</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Случаи переписывания протокола</string>
+						<key>violation_text</key>
+						<string>Случаи переписывания протокола</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -552,14 +558,8 @@
 							<key>hi_text</key>
 							<string>есть</string>
 						</dict>
-						<key>title</key>
-						<string>Случаи переписывания протокола</string>
-						<key>violation_text</key>
-						<string>Случаи переписывания протокола</string>
 						<key>name</key>
 						<string>tik_rewrite_uik_protocol_</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -569,27 +569,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Компьютер с системой находится в отдельном помещении</string>
 						<key>violation_text</key>
 						<string>Компьютер с ГАС &quot;Выборы&quot; не находится в отдельном помещении</string>
-						<key>name</key>
-						<string>gas_vybory_is_in_separate_room</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -601,14 +586,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>gas_vybory_is_in_separate_room</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Представители кандидатов присутствуют при вводе данных</string>
 						<key>violation_text</key>
 						<string>Представители кандидатов не могут присутствовать при вводе данных в ГАС &quot;Выборы&quot;</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>candidate_representatives_observe_gas_vybody</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -638,6 +638,12 @@
 						<integer>1</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Все письменные жалобы рассмотрены</string>
+						<key>violation_text</key>
+						<string>Не все письменные жалобы рассмотрены</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -649,14 +655,8 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Все письменные жалобы рассмотрены</string>
-						<key>violation_text</key>
-						<string>Не все письменные жалобы рассмотрены</string>
 						<key>name</key>
 						<string>tik_all_complains_are_checked</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -739,27 +739,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>есть</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Правильно оформленные сведения о кандидатах</string>
 						<key>violation_text</key>
 						<string>На участке отсутсвуют сведения о кандидатах, либо они оформлены неправильно</string>
-						<key>name</key>
-						<string>appearance_candidates_info</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -771,16 +756,37 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>appearance_candidates_info</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Образец заполнения бюллетеня</string>
 						<key>violation_text</key>
 						<string>На участке отсутсвует образец заполнения бюллетеня, либо он оформлен неправильно</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>есть</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>appearance_ballot_sample_present</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Увеличенная форма протокола</string>
+						<key>violation_text</key>
+						<string>На участке отсутсвует увеличенная форма протокола, либо она оформлена неправильно</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -792,16 +798,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Увеличенная форма протокола</string>
-						<key>violation_text</key>
-						<string>На участке отсутсвует увеличенная форма протокола, либо она оформлена неправильно</string>
 						<key>name</key>
 						<string>appearance_ballot_extended_protocol</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Агитационные материалы ближе 50 м</string>
+						<key>violation_text</key>
+						<string>Агитационные материалы располагаются ближе 50 м к участку</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -813,37 +819,16 @@
 							<key>hi_text</key>
 							<string>есть</string>
 						</dict>
-						<key>title</key>
-						<string>Агитационные материалы ближе 50 м</string>
-						<key>violation_text</key>
-						<string>Агитационные материалы располагаются ближе 50 м к участку</string>
 						<key>name</key>
 						<string>appearance_campaign_materials_closer_than_50m</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Кабинки обеспечивают тайну голосования</string>
 						<key>violation_text</key>
 						<string>Кабинки не обеспечивают тайны голосования</string>
-						<key>name</key>
-						<string>appearance_vote_secrecy</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -855,14 +840,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>appearance_vote_secrecy</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Книги со списками избирателей сброшюрованы</string>
 						<key>violation_text</key>
 						<string>Книги со списками избирателей не сброшюрованы</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>books_are_correctly_stitched</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -882,27 +882,33 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Вы можете видеть урны, кабинки и выдачу бюллетеней одновременно</string>
 						<key>violation_text</key>
 						<string>Помещение неудобно для наблюдения, урны, кабинки и выдача бюллетеней одновременно не находятся в поле зрения</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>ballot_box_watch_allowed</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Перемещение наблюдателей ограничено</string>
+						<key>violation_text</key>
+						<string>Перемещение наблюдателей ограничено</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -914,16 +920,16 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Перемещение наблюдателей ограничено</string>
-						<key>violation_text</key>
-						<string>Перемещение наблюдателей ограничено</string>
 						<key>name</key>
 						<string>ballot_process_watch_allowed</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Незаконное ограничение на фото- и видеосъёмку</string>
+						<key>violation_text</key>
+						<string>Незаконное ограничение на фото- и видеосъёмку</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -935,37 +941,37 @@
 							<key>hi_text</key>
 							<string>есть</string>
 						</dict>
-						<key>title</key>
-						<string>Незаконное ограничение на фото- и видеосъёмку</string>
-						<key>violation_text</key>
-						<string>Незаконное ограничение на фото- и видеосъёмку</string>
 						<key>name</key>
 						<string>photo_video_allowed</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Переносные ящики всегда в поле зрения</string>
 						<key>violation_text</key>
 						<string>Переносные ящики не всегда находились в поле зрения наблюдателей</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>portable_ballot_box_watch_allowed</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Случаи удаление наблюдателей или членов УИК</string>
+						<key>violation_text</key>
+						<string>Зарегистрированы случаи удаления наблюдателей или членов УИК</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -977,14 +983,8 @@
 							<key>hi_text</key>
 							<string>есть</string>
 						</dict>
-						<key>title</key>
-						<string>Случаи удаление наблюдателей или членов УИК</string>
-						<key>violation_text</key>
-						<string>Зарегистрированы случаи удаления наблюдателей или членов УИК</string>
 						<key>name</key>
 						<string>observer_removal</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1004,6 +1004,12 @@
 				<key>items</key>
 				<array>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Давление на голосующих</string>
+						<key>violation_text</key>
+						<string>Давление на голосующих</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1015,16 +1021,16 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Давление на голосующих</string>
-						<key>violation_text</key>
-						<string>Давление на голосующих</string>
 						<key>name</key>
 						<string>ballot_process_pressure_on_voters</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Избиратели фотографируют свои бюллетени</string>
+						<key>violation_text</key>
+						<string>Избиратели фотографируют свои бюллетени</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1036,14 +1042,8 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Избиратели фотографируют свои бюллетени</string>
-						<key>violation_text</key>
-						<string>Избиратели фотографируют свои бюллетени</string>
 						<key>name</key>
 						<string>ballot_process_ballot_photo</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1063,6 +1063,12 @@
 				<key>items</key>
 				<array>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Голосование за других лиц по сговору с членами УИК</string>
+						<key>violation_text</key>
+						<string>Голосование за других лиц по сговору с членами УИК</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1074,16 +1080,16 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Голосование за других лиц по сговору с членами УИК</string>
-						<key>violation_text</key>
-						<string>Голосование за других лиц по сговору с членами УИК</string>
 						<key>name</key>
 						<string>suspicious_voters_no_absentee_ballot</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Случаи, когда за пришедших избирателей уже проголосовали</string>
+						<key>violation_text</key>
+						<string>Случаи, когда за пришедших избирателей уже проголосовали</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1095,16 +1101,16 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Случаи, когда за пришедших избирателей уже проголосовали</string>
-						<key>violation_text</key>
-						<string>Случаи, когда за пришедших избирателей уже проголосовали</string>
 						<key>name</key>
 						<string>suspicious_voters_already_voted</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Голосование без паспорта, регистрации, открепительного, по чужим документам</string>
+						<key>violation_text</key>
+						<string>Голосование без паспорта, регистрации, открепительного, по чужим документам</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1116,16 +1122,16 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Голосование без паспорта, регистрации, открепительного, по чужим документам</string>
-						<key>violation_text</key>
-						<string>Голосование без паспорта, регистрации, открепительного, по чужим документам</string>
 						<key>name</key>
 						<string>suspicious_voters_no_passport</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Голосование по чужим открепительным, неизъятие талона</string>
+						<key>violation_text</key>
+						<string>Голосование по чужим открепительным, неизъятие талона</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1137,16 +1143,16 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Голосование по чужим открепительным, неизъятие талона</string>
-						<key>violation_text</key>
-						<string>Голосование по чужим открепительным, неизъятие талона</string>
 						<key>name</key>
 						<string>suspicious_voters_invalid_absentee_ballot</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Массовое голосование по открепительным талонам</string>
+						<key>violation_text</key>
+						<string>Массовое голосование по открепительным талонам</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1158,16 +1164,16 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Массовое голосование по открепительным талонам</string>
-						<key>violation_text</key>
-						<string>Массовое голосование по открепительным талонам</string>
 						<key>name</key>
 						<string>suspicious_mass_absentee_ballot</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Организованный подвоз групп голосующих</string>
+						<key>violation_text</key>
+						<string>Организованный подвоз групп голосующих</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1179,14 +1185,8 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Организованный подвоз групп голосующих</string>
-						<key>violation_text</key>
-						<string>Организованный подвоз групп голосующих</string>
 						<key>name</key>
 						<string>suspicious_voters_brought_by_transport</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1216,6 +1216,12 @@
 				<key>items</key>
 				<array>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Голосование пачкой бюллетеней (вброс)</string>
+						<key>violation_text</key>
+						<string>Голосование пачкой бюллетеней (вброс)</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1227,14 +1233,8 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
-						<key>title</key>
-						<string>Голосование пачкой бюллетеней (вброс)</string>
-						<key>violation_text</key>
-						<string>Голосование пачкой бюллетеней (вброс)</string>
 						<key>name</key>
 						<string>bundle_of_ballots_vote</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1264,90 +1264,75 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Вы своевременно (до выезда) ознакомились с реестром голосования на дому </string>
 						<key>violation_text</key>
 						<string>Наблюдатели не смогли своевременно (до вызеда) ознакомиться с реестром заявок голосования на дому</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>absentee_vote_registry_check_allowed</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
-						<string>Реестр заполнен правильно: указаны ФИО, что ещё нужно?</string>
+						<string>Реестр заполнен правильно</string>
 						<key>violation_text</key>
 						<string>Реестр для голосования на дому заполнен неправильно</string>
-						<key>name</key>
-						<string>absentee_vote_registry_is_correct</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
 							<string>false</string>
 							<key>lo_text</key>
-							<string>нет</string>
+							<string>да</string>
 							<key>lo_value</key>
 							<string>true</string>
 							<key>hi_text</key>
-							<string>да</string>
+							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>absentee_vote_registry_is_correct</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Вместо выписки из реестра &quot;список из собеса&quot; или &quot;совета ветеранов&quot;</string>
 						<key>violation_text</key>
 						<string>Корректная выписка из реестра заявок голосвания на дому не предъявлена</string>
-						<key>name</key>
-						<string>abstentee_vote_registry_is_valid</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
-							<string>true</string>
+							<string>false</string>
 							<key>lo_text</key>
 							<string>нет</string>
 							<key>lo_value</key>
-							<string>false</string>
+							<string>true</string>
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
+						<key>name</key>
+						<string>absentee_vote_registry_is_valid</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Количество бюллетеней превышает число заявок более чем на 5%</string>
 						<key>violation_text</key>
 						<string>Количество бюллетеней превышает число заявок более чем на 5%</string>
-						<key>name</key>
-						<string>absentee_vote_ballots_number_mismatch</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1359,16 +1344,37 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
+						<key>name</key>
+						<string>absentee_vote_ballots_number_mismatch</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Проголосовали лица, не внесённые в реестр</string>
 						<key>violation_text</key>
 						<string>Голосование на дому лиц, не внесённых в реестр</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>true</string>
+							<key>lo_text</key>
+							<string>нет</string>
+							<key>lo_value</key>
+							<string>false</string>
+							<key>hi_text</key>
+							<string>да</string>
+						</dict>
 						<key>name</key>
 						<string>absentee_vote_voters_not_in_registry</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Акт о голосовании на дому составлен сразу по возвращении</string>
+						<key>violation_text</key>
+						<string>Акт о голосовании на дому составлен не сразу по возвращении</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1380,14 +1386,8 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Акт о голосовании на дому составлен сразу по возвращении</string>
-						<key>violation_text</key>
-						<string>Акт о голосовании на дому составлен не сразу по возвращении</string>
 						<key>name</key>
 						<string>absentee_vote_akt_after_returning</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1423,27 +1423,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Подсчёт начался сразу после окончания голосования</string>
 						<key>violation_text</key>
 						<string>Подсчёт неиспользованых бюллетеней начался не сразу по окончании голосования</string>
-						<key>name</key>
-						<string>unused_ballots_counted_after_vote_finish</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1455,16 +1440,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>unused_ballots_counted_after_vote_finish</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Бюллетени подсчитаны и погашены до других подсчетов</string>
 						<key>violation_text</key>
 						<string>Неиспользованые бюллетени не были подсчитаны и погашены до других подсчётов</string>
-						<key>name</key>
-						<string>unused_ballots_counted_before_other_actions</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1476,14 +1461,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>unused_ballots_counted_before_other_actions</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Данные сразу внесены в УФП</string>
 						<key>violation_text</key>
 						<string>Данные не сразу внесены в УФП</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>unused_ballots_recorded_in_protocol_immediately</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1503,27 +1503,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Данные подсчёта оглашаются по каждой книге и в сумме по всем</string>
 						<key>violation_text</key>
 						<string>Оглашение данных производилось некорректно</string>
-						<key>name</key>
-						<string>confirmed_voters_announced</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1535,14 +1520,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>confirmed_voters_announced</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Данные сразу внесены в УФП</string>
 						<key>violation_text</key>
 						<string>Данные не сразу внесены в УФП</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>confirmed_voters_recorded_in_protocol_immediately</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1582,27 +1582,12 @@
 						<integer>5</integer>
 					</dict>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Число заявлений объявлено перед вскрытием каждого ящика</string>
 						<key>violation_text</key>
 						<string>Число заявлений не объявлено перед вскрытием каждого ящика</string>
-						<key>name</key>
-						<string>absentee_ballot_box_opening_number_of_applications_announced</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1614,14 +1599,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>absentee_ballot_box_opening_number_of_applications_announced</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Данные сразу внесены в УФП</string>
 						<key>violation_text</key>
 						<string>Данные не сразу внесены в УФП</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>absentee_ballot_voters_recorded_in_protocol_immediately</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -1651,27 +1651,12 @@
 						<integer>5</integer>
 					</dict>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>true</string>
-							<key>lo_text</key>
-							<string>нет</string>
-							<key>lo_value</key>
-							<string>false</string>
-							<key>hi_text</key>
-							<string>да</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Ящики перед вскрытием встряхивали и переворачивали</string>
 						<key>violation_text</key>
 						<string>Ящики перед вскрытием встряхивали и переворачивали</string>
-						<key>name</key>
-						<string>ballot_box_mix_up_ballots</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1683,16 +1668,37 @@
 							<key>hi_text</key>
 							<string>да</string>
 						</dict>
+						<key>name</key>
+						<string>ballot_box_mix_up_ballots</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Сложенные пачки бюллетеней</string>
 						<key>violation_text</key>
 						<string>В стационарных урнах замечены сложенные пачки бюллетеней</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>true</string>
+							<key>lo_text</key>
+							<string>нет</string>
+							<key>lo_value</key>
+							<string>false</string>
+							<key>hi_text</key>
+							<string>да</string>
+						</dict>
 						<key>name</key>
 						<string>ballot_box_opening_ballot_bundles</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Данные сразу внесены в УФП</string>
+						<key>violation_text</key>
+						<string>Данные не сразу внесены в УФП</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1704,14 +1710,8 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Данные сразу внесены в УФП</string>
-						<key>violation_text</key>
-						<string>Данные не сразу внесены в УФП</string>
 						<key>name</key>
 						<string>ballot_voters_recorded_in_protocol_immediately</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -1721,27 +1721,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Бюллетени предъявлены и оглашены при сортировке</string>
 						<key>violation_text</key>
 						<string>Сортировка производилась с нарушениями</string>
-						<key>name</key>
-						<string>counting_ballots_presented_or_announced</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1753,16 +1738,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>counting_ballots_presented_or_announced</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Бюллетени перекладывались отдельно в каждой рассортированной пачке при подсчёте</string>
 						<key>violation_text</key>
 						<string>Подсчёт производился с нарушениями</string>
-						<key>name</key>
-						<string>counting_ballots_sorted_in_separate_bundles</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1774,58 +1759,58 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>counting_ballots_sorted_in_separate_bundles</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Вы могли видеть отметки в бюллетенях</string>
 						<key>violation_text</key>
 						<string>Наблюдатели не могли видеть отметки в бюллетенях</string>
-						<key>name</key>
-						<string>counting_ballots_marks_noticed_in_ballots</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
-							<string>true</string>
-							<key>lo_text</key>
-							<string>нет</string>
-							<key>lo_value</key>
 							<string>false</string>
-							<key>hi_text</key>
+							<key>lo_text</key>
 							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>counting_ballots_marks_noticed_in_ballots</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>В правильности подсчёта возникли сомнения</string>
 						<key>violation_text</key>
 						<string>В правильности подсчёта возникли сомнения</string>
-						<key>name</key>
-						<string>counting_ballots_suspicious_counting</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
 							<string>true</string>
-							<key>hi_text</key>
+							<key>lo_text</key>
 							<string>нет</string>
+							<key>lo_value</key>
+							<string>false</string>
+							<key>hi_text</key>
+							<string>да</string>
 						</dict>
+						<key>name</key>
+						<string>counting_ballots_suspicious_counting</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Вы смогли проверить правильность подсчёта</string>
 						<key>violation_text</key>
 						<string>Наблюдатели не смогли проверить правильность подсчёта</string>
-						<key>name</key>
-						<string>counting_ballots_ballot_check_allowed</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1837,14 +1822,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>counting_ballots_ballot_check_allowed</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Данные сразу внесены в УФП</string>
 						<key>violation_text</key>
 						<string>Данные не сразу внесены в УФП</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>counting_ballots_recorded_in_protocol_immediately</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1874,48 +1874,54 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>нет</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>да</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Сбои электропитания</string>
 						<key>violation_text</key>
 						<string>Сбои электропитания на участках с КОИБами</string>
-						<key>name</key>
-						<string>koib_electricity_problem</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
 							<string>false</string>
 							<key>lo_text</key>
-							<string>да</string>
+							<string>нет</string>
 							<key>lo_value</key>
 							<string>true</string>
 							<key>hi_text</key>
-							<string>нет</string>
+							<string>да</string>
 						</dict>
+						<key>name</key>
+						<string>koib_electricity_problem</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Другие сбои в работе КОИБов</string>
 						<key>violation_text</key>
 						<string>Сбои в работе КОИБов</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>true</string>
+							<key>lo_text</key>
+							<string>нет</string>
+							<key>lo_value</key>
+							<string>false</string>
+							<key>hi_text</key>
+							<string>да</string>
+						</dict>
 						<key>name</key>
 						<string>koib_nonelectricity_problem</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>По требованию голоса пересчитаны вручную</string>
+						<key>violation_text</key>
+						<string>Ручной пересчёт по требованию наблюдателей не производился</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1927,14 +1933,8 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>По требованию голоса пересчитаны вручную</string>
-						<key>violation_text</key>
-						<string>Ручной пересчёт по требованию наблюдателей не производился</string>
 						<key>name</key>
 						<string>koib_recalculations_performed</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -1954,27 +1954,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Контрольные соотношения выполнены</string>
 						<key>violation_text</key>
 						<string>Контрольные соотношения не выполнены</string>
-						<key>name</key>
-						<string>control_calculations_conducted</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -1986,14 +1971,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>control_calculations_conducted</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>При невыполнении произведен пересчёт</string>
 						<key>violation_text</key>
 						<string>Пересчёт при невыполнении контрольных соотношений не производился</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>control_calculations_performed</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -2003,27 +2003,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Этапность подсчётов соблюдена</string>
 						<key>violation_text</key>
 						<string>Этапность подсчётов не соблюдена</string>
-						<key>name</key>
-						<string>control_calculations_conducted</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2035,14 +2020,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>control_calculations_conducted</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>При невыполнении произведен пересчёт</string>
 						<key>violation_text</key>
 						<string>Пересчёт при невыполнении контрольных соотношений не производился</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>control_calculations_performed</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -2068,6 +2068,12 @@
 				<key>items</key>
 				<array>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Корректный приём жалоб (нет отказов, копии заверены)</string>
+						<key>violation_text</key>
+						<string>Некорректный приём жалоб</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2079,14 +2085,8 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Корректный приём жалоб (нет отказов, копии заверены)</string>
-						<key>violation_text</key>
-						<string>Некорректный приём жалоб</string>
 						<key>name</key>
 						<string>final_meeting_correct_complains</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -2099,27 +2099,12 @@
 						<integer>1</integer>
 					</dict>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Все письменные жалобы рассмотрены</string>
 						<key>violation_text</key>
 						<string>Не все письменные жалобы рассмотрены на итоговом заседании</string>
-						<key>name</key>
-						<string>final_meeting_all_complains_are_checked</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2131,14 +2116,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>final_meeting_all_complains_are_checked</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Количество жалоб внесено в протокол</string>
 						<key>violation_text</key>
 						<string>Количество жалоб не внесено в протокол</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>final_meeting_number_of_complains_is_added_to_protocol</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -2148,6 +2148,12 @@
 				<key>items</key>
 				<array>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Итоговое заседание проводилось</string>
+						<key>violation_text</key>
+						<string>Итоговое заседание не проводилось</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2159,37 +2165,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Итоговое заседание проводилось</string>
-						<key>violation_text</key>
-						<string>Итоговое заседание не проводилось</string>
 						<key>name</key>
 						<string>final_meeting_conducted</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>есть</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Присутствовали представители администрации</string>
 						<key>violation_text</key>
 						<string>Представители администрации не присутствовали на итоговом заседании</string>
-						<key>name</key>
-						<string>final_meeting_administration</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2201,14 +2186,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>final_meeting_administration</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Присутствовали представители вышестоящей комиссии</string>
 						<key>violation_text</key>
 						<string>Представители вышестоящей комиссии не присутствовали на итоговом заседании</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>есть</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>final_meeting_main_comission</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -2275,27 +2275,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>4</integer>
 						<key>title</key>
 						<string></string>
 						<key>hint</key>
 						<string>Фото упаковок</string>
-						<key>name</key>
-						<string>ballot_bundles_photo</string>
-						<key>control</key>
-						<integer>4</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2307,16 +2292,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>ballot_bundles_photo</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Бюллетени упакованы правильно</string>
 						<key>violation_text</key>
 						<string>Бюллетени упакованы неправильно</string>
-						<key>name</key>
-						<string>ballot_bundles_are_bundled_properly</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2328,14 +2313,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>ballot_bundles_are_bundled_properly</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Вам разрешили расписаться на упаковках</string>
 						<key>violation_text</key>
 						<string>Наблюдателям не разрешила расписаться на упаковках</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>да</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>ballot_bundles_are_signed_by_you_and_other_watchers</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 				</array>
 			</dict>
@@ -2365,48 +2365,54 @@
 						<integer>4</integer>
 					</dict>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Протокол окончательно оформлен до отправки в ТИК</string>
 						<key>violation_text</key>
 						<string>Протокол не оформлен окончательно до отправки в ТИК</string>
-						<key>name</key>
-						<string>protocol_finished_before_sending_to_tik</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
 							<string>false</string>
 							<key>lo_text</key>
-							<string>нет</string>
+							<string>да</string>
 							<key>lo_value</key>
 							<string>true</string>
 							<key>hi_text</key>
-							<string>да</string>
+							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>protocol_finished_before_sending_to_tik</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Нарушения при оформлении протокола (подписи на пустых бланках и т.п.)</string>
 						<key>violation_text</key>
 						<string>Протокол оформлен неправильно</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>нет</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>да</string>
+						</dict>
 						<key>name</key>
 						<string>protocol_is_properly_formatted</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
+						<key>control</key>
+						<integer>3</integer>
+						<key>title</key>
+						<string>Протокол составлен в помещении для голосования в присутствии наблюдателей</string>
+						<key>violation_text</key>
+						<string>Наблюдатели не присутствовали при составлении протокола</string>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2418,14 +2424,8 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
-						<key>title</key>
-						<string>Протокол составлен в помещении для голосования в присутствии наблюдателей</string>
-						<key>violation_text</key>
-						<string>Наблюдатели не присутствовали при составлении протокола</string>
 						<key>name</key>
 						<string>protocol_with_observers</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
@@ -2445,27 +2445,12 @@
 				<key>items</key>
 				<array>
 					<dict>
-						<key>switch_options</key>
-						<dict>
-							<key>hi_value</key>
-							<string>false</string>
-							<key>lo_text</key>
-							<string>да</string>
-							<key>lo_value</key>
-							<string>true</string>
-							<key>hi_text</key>
-							<string>нет</string>
-						</dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Комиссия сама изготовила копию протокола</string>
 						<key>violation_text</key>
 						<string>Комиссия не предоставила копию протокола</string>
-						<key>name</key>
-						<string>protocol_copy_is_provided</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2477,16 +2462,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>protocol_copy_is_provided</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Копия выдана до отправки протокола в ТИК</string>
 						<key>violation_text</key>
 						<string>Копия протокола не была выдана до отправки протокола в ТИК</string>
-						<key>name</key>
-						<string>protocol_copy_is_provided_before_sumission</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2498,16 +2483,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>protocol_copy_is_provided_before_sumission</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Копия подписана председателем, его заместителем и секретарем</string>
 						<key>violation_text</key>
 						<string>На копии недостаточно подписей</string>
-						<key>name</key>
-						<string>protocol_copy_is_signed_by_all_required_personnel</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2519,37 +2504,37 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>protocol_copy_is_signed_by_all_required_personnel</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Все подписи расшифрованы</string>
 						<key>violation_text</key>
 						<string>Подписи на копии не расшифрованы</string>
-						<key>name</key>
-						<string>protocol_copy_signatures_commented</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
 							<string>false</string>
 							<key>lo_text</key>
-							<string>есть</string>
+							<string>да</string>
 							<key>lo_value</key>
 							<string>true</string>
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>protocol_copy_signatures_commented</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Печать комиссии на копии</string>
 						<key>violation_text</key>
 						<string>На копии нет печати комиссии</string>
-						<key>name</key>
-						<string>protocol_copy_has_stamp</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2561,16 +2546,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>protocol_copy_has_stamp</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Надпись &quot;верно&quot;</string>
 						<key>violation_text</key>
 						<string>На копии нет надписи &quot;верно&quot;</string>
-						<key>name</key>
-						<string>protocol_copy_is_marked_as_genuine</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2582,16 +2567,16 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>protocol_copy_is_marked_as_genuine</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Дата заверения</string>
 						<key>violation_text</key>
 						<string>На копии нет даты заверения</string>
-						<key>name</key>
-						<string>protocol_copy_is_marked_with_date</string>
-						<key>control</key>
-						<integer>3</integer>
-					</dict>
-					<dict>
 						<key>switch_options</key>
 						<dict>
 							<key>hi_value</key>
@@ -2603,14 +2588,29 @@
 							<key>hi_text</key>
 							<string>нет</string>
 						</dict>
+						<key>name</key>
+						<string>protocol_copy_is_marked_with_date</string>
+					</dict>
+					<dict>
+						<key>control</key>
+						<integer>3</integer>
 						<key>title</key>
 						<string>Время заверения (отличное от времени составления протокола)</string>
 						<key>violation_text</key>
 						<string>На копии нет времени заверения</string>
+						<key>switch_options</key>
+						<dict>
+							<key>hi_value</key>
+							<string>false</string>
+							<key>lo_text</key>
+							<string>есть</string>
+							<key>lo_value</key>
+							<string>true</string>
+							<key>hi_text</key>
+							<string>нет</string>
+						</dict>
 						<key>name</key>
 						<string>protocol_copy_is_marked_with_time</string>
-						<key>control</key>
-						<integer>3</integer>
 					</dict>
 					<dict>
 						<key>title</key>
