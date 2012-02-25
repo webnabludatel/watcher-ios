@@ -330,6 +330,10 @@
         }
             break;
     }
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    BOOL disableChange = ( self.checklistItem.value.length > 0 ) && [[self.itemInfo objectForKey: @"disable_change"] boolValue];
+    self.control.userInteractionEnabled = ( appDelegate.watcherProfile.userId.length > 0 ) && ! disableChange;
 }
 
 - (void) saveItem {
@@ -343,12 +347,9 @@
     self.checklistItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
     self.checklistItem.timestamp = [NSDate date];
     self.checklistItem.synchronized = [NSNumber numberWithBool: NO];
-//    self.checklistItem.pollingPlace = appDelegate.watcherProfile.currentPollingPlace;
     
     switch ( [[self.itemInfo objectForKey: @"control"] intValue] ) {
         case INPUT_CONSTANT:
-//            self.checklistItem.synchronized = [NSNumber numberWithBool: YES]; // never synchronize constant items
-//            break;
         case INPUT_TEXT:
         case INPUT_EMAIL:
         case INPUT_NUMBER:

@@ -22,4 +22,6 @@
 @property (nonatomic, retain) ChecklistItem *checklistItem;
 @property (nonatomic, retain) PollingPlace *pollingPlace;
 
+- (NSString *) amazonS3FilePath;
+
 @end

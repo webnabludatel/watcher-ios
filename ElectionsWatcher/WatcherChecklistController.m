@@ -229,7 +229,7 @@
             self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
             appDelegate.watcherProfile.currentPollingPlace.titleString : @"Наблюдение";
         } else {
-            if ( appDelegate.watcherProfile.userId != nil ) {
+            if ( appDelegate.watcherProfile.userId.length > 0 ) {
                 WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
                 pollingPlaceController.pollingPlaceControllerDelegate = self;
                 pollingPlaceController.pollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 

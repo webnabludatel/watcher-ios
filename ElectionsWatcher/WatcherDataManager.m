@@ -298,8 +298,8 @@
                                  checklistItem.value, @"value",
                                  checklistItem.lat, @"lat",
                                  checklistItem.lng, @"lng",
-                                 checklistItem.pollingPlace.nameOrNumber, @"polling_place_id",
-                                 checklistItem.pollingPlace.region, @"polling_place_region",
+                                 checklistItem.objectID.URIRepresentation.absoluteString, @"internal_id",
+                                 checklistItem.pollingPlace.objectID.URIRepresentation.absoluteString, @"polling_place_internal_id",
                                  [NSNumber numberWithDouble: [checklistItem.timestamp timeIntervalSince1970]], @"timestamp",
                                  nil];
         
@@ -363,6 +363,8 @@
         if ( mediaItem.serverUrl ) {
             
             NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                     mediaItem.objectID.URIRepresentation.absoluteString, @"internal_id",
+                                     mediaItem.checklistItem.objectID.URIRepresentation.absoluteString, @"checklist_item_internal_id",
                                      mediaItem.serverUrl, @"url", 
                                      mediaItem.mediaType, @"type",
                                      [NSNumber numberWithDouble: [mediaItem.timestamp timeIntervalSince1970]], @"timestamp",
@@ -439,7 +441,7 @@
         ASIS3ObjectRequest *request = 
         [ASIS3ObjectRequest PUTRequestForFile: mediaItem.filePath 
                                    withBucket: @"webnabludatel-media" 
-                                          key: [mediaItem.filePath lastPathComponent]];
+                                          key: mediaItem.amazonS3FilePath];
         
         request.mimeType        = [mediaItem.mediaType isEqualToString: (NSString *) kUTTypeImage] ? @"image/jpeg" : @"video/quicktime";
         request.timeOutSeconds  = 60;
@@ -455,7 +457,7 @@
             NSLog(@"ASIS3Request error: %@, %@", [request error], [[request error] localizedDescription]);
             [_errors addObject: [request error]];
         } else {
-            mediaItem.serverUrl = [@"http://webnabludatel-media.s3.amazonaws.com/" stringByAppendingString: [mediaItem.filePath lastPathComponent]];
+            mediaItem.serverUrl = [@"http://webnabludatel-media.s3.amazonaws.com/" stringByAppendingString: mediaItem.amazonS3FilePath];
             NSLog(@"media item uploaded to server URL: %@", mediaItem.serverUrl);
 
             [self performSelector: @selector(saveManagedObject:) 

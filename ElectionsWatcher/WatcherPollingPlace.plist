@@ -566,6 +566,8 @@
 				<integer>2</integer>
 				<key>hint</key>
 				<string>выберите тип участка </string>
+				<key>disable_change</key>
+				<true/>
 				<key>possible_values</key>
 				<array>
 					<dict>
