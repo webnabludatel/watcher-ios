@@ -838,6 +838,11 @@
     return YES;
 }
 
+-(BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    [self saveItem];
+    return YES;
+}
+
 -(void) cancelTextView {
     UITextView *textView = (UITextView *) self.control;
     [textView resignFirstResponder];

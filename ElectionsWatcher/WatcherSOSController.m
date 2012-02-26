@@ -203,6 +203,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
                                                   reuseIdentifier: cellId 
                                                      withItemInfo: itemInfo] autorelease];
         [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
+        [(WatcherChecklistScreenCell *) cell setChecklistCellDelegate: self];
         [(WatcherChecklistScreenCell *) cell setSectionName: sosReportSections[indexPath.section]];
     }
     
