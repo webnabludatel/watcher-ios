@@ -25,7 +25,9 @@
 
 - (NSString *) amazonS3FilePath {
     return [NSString stringWithFormat: @"%@/%@/%@", 
-            self.checklistItem.name, [WatcherTools md5: self.objectID.URIRepresentation.absoluteString], self.filePath.lastPathComponent];
+            self.checklistItem.name, 
+            [WatcherTools md5: self.objectID.URIRepresentation.absoluteString], 
+            self.filePath.lastPathComponent];
 }
 
 @end

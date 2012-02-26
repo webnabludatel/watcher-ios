@@ -82,19 +82,19 @@
                                                      name: NSManagedObjectContextDidSaveNotification 
                                                    object: self.managedObjectContext];
         
-        NSTimer *timer = [NSTimer timerWithTimeInterval: 37.0 target: self 
-                                               selector: @selector(processUnsentData) 
-                                               userInfo: nil 
-                                                repeats: YES];
+        NSTimer *checklistItemsTimer = [NSTimer timerWithTimeInterval: 37.0 target: self 
+                                                             selector: @selector(processUnsentData) 
+                                                             userInfo: nil 
+                                                              repeats: YES];
         
         
-//        NSTimer *wifiCheck = [NSTimer timerWithTimeInterval: 43.0 target: self 
-//                                                   selector: @selector(processUnsentMediaItems) 
-//                                                   userInfo: nil 
-//                                                    repeats: YES];
+        NSTimer *mediaItemsTimer = [NSTimer timerWithTimeInterval: 71.0f target: self 
+                                                         selector: @selector(processUnsentMediaItems) 
+                                                         userInfo: nil 
+                                                          repeats: YES];
         
-        [[NSRunLoop currentRunLoop] addTimer: timer forMode: NSRunLoopCommonModes];
-//        [[NSRunLoop currentRunLoop] addTimer: wifiCheck forMode: NSRunLoopCommonModes];
+        [[NSRunLoop currentRunLoop] addTimer: checklistItemsTimer forMode: NSRunLoopCommonModes];
+        [[NSRunLoop currentRunLoop] addTimer: mediaItemsTimer forMode: NSRunLoopCommonModes];
         [[NSRunLoop currentRunLoop] run];
     }
 }
@@ -139,21 +139,20 @@
     }
 
     @autoreleasepool {
-        if ( _wifiReachability.currentReachabilityStatus > 0 && ! _wifiReachability.connectionRequired ) {
-            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-            NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentMediaItems" 
-                                                          forEntity: @"MediaItem" 
-                                                        withContext: self.managedObjectContext
-                                                     withParameters: [NSDictionary dictionary]];
+        NSLog(@"checking for unsynchronized media items that are not currently in progress");
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSArray *unsentItems = [appDelegate executeFetchRequest: @"findUnsentMediaItems" 
+                                                      forEntity: @"MediaItem" 
+                                                    withContext: self.managedObjectContext
+                                                 withParameters: [NSDictionary dictionary]];
+        
+        NSLog(@"found %d unsent media items", unsentItems.count);
+        
+        for ( MediaItem *mediaItem in unsentItems ) {
+            if ( [_objectsInProgress containsObject: mediaItem] )
+                continue;
             
-            NSLog(@"enqueue %d unsent media items", unsentItems.count);
-            
-            for ( MediaItem *mediaItem in unsentItems ) {
-                if ( [_objectsInProgress containsObject: mediaItem] )
-                    continue;
-                
-                [self enqueueMediaItem: mediaItem];
-            }
+            [self enqueueMediaItem: mediaItem];
         }
     }
 }
@@ -318,6 +317,7 @@
         
         ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
         if ( [checklistItem.serverRecordId doubleValue] > 0 ) [request setRequestMethod: @"PUT"];
+        [request setShouldCompressRequestBody: NO];
         [request setTimeOutSeconds: 60];
         [request setPostValue: deviceId forKey: @"device_id"];
         [request setPostValue: json forKey: @"payload"];
@@ -341,15 +341,16 @@
                                  onThread: _dataManagerThread 
                                withObject: checklistItem 
                             waitUntilDone: NO];
+                    
+                    NSLog(@"checklist item [%@] successfully synchronized", checklistItem.name);
                 } else {
                     // TODO: process server-side errors (check spec)
                 }
             } else {
-                NSLog(@"http request status: %d", [request responseStatusCode]);
+                NSLog(@"http request error: %@", [request responseStatusMessage]);
+                [_errors addObject: [request responseStatusMessage]];
             }
         }
-        
-        NSLog(@"checklist item [%@] successfully synchronized", checklistItem.name);
         
         [_objectsInProgress removeObject: checklistItem];
     }
@@ -381,6 +382,7 @@
             [ASIFormDataRequest throttleBandwidthForWWANUsingLimit: 21600];
 
             ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
+            [request setShouldCompressRequestBody: NO];
             [request setTimeOutSeconds: 60];
             [request setPostValue: deviceId forKey: @"device_id"];
             [request setPostValue: json forKey: @"payload"];
@@ -413,7 +415,8 @@
                         // TODO: process server-side errors (check spec)
                     }
                 } else {
-                    NSLog(@"http request status: %d", [request responseStatusCode]);
+                    NSLog(@"http request error: %@", [request responseStatusMessage]);
+                    [_errors addObject: [request responseStatusMessage]];
                 }
             }
             
@@ -447,7 +450,7 @@
         request.timeOutSeconds  = 60;
         request.uploadProgressDelegate = self;
         
-        NSLog(@"file size: %d", [[NSData dataWithContentsOfFile: mediaItem.filePath] length]);
+        NSLog(@"ASIS3Request upload file size: %dK", [[NSData dataWithContentsOfFile: mediaItem.filePath] length]/1024);
         
         [request startSynchronous];
         

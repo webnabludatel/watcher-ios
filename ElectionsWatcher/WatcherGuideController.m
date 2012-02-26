@@ -77,8 +77,8 @@
     [super viewDidAppear:animated];
 
     NSString *bundlePath = [[NSBundle mainBundle] pathForResource: @"WatcherGuide" ofType: @"bundle"];
-    NSBundle *bundle = [NSBundle bundleWithPath: bundlePath];
-    NSString *indexPath = [bundle pathForResource: @"index" ofType: @"html"];
+    NSBundle *guideBundle = [NSBundle bundleWithPath: bundlePath];
+    NSString *indexPath = [guideBundle pathForResource: @"index" ofType: @"html"];
     
     NSURL *indexUrl = [NSURL fileURLWithPath: indexPath];
     [self.watcherGuideView loadRequest: [NSURLRequest requestWithURL: indexUrl]];
@@ -147,17 +147,21 @@
 
 -(void) refreshSearchResultsForString: (NSString *) searchString {
     self.searchResults = [NSMutableArray array];
+
+    NSError *error          = nil;
+    NSFileManager *fm       = [NSFileManager defaultManager];
+    NSString *bundlePath    = [[NSBundle mainBundle] pathForResource: @"WatcherGuide" ofType: @"bundle"];
+    NSBundle *guideBundle   = [NSBundle bundleWithPath: bundlePath];
     
-    NSFileManager *fm = [NSFileManager defaultManager];
-    NSArray *bundleContents = [fm contentsOfDirectoryAtPath: [[NSBundle mainBundle] bundlePath]  error: nil];
-    NSPredicate *guidePredicate = [NSPredicate predicateWithFormat: @"SELF LIKE 'golos*.html'"];
-    NSArray *guideContents = [bundleContents filteredArrayUsingPredicate: guidePredicate];
-    NSString *trimmedSearchString = [searchString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSArray *bundleSubpaths     = [fm subpathsOfDirectoryAtPath: [guideBundle resourcePath] error: &error];
+    NSPredicate *htmlPredicate  = [NSPredicate predicateWithFormat: @"SELF LIKE '*.html'"];
+    NSArray *htmlFilePaths      = [bundleSubpaths filteredArrayUsingPredicate: htmlPredicate];
+    NSString *trimmedSearchText = [searchString stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
     
-    for ( NSString *filename in guideContents) {
-        NSString *filepath = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent: filename];
+    for ( NSString *filesubpath in htmlFilePaths) {
+        NSString *filepath = [[guideBundle resourcePath] stringByAppendingPathComponent: filesubpath];
         NSString *contents = [NSString stringWithContentsOfFile: filepath encoding: NSUTF8StringEncoding error: nil];
-        if ( [contents rangeOfString: trimmedSearchString options: NSCaseInsensitiveSearch].location != NSNotFound ) {
+        if ( [contents rangeOfString: trimmedSearchText options: NSCaseInsensitiveSearch].location != NSNotFound ) {
             NSString *htmlTitle = [contents stringByMatching: @"<h1>(.+?)</h1>" 
                                                      options: RKLCaseless 
                                                      inRange: NSMakeRange(0, contents.length) 
