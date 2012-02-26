@@ -28,8 +28,8 @@
  */
 
 #import "NSObject+SBJson.h"
-#import <AWSiOSSDK/SBJsonWriter.h>
-#import <AWSiOSSDK/SBJsonParser.h>
+#import "SBJsonParser.h"
+#import "SBJsonWriter.h"
 
 @implementation NSObject (NSObject_SBJsonWriting)
 

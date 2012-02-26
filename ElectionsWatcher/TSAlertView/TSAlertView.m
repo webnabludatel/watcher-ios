@@ -57,7 +57,7 @@
 {
 	self.oldKeyWindow = nil;
 	
-	NSLog( @"TSAlertView: TSAlertOverlayWindow dealloc" );
+//	NSLog( @"TSAlertView: TSAlertOverlayWindow dealloc" );
 	
 	[super dealloc];
 }
@@ -106,7 +106,7 @@
 
 - (void) dealloc
 {
-	NSLog( @"TSAlertView: TSAlertViewController dealloc" );
+//	NSLog( @"TSAlertView: TSAlertViewController dealloc" );
 	[super dealloc];
 }
 
@@ -218,7 +218,7 @@ const CGFloat kTSAlertView_ColumnMargin = 10.0;
 	
 	[[NSNotificationCenter defaultCenter] removeObserver: self ];
 	
-	NSLog( @"TSAlertView: TSAlertOverlayWindow dealloc" );
+//	NSLog( @"TSAlertView: TSAlertOverlayWindow dealloc" );
 	
     [super dealloc];
 }

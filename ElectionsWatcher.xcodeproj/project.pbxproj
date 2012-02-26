@@ -13,7 +13,6 @@
 		5F2062C614E876D50031BA22 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2062C514E876D50031BA22 /* RegexKitLite.m */; };
 		5F2062C814E876FC0031BA22 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2062C714E876FC0031BA22 /* libicucore.dylib */; };
 		5F2062CA14E8FB470031BA22 /* transparent.gif in Resources */ = {isa = PBXBuildFile; fileRef = 5F2062C914E8FB470031BA22 /* transparent.gif */; };
-		5F514EAE14F953B80071885F /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F514EAD14F953B80071885F /* Default.png */; };
 		5F514EBC14F95C980071885F /* ASIS3Bucket.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F514EB114F95C980071885F /* ASIS3Bucket.m */; };
 		5F514EBD14F95C980071885F /* ASIS3BucketObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F514EB314F95C980071885F /* ASIS3BucketObject.m */; };
 		5F514EBE14F95C980071885F /* ASIS3BucketRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F514EB514F95C980071885F /* ASIS3BucketRequest.m */; };
@@ -87,7 +86,6 @@
 		5F71310514F57B92007CEAC7 /* PrivateSettings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5F71310414F57B8F007CEAC7 /* PrivateSettings.plist */; };
 		5F71310814F5827F007CEAC7 /* WatcherTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F71310714F58226007CEAC7 /* WatcherTools.m */; };
 		5F71310F14F61B9A007CEAC7 /* Watcher3PosSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F71310E14F61B90007CEAC7 /* Watcher3PosSwitch.m */; };
-		5F71311414F67197007CEAC7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5F71311314F67195007CEAC7 /* Default@2x.png */; };
 		5F71311B14F71BE5007CEAC7 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F71311A14F71BDE007CEAC7 /* Reachability.m */; };
 		5F71311D14F732E9007CEAC7 /* WatcherGuide.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 5F71311C14F732E4007CEAC7 /* WatcherGuide.bundle */; };
 		5F73515D14DEF89F00C8D5F1 /* traverseresponderchain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F73515C14DEF89F00C8D5F1 /* traverseresponderchain.m */; };
@@ -165,10 +163,13 @@
 		5FA5E17A14F1A1C500030487 /* sync_ok_icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17814F1A1C500030487 /* sync_ok_icon@2x.png */; };
 		5FA5E17D14F1A3FE00030487 /* sync_errors_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17B14F1A3FE00030487 /* sync_errors_icon.png */; };
 		5FA5E17E14F1A3FE00030487 /* sync_ok_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FA5E17C14F1A3FE00030487 /* sync_ok_icon.png */; };
+		5FBA87A414FAE59800ADD4EA /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FBA87A314FAE59800ADD4EA /* Default@2x.png */; };
+		5FBA87A614FAE5D500ADD4EA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 5FBA87A514FAE5D500ADD4EA /* Default.png */; };
 		5FC6C0DB14CBF8970078AD8E /* WatcherChecklist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */; };
 		5FC6C0DE14CC1C270078AD8E /* WatcherChecklistSectionController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0DD14CC1C270078AD8E /* WatcherChecklistSectionController.m */; };
 		5FC6C0E114CC206C0078AD8E /* WatcherChecklistScreenController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0E014CC206C0078AD8E /* WatcherChecklistScreenController.m */; };
 		5FC6C0E414CC66DE0078AD8E /* WatcherChecklistScreenCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC6C0E314CC66DE0078AD8E /* WatcherChecklistScreenCell.m */; };
+		5FCA8E1114FAC5B4008D4A7A /* WatcherInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCA8E1014FAC5B4008D4A7A /* WatcherInfoHeaderView.m */; };
 		5FD5977D14EE5AEE00E27620 /* WatcherDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5977C14EE5AEE00E27620 /* WatcherDataManager.m */; };
 		5FD5978714EFEE8E00E27620 /* WatcherManualProfileController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD5978514EFEE8C00E27620 /* WatcherManualProfileController.m */; };
 		5FD5978814EFEE8E00E27620 /* WatcherManualProfileController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5FD5978614EFEE8D00E27620 /* WatcherManualProfileController.xib */; };
@@ -192,7 +193,6 @@
 		5F2062C514E876D50031BA22 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		5F2062C714E876FC0031BA22 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		5F2062C914E8FB470031BA22 /* transparent.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = transparent.gif; sourceTree = "<group>"; };
-		5F514EAD14F953B80071885F /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		5F514EAF14F95C980071885F /* ASINSXMLParserCompat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASINSXMLParserCompat.h; sourceTree = "<group>"; };
 		5F514EB014F95C980071885F /* ASIS3Bucket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIS3Bucket.h; sourceTree = "<group>"; };
 		5F514EB114F95C980071885F /* ASIS3Bucket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIS3Bucket.m; sourceTree = "<group>"; };
@@ -316,7 +316,6 @@
 		5F71310D14F61B8C007CEAC7 /* Watcher3PosSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Watcher3PosSwitch.h; sourceTree = "<group>"; };
 		5F71310E14F61B90007CEAC7 /* Watcher3PosSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Watcher3PosSwitch.m; sourceTree = "<group>"; };
 		5F71311014F632D5007CEAC7 /* ElectionsWatcherDataModel_2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ElectionsWatcherDataModel_2.xcdatamodel; sourceTree = "<group>"; };
-		5F71311314F67195007CEAC7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		5F71311914F71BD9007CEAC7 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		5F71311A14F71BDE007CEAC7 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		5F71311C14F732E4007CEAC7 /* WatcherGuide.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = WatcherGuide.bundle; sourceTree = "<group>"; };
@@ -430,6 +429,8 @@
 		5FA5E17B14F1A3FE00030487 /* sync_errors_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_errors_icon.png; sourceTree = "<group>"; };
 		5FA5E17C14F1A3FE00030487 /* sync_ok_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sync_ok_icon.png; sourceTree = "<group>"; };
 		5FA5E18214F24AA100030487 /* AWSiOSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSiOSSDK.framework; path = "../aws-ios-sdk-1.1.1/AWSiOSSDK.framework"; sourceTree = "<group>"; };
+		5FBA87A314FAE59800ADD4EA /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		5FBA87A514FAE5D500ADD4EA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		5FC6C0DA14CBF8970078AD8E /* WatcherChecklist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WatcherChecklist.plist; sourceTree = "<group>"; };
 		5FC6C0DC14CC1C270078AD8E /* WatcherChecklistSectionController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistSectionController.h; sourceTree = "<group>"; };
 		5FC6C0DD14CC1C270078AD8E /* WatcherChecklistSectionController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherChecklistSectionController.m; sourceTree = "<group>"; };
@@ -437,6 +438,8 @@
 		5FC6C0E014CC206C0078AD8E /* WatcherChecklistScreenController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherChecklistScreenController.m; sourceTree = "<group>"; };
 		5FC6C0E214CC66DE0078AD8E /* WatcherChecklistScreenCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistScreenCell.h; sourceTree = "<group>"; };
 		5FC6C0E314CC66DE0078AD8E /* WatcherChecklistScreenCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherChecklistScreenCell.m; sourceTree = "<group>"; };
+		5FCA8E0F14FAC5B4008D4A7A /* WatcherInfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherInfoHeaderView.h; sourceTree = "<group>"; };
+		5FCA8E1014FAC5B4008D4A7A /* WatcherInfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherInfoHeaderView.m; sourceTree = "<group>"; };
 		5FD5977B14EE5AEE00E27620 /* WatcherDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherDataManager.h; sourceTree = "<group>"; };
 		5FD5977C14EE5AEE00E27620 /* WatcherDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WatcherDataManager.m; sourceTree = "<group>"; };
 		5FD5977E14EF149000E27620 /* WatcherChecklistScreenCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WatcherChecklistScreenCellDelegate.h; sourceTree = "<group>"; };
@@ -671,6 +674,8 @@
 				5F12BAC314EAFFFF00000471 /* WatcherReportGraph.m */,
 				5F8892AA14E65F890067F2DD /* WatcherSOSController.h */,
 				5F8892AB14E65F890067F2DD /* WatcherSOSController.m */,
+				5FCA8E0F14FAC5B4008D4A7A /* WatcherInfoHeaderView.h */,
+				5FCA8E1014FAC5B4008D4A7A /* WatcherInfoHeaderView.m */,
 				5F71310614F58220007CEAC7 /* WatcherTools.h */,
 				5F71310714F58226007CEAC7 /* WatcherTools.m */,
 				5F7DDA3A14EBD2BA005857D3 /* WatcherSaveAttributeDelegate.h */,
@@ -709,8 +714,8 @@
 		5F7ADDF114C1AEB200A8E955 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				5F514EAD14F953B80071885F /* Default.png */,
-				5F71311314F67195007CEAC7 /* Default@2x.png */,
+				5FBA87A514FAE5D500ADD4EA /* Default.png */,
+				5FBA87A314FAE59800ADD4EA /* Default@2x.png */,
 				5F7130EC14F5458D007CEAC7 /* button_facebook.png */,
 				5F7130ED14F5458E007CEAC7 /* button_facebook@2x.png */,
 				5F7130EE14F5458E007CEAC7 /* button_twitter.png */,
@@ -1041,9 +1046,9 @@
 				5F71310214F54952007CEAC7 /* guide_back.png in Resources */,
 				5F71310314F54952007CEAC7 /* guide_forward.png in Resources */,
 				5F71310514F57B92007CEAC7 /* PrivateSettings.plist in Resources */,
-				5F71311414F67197007CEAC7 /* Default@2x.png in Resources */,
 				5F71311D14F732E9007CEAC7 /* WatcherGuide.bundle in Resources */,
-				5F514EAE14F953B80071885F /* Default.png in Resources */,
+				5FBA87A414FAE59800ADD4EA /* Default@2x.png in Resources */,
+				5FBA87A614FAE5D500ADD4EA /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1134,6 +1139,7 @@
 				5F514EE114F97FC10071885F /* SBJsonTokeniser.m in Sources */,
 				5F514EE214F97FC10071885F /* SBJsonUTF8Stream.m in Sources */,
 				5F514EE314F97FC10071885F /* SBJsonWriter.m in Sources */,
+				5FCA8E1114FAC5B4008D4A7A /* WatcherInfoHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1214,10 +1220,6 @@
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../aws-ios-sdk-1.1.1\"",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
@@ -1241,10 +1243,6 @@
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XMPSoft Ltd.";
 				COPY_PHASE_STRIP = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../aws-ios-sdk-1.1.1\"",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";

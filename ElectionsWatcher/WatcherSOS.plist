@@ -24,7 +24,7 @@
 				<key>control</key>
 				<integer>4</integer>
 				<key>hint</key>
-				<string>Сделайте фотографию</string>
+				<string>Фото</string>
 			</dict>
 			<dict>
 				<key>name</key>
@@ -32,7 +32,7 @@
 				<key>control</key>
 				<integer>5</integer>
 				<key>hint</key>
-				<string>Снимите видео</string>
+				<string>Видео</string>
 			</dict>
 		</array>
 	</dict>

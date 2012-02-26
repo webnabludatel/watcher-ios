@@ -13,6 +13,8 @@
 #import "WatcherProfile.h"
 #import "AppDelegate.h"
 #import "WatcherDataManager.h"
+#import "WatcherInfoHeaderView.h"
+#import "TSAlertView.h"
 
 @implementation WatcherSettingsController
 
@@ -90,9 +92,12 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     
     [self.tableView reloadData];
  
-    if ( ! appDelegate.watcherProfile.userId.length )
-        [appDelegate.dataManager performSelector: @selector(registerCurrentDevice) withObject: nil afterDelay: 10];
-//        [appDelegate.dataManager registerCurrentDevice];
+    if ( ! appDelegate.watcherProfile.userId.length ) {
+        [appDelegate.dataManager performSelector: @selector(registerCurrentDevice) withObject: nil afterDelay: 1];
+        [self.tableView setAllowsSelection: NO];
+    } else {
+        [self.tableView setAllowsSelection: YES];
+    }
 }
 
 - (void)viewDidUnload
@@ -114,9 +119,42 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     return [[self.settings allKeys] count];
 }
 
+/*
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[section]];
     return [sectionInfo objectForKey: @"title"];
+}
+ */
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[section]];
+    return [sectionInfo objectForKey: @"title"] ? 34 : 0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[section]];
+    if ( [sectionInfo objectForKey: @"title"] != nil ) {
+        WatcherInfoHeaderView *headerView = [[[WatcherInfoHeaderView alloc] initWithFrame: CGRectZero 
+                                                                                withTitle: [sectionInfo objectForKey: @"title"]] 
+                                             autorelease];
+
+        [headerView.infoButton setTag: section];
+        [headerView.infoButton addTarget: self 
+                                  action: @selector(showSectionHelp:) 
+                        forControlEvents: UIControlEventTouchUpInside];
+        
+        return headerView;
+    }
+    
+    return nil;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    return nil;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -180,7 +218,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
         if ( appDelegate.watcherProfile.userId.length == 0 ) {
-            cell.textLabel.text = @"Регистрация в системе";
+            cell.textLabel.text = @"Регистрация телефона";
             cell.accessoryType = UITableViewCellAccessoryNone;
             UIActivityIndicatorView *iv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
             cell.accessoryView = iv;
@@ -221,7 +259,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
         if ( cell == nil )
             cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleValue1 reuseIdentifier: cellId] autorelease];
         
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     } else {
         NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
         NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
@@ -398,6 +436,32 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
 -(void)hudWasHidden {
     [_HUD release]; _HUD = nil;
 }
+
+#pragma mark - Section help
+
+-(void) showSectionHelp: (UIButton *) sender {
+    NSString *text = nil, *title = nil;
+    
+    if ( sender.tag == 1 ) {
+        text = @"Вы можете изменить свой статус после того, как программа зарегистрирует устройство на сервере. Если Вы - официальный наблюдатель или член избирательной комиссии, укажите это.\n\n";
+        title = @"Статус наблюдателя";
+    }
+    
+    if ( sender.tag == 2 ) {
+        text = @"Для того, чтобы мы могли подтвердить Ваш статус официального наблюдателя в системе, загрузите фотографию Вашего удостоверения.\n\n";
+        title = @"Удостоверение";
+    }
+    
+    TSAlertView *alertView = [[TSAlertView alloc] initWithTitle: title 
+                                                        message: text
+                                                       delegate: nil cancelButtonTitle: @"OK" otherButtonTitles: nil];
+    
+    alertView.usesMessageTextView = YES;
+    
+    [alertView show];
+    [alertView release];
+}
+
 
 
 @end

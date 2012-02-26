@@ -13,6 +13,8 @@
 #import "PollingPlace.h"
 #import "WatcherProfile.h"
 #import "WatcherTools.h"
+#import "WatcherInfoHeaderView.h"
+#import "TSAlertView.h"
 
 @implementation WatcherChecklistController
 
@@ -51,7 +53,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Вернуться" 
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle: @"Назад" 
                                                                               style: UIBarButtonItemStylePlain 
                                                                              target: nil 
                                                                              action: nil] autorelease];
@@ -130,8 +132,23 @@
     }
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return section == 0 ? @"Избирательные участки" : @"Наблюдение";
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 34;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    NSString *title = section == 0 ? @"Избирательные участки" : @"Наблюдение";
+    WatcherInfoHeaderView *headerView = [[[WatcherInfoHeaderView alloc] initWithFrame: CGRectZero 
+                                                                            withTitle: title] 
+                                         autorelease];
+
+    
+    [headerView.infoButton setTag: section];
+    [headerView.infoButton addTarget: self 
+                              action: @selector(showSectionHelp:) 
+                    forControlEvents: UIControlEventTouchUpInside];
+    
+    return headerView;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -352,6 +369,29 @@
     [self.tableView reloadData];
 }
 
+#pragma mark - Section help
 
+-(void) showSectionHelp: (UIButton *) sender {
+    NSString *text = nil, *title = nil;
+    
+    if ( sender.tag == 0 ) {
+        text = @"Вы можете добавлять, делать активным (короткое нажатие), редактировать (длинное нажатие) и удалять (жестом поперек экрана) избирательные участки.\n\nДля того, чтобы вести наблюдение, необходимо добавить хотя бы один избирательный участок.\n\n";
+        title = @"Участки";
+    }
+    
+    if ( sender.tag == 1 ) {
+        text = @"Вы можете отмечать пункты переключателями, вводить текстовую информацию, снимать или загружать из альбома на телефоне фото и видео. Вся введенная в приложение информация синхронизируется с сервером в фоновом режиме.\n\nВ случае возникновения ошибок передача данных производится повторно до тех пор, пока все данные не будут переданы.\n\n";
+        title = @"Наблюдение";
+    }
+    
+    TSAlertView *alertView = [[TSAlertView alloc] initWithTitle: title 
+                                                        message: text
+                                                       delegate: nil cancelButtonTitle: @"OK" otherButtonTitles: nil];
+    
+    alertView.usesMessageTextView = YES;
+    
+    [alertView show];
+    [alertView release];
+}
 
 @end

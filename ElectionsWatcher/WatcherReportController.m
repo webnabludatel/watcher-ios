@@ -132,14 +132,16 @@
         UILabel *summaryLabel = [[[UILabel alloc] initWithFrame: CGRectZero] autorelease];
         
         [linkButton setTitle: @"Ваш отчет на сайте" forState: UIControlStateNormal];
-        [linkButton setTitleColor: [UIColor darkTextColor] forState: UIControlStateNormal];
+        [linkButton setTitleColor: [UIColor colorWithRed:0.265 green:0.294 blue:0.367 alpha:1.000] forState: UIControlStateNormal];
         [linkButton setTitleColor: [UIColor lightTextColor] forState: UIControlStateSelected];
         [facebookButton setImage: [UIImage imageNamed: @"button_facebook"] forState: UIControlStateNormal];
         [twitterButton setImage: [UIImage imageNamed: @"button_twitter"] forState: UIControlStateNormal];
         
         summaryLabel.text = summary;
         summaryLabel.backgroundColor = [UIColor clearColor];
-        summaryLabel.textColor = [UIColor darkTextColor];
+        summaryLabel.textColor = [UIColor colorWithRed:0.265 green:0.294 blue:0.367 alpha:1.000];
+        summaryLabel.shadowColor = [UIColor colorWithWhite: 1 alpha: 1];
+        summaryLabel.shadowOffset = CGSizeMake(0, 1);
         summaryLabel.font = [UIFont boldSystemFontOfSize: 15];
         summaryLabel.numberOfLines = 2;
         summaryLabel.lineBreakMode = UILineBreakModeWordWrap;
@@ -157,7 +159,8 @@
         twitterButton.frame = CGRectMake(headerFrame.size.width-70, 0, 30, 30);
         facebookButton.frame = CGRectMake(headerFrame.size.width-30, 0, 30, 30);
         
-        twitterButton.enabled = appDelegate.watcherProfile.twNickname != nil;
+        linkButton.enabled = appDelegate.watcherProfile.userId != nil;
+        twitterButton.enabled = ( appDelegate.watcherProfile.twNickname != nil ) && [TWTweetComposeViewController canSendTweet];
         facebookButton.enabled = appDelegate.watcherProfile.fbAccessToken != nil;
         
         [linkButton addTarget: self action: @selector(openWebsite:) forControlEvents: UIControlEventTouchUpInside];
@@ -190,7 +193,9 @@
         for ( UILabel *label in labels ) {
             label.backgroundColor = [UIColor clearColor];
             label.font = [UIFont boldSystemFontOfSize: 15];
-            label.textColor = [UIColor darkTextColor];
+            label.textColor = [UIColor colorWithRed:0.265 green:0.294 blue:0.367 alpha:1.000];
+            label.shadowColor = [UIColor colorWithWhite: 1 alpha: 1];
+            label.shadowOffset = CGSizeMake(0, 1);
             [footerView addSubview: label];
         }
         

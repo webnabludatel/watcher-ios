@@ -13,6 +13,7 @@
 #import "WatcherProfile.h"
 #import "TSAlertView.h"
 #import "WatcherDataManager.h"
+#import "WatcherInfoHeaderView.h"
 
 @implementation WatcherSOSController
 
@@ -106,7 +107,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if ( section == 0 ) 
-        return 40;
+        return 34;
     else
         return 0;
 }
@@ -114,25 +115,14 @@ static NSString *sosReportSections[] = { @"sos_report" };
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     if ( section == 0 ) {
         NSDictionary *sectionInfo = [self.sosReport objectForKey: sosReportSections[section]];
-        UIView *headerView = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 40)] autorelease];
-        UILabel *textLabel = [[[UILabel alloc] initWithFrame: CGRectMake(10, 0, tableView.bounds.size.width-50, 40)] autorelease];
-        UIButton *infoButton = [UIButton buttonWithType: UIButtonTypeInfoDark];
         
-        textLabel.text = [sectionInfo objectForKey: @"title"];
-        textLabel.backgroundColor = [UIColor clearColor];
-        textLabel.textColor = [UIColor colorWithRed:0.265 green:0.294 blue:0.367 alpha:1.000];
-        textLabel.font = [UIFont boldSystemFontOfSize: 15];
-        textLabel.numberOfLines = 1;
-        textLabel.textAlignment = UITextAlignmentLeft;
+        WatcherInfoHeaderView *headerView = [[[WatcherInfoHeaderView alloc] initWithFrame: CGRectZero 
+                                                                                withTitle: [sectionInfo objectForKey: @"title"]] 
+                                             autorelease];
         
-        infoButton.frame = CGRectMake(tableView.bounds.size.width-40, 0, 40, 40);
-        
-        [infoButton addTarget: self action: @selector(showInstructions) forControlEvents: UIControlEventTouchUpInside];
-        
-        headerView.backgroundColor = [UIColor clearColor];
-        
-        [headerView addSubview: textLabel];
-        [headerView addSubview: infoButton];
+        [headerView.infoButton addTarget: self 
+                                  action: @selector(showInstructions) 
+                        forControlEvents: UIControlEventTouchUpInside];
         
         return headerView;
     } else {
@@ -177,7 +167,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
                                  lineBreakMode: UILineBreakModeWordWrap];
     
     return controlType == INPUT_COMMENT ? 
-            labelSize.height + 120 : 
+            labelSize.height + 135 : 
         itemTitle.length ? 
             labelSize.height + 70 : 60;
 }
@@ -292,7 +282,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
 
 - (void) showInstructions {
     TSAlertView *alertView = [[TSAlertView alloc] initWithTitle: @"Инструкции" 
-                                                        message: @"Если Вас удаляют с участка:\n1. Попросите объяснить, чем конкретно Вы \"препятствуете работе\" комиссии\n2. Получите письменное решение комиссии со ссылкой на пункт закона о выборах и печатью комиссии\n3. Добейтесь составления акта об административном правонарушении\n4. Помните, если вы член комиссии, вас не имеют право удалить, только отстранить от работы\n5. Если вас удалили, сообщите об этом нам." 
+                                                        message: @"Если Вас удаляют с участка:\n1. Попросите объяснить, чем конкретно Вы препятствуете работе комиссии\n2. Получите письменное решение комиссии со ссылкой на пункт закона о выборах и печатью комиссии\n3. Добейтесь составления акта об административном правонарушении\n4. Помните, если вы член комиссии, вас не имеют право удалить, только отстранить от работы\n5. Если вас удалили, сообщите об этом нам." 
                                                        delegate: nil 
                                               cancelButtonTitle: @"OK" 
                                               otherButtonTitles: nil];
