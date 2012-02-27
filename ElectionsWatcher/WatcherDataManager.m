@@ -88,7 +88,7 @@
                                                               repeats: YES];
         
         
-        NSTimer *mediaItemsTimer = [NSTimer timerWithTimeInterval: 17.0f target: self 
+        NSTimer *mediaItemsTimer = [NSTimer timerWithTimeInterval: 71.0f target: self 
                                                          selector: @selector(processUnsentMediaItems) 
                                                          userInfo: nil 
                                                           repeats: YES];

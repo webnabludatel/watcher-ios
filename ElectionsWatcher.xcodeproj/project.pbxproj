@@ -705,7 +705,6 @@
 		5F7ADDB714C1AE4100A8E955 = {
 			isa = PBXGroup;
 			children = (
-				5F5911AD14FC307800D15369 /* libxml2.dylib */,
 				5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */,
 				5F7ADDC514C1AE4100A8E955 /* Frameworks */,
 				5F7ADDC314C1AE4100A8E955 /* Products */,
@@ -738,6 +737,7 @@
 				5F7ADDC814C1AE4100A8E955 /* Foundation.framework */,
 				5F7ADDCA14C1AE4100A8E955 /* CoreGraphics.framework */,
 				5F91F25E14C2F3DA00446C86 /* libz.dylib */,
+				5F5911AD14FC307800D15369 /* libxml2.dylib */,
 				5F2062C714E876FC0031BA22 /* libicucore.dylib */,
 			);
 			name = Frameworks;
