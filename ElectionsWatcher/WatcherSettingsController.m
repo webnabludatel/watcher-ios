@@ -15,6 +15,8 @@
 #import "WatcherDataManager.h"
 #import "WatcherInfoHeaderView.h"
 #import "TSAlertView.h"
+#import "ActionSheetPicker.h"
+#import "ChecklistItem.h"
 
 @implementation WatcherSettingsController
 
@@ -225,9 +227,17 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
             [iv startAnimating];
             [iv release];
         } else {
-            cell.textLabel.text = @"Участник голосования";
+            NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+            [nf setNumberStyle: NSNumberFormatterDecimalStyle];
+            
+            ChecklistItem *observerStatusItem = [self findOrCreateObserverStatusItem];
+            NSArray *statusArray = [itemInfo objectForKey: @"possible_values"];
+            
+            cell.textLabel.text = [statusArray objectAtIndex: [nf numberFromString: observerStatusItem.value].intValue];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
             cell.accessoryView = nil;
+            
+            [nf release];
         }
     } else {
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -327,6 +337,26 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
             [nc release];
             
         }
+    }
+    
+    if ( indexPath.section == 1 ) {
+        NSDictionary *sectionInfo = [self.settings objectForKey: settingsSections[indexPath.section]];
+        NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
+        
+        NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+        [nf setNumberStyle: NSNumberFormatterDecimalStyle];
+        
+        ChecklistItem *observerStatusItem = [self findOrCreateObserverStatusItem];
+        
+        [ActionSheetStringPicker showPickerWithTitle: @"Статус наблюдателя" 
+                                                rows: [itemInfo objectForKey: @"possible_values"]
+                                    initialSelection: [nf numberFromString: observerStatusItem.value].intValue
+                                              target: self 
+                                        sucessAction: @selector(statusSelected:element:) 
+                                        cancelAction: @selector(statusCancelled:) 
+                                              origin: [self.tableView cellForRowAtIndexPath: indexPath]];
+        
+        [nf release];
     }
 }
 
@@ -462,6 +492,58 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     [alertView release];
 }
 
+#pragma mark - Observer status
 
+-(ChecklistItem *) findOrCreateObserverStatusItem {
+    AppDelegate *appDelegate    = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSPredicate *predicate      = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", @"observer_status"];
+    ChecklistItem *statusItem   = [appDelegate.watcherProfile.profileChecklistItems filteredSetUsingPredicate: predicate].anyObject;
+    
+    if ( ! statusItem ) {
+        statusItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                   inManagedObjectContext: appDelegate.managedObjectContext];
+        
+        statusItem.name = @"observer_status";
+        statusItem.value = @"0";
+        statusItem.timestamp = [NSDate date];
+        statusItem.synchronized = [NSNumber numberWithBool: NO];
+        statusItem.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
+        statusItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
+        
+        [appDelegate.watcherProfile addProfileChecklistItemsObject: statusItem];
+        
+        NSError *error = nil;
+        [appDelegate.watcherProfile.managedObjectContext save: &error];
+        
+        if ( error ) 
+            NSLog(@"error saving observer status: %@", error.description);
+    }
+    
+    return statusItem;
+}
+
+- (void) statusSelected: (NSNumber *) index element: (id) element {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    ChecklistItem *statusItem = [self findOrCreateObserverStatusItem];
+    statusItem.value = [index stringValue];
+    statusItem.timestamp = [NSDate date];
+    statusItem.synchronized = [NSNumber numberWithBool: NO];;
+    statusItem.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
+    statusItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
+    
+    [appDelegate.watcherProfile addProfileChecklistItemsObject: statusItem];
+    
+    NSError *error = nil;
+    [appDelegate.watcherProfile.managedObjectContext save: &error];
+    
+    if ( error ) 
+        NSLog(@"error saving observer status: %@", error.description);
+    
+    [self.tableView reloadData];
+}
+
+- (void) statusCancelled: (id) sender {
+}
 
 @end

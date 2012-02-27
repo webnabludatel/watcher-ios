@@ -177,7 +177,7 @@
 }
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    if ( [searchText length] >= 5 ) {
+    if ( [searchText length] >= 4 ) {
         [self refreshSearchResultsForString: searchText];
     }
 }

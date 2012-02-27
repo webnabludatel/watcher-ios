@@ -19,4 +19,6 @@
 @property (nonatomic, retain) NSDictionary *settings;
 @property (nonatomic, assign) MBProgressHUD *HUD;
 
+-(ChecklistItem *) findOrCreateObserverStatusItem;
+
 @end
