@@ -30,6 +30,17 @@
 		5F514EE114F97FC10071885F /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F514ED414F97FC10071885F /* SBJsonTokeniser.m */; };
 		5F514EE214F97FC10071885F /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F514ED614F97FC10071885F /* SBJsonUTF8Stream.m */; };
 		5F514EE314F97FC10071885F /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F514ED814F97FC10071885F /* SBJsonWriter.m */; };
+		5F5911A314FC300400D15369 /* GCAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59118114FC300300D15369 /* GCAlertView.m */; };
+		5F5911A414FC300400D15369 /* DDXMLElementAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59118514FC300300D15369 /* DDXMLElementAdditions.m */; };
+		5F5911A514FC300400D15369 /* NSString+DDXML.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59118814FC300300D15369 /* NSString+DDXML.m */; };
+		5F5911A614FC300400D15369 /* DDXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59118B14FC300300D15369 /* DDXMLDocument.m */; };
+		5F5911A714FC300400D15369 /* DDXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59118D14FC300300D15369 /* DDXMLElement.m */; };
+		5F5911A814FC300400D15369 /* DDXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59118F14FC300300D15369 /* DDXMLNode.m */; };
+		5F5911A914FC300400D15369 /* ABNotice.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59119414FC300300D15369 /* ABNotice.m */; };
+		5F5911AA14FC300400D15369 /* ABNotifier.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59119614FC300300D15369 /* ABNotifier.m */; };
+		5F5911AB14FC300400D15369 /* ABNotifierFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F59119914FC300300D15369 /* ABNotifierFunctions.m */; };
+		5F5911AC14FC300400D15369 /* HTNotifier.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5F59119A14FC300300D15369 /* HTNotifier.strings */; };
+		5F5911AE14FC307800D15369 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5911AD14FC307800D15369 /* libxml2.dylib */; };
 		5F65581A14EA5E0300135422 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65580E14EA5E0300135422 /* MWCaptionView.m */; };
 		5F65581B14EA5E0300135422 /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65581014EA5E0300135422 /* MWPhoto.m */; };
 		5F65581C14EA5E0300135422 /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F65581214EA5E0300135422 /* MWPhotoBrowser.m */; };
@@ -230,6 +241,36 @@
 		5F514ED714F97FC10071885F /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		5F514ED814F97FC10071885F /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		5F514EE414F97FD30071885F /* JSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSON.h; sourceTree = "<group>"; };
+		5F59118014FC300300D15369 /* GCAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCAlertView.h; sourceTree = "<group>"; };
+		5F59118114FC300300D15369 /* GCAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCAlertView.m; sourceTree = "<group>"; };
+		5F59118414FC300300D15369 /* DDXMLElementAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElementAdditions.h; sourceTree = "<group>"; };
+		5F59118514FC300300D15369 /* DDXMLElementAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElementAdditions.m; sourceTree = "<group>"; };
+		5F59118714FC300300D15369 /* NSString+DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DDXML.h"; sourceTree = "<group>"; };
+		5F59118814FC300300D15369 /* NSString+DDXML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DDXML.m"; sourceTree = "<group>"; };
+		5F59118914FC300300D15369 /* DDXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXML.h; sourceTree = "<group>"; };
+		5F59118A14FC300300D15369 /* DDXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLDocument.h; sourceTree = "<group>"; };
+		5F59118B14FC300300D15369 /* DDXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLDocument.m; sourceTree = "<group>"; };
+		5F59118C14FC300300D15369 /* DDXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLElement.h; sourceTree = "<group>"; };
+		5F59118D14FC300300D15369 /* DDXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLElement.m; sourceTree = "<group>"; };
+		5F59118E14FC300300D15369 /* DDXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLNode.h; sourceTree = "<group>"; };
+		5F59118F14FC300300D15369 /* DDXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDXMLNode.m; sourceTree = "<group>"; };
+		5F59119114FC300300D15369 /* DDXMLPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDXMLPrivate.h; sourceTree = "<group>"; };
+		5F59119314FC300300D15369 /* ABNotice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotice.h; sourceTree = "<group>"; };
+		5F59119414FC300300D15369 /* ABNotice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABNotice.m; sourceTree = "<group>"; };
+		5F59119514FC300300D15369 /* ABNotifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotifier.h; sourceTree = "<group>"; };
+		5F59119614FC300300D15369 /* ABNotifier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABNotifier.m; sourceTree = "<group>"; };
+		5F59119714FC300300D15369 /* ABNotifierDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotifierDelegate.h; sourceTree = "<group>"; };
+		5F59119814FC300300D15369 /* ABNotifierFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ABNotifierFunctions.h; sourceTree = "<group>"; };
+		5F59119914FC300300D15369 /* ABNotifierFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ABNotifierFunctions.m; sourceTree = "<group>"; };
+		5F59119B14FC300300D15369 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		5F59119C14FC300300D15369 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		5F59119D14FC300300D15369 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		5F59119E14FC300300D15369 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		5F59119F14FC300300D15369 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		5F5911A014FC300300D15369 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		5F5911A114FC300300D15369 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/HTNotifier.strings; sourceTree = "<group>"; };
+		5F5911A214FC300300D15369 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/HTNotifier.strings"; sourceTree = "<group>"; };
+		5F5911AD14FC307800D15369 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		5F65580D14EA5E0300135422 /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
 		5F65580E14EA5E0300135422 /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
 		5F65580F14EA5E0300135422 /* MWPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhoto.h; sourceTree = "<group>"; };
@@ -467,6 +508,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F5911AE14FC307800D15369 /* libxml2.dylib in Frameworks */,
 				5FA5E16A14F1358B00030487 /* Accounts.framework in Frameworks */,
 				5FA5E16614F12E8700030487 /* Twitter.framework in Frameworks */,
 				5F65584014EA65ED00135422 /* MediaPlayer.framework in Frameworks */,
@@ -495,6 +537,83 @@
 				5F2062C514E876D50031BA22 /* RegexKitLite.m */,
 			);
 			path = RegexKitLite;
+			sourceTree = "<group>";
+		};
+		5F59117E14FC300300D15369 /* Airbrake */ = {
+			isa = PBXGroup;
+			children = (
+				5F59117F14FC300300D15369 /* gcalertview */,
+				5F59118214FC300300D15369 /* kissxml */,
+				5F59119214FC300300D15369 /* notifier */,
+			);
+			path = Airbrake;
+			sourceTree = "<group>";
+		};
+		5F59117F14FC300300D15369 /* gcalertview */ = {
+			isa = PBXGroup;
+			children = (
+				5F59118014FC300300D15369 /* GCAlertView.h */,
+				5F59118114FC300300D15369 /* GCAlertView.m */,
+			);
+			path = gcalertview;
+			sourceTree = "<group>";
+		};
+		5F59118214FC300300D15369 /* kissxml */ = {
+			isa = PBXGroup;
+			children = (
+				5F59118314FC300300D15369 /* Additions */,
+				5F59118614FC300300D15369 /* Categories */,
+				5F59118914FC300300D15369 /* DDXML.h */,
+				5F59118A14FC300300D15369 /* DDXMLDocument.h */,
+				5F59118B14FC300300D15369 /* DDXMLDocument.m */,
+				5F59118C14FC300300D15369 /* DDXMLElement.h */,
+				5F59118D14FC300300D15369 /* DDXMLElement.m */,
+				5F59118E14FC300300D15369 /* DDXMLNode.h */,
+				5F59118F14FC300300D15369 /* DDXMLNode.m */,
+				5F59119014FC300300D15369 /* Private */,
+			);
+			path = kissxml;
+			sourceTree = "<group>";
+		};
+		5F59118314FC300300D15369 /* Additions */ = {
+			isa = PBXGroup;
+			children = (
+				5F59118414FC300300D15369 /* DDXMLElementAdditions.h */,
+				5F59118514FC300300D15369 /* DDXMLElementAdditions.m */,
+			);
+			path = Additions;
+			sourceTree = "<group>";
+		};
+		5F59118614FC300300D15369 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				5F59118714FC300300D15369 /* NSString+DDXML.h */,
+				5F59118814FC300300D15369 /* NSString+DDXML.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
+		5F59119014FC300300D15369 /* Private */ = {
+			isa = PBXGroup;
+			children = (
+				5F59119114FC300300D15369 /* DDXMLPrivate.h */,
+			);
+			path = Private;
+			sourceTree = "<group>";
+		};
+		5F59119214FC300300D15369 /* notifier */ = {
+			isa = PBXGroup;
+			children = (
+				5F59119314FC300300D15369 /* ABNotice.h */,
+				5F59119414FC300300D15369 /* ABNotice.m */,
+				5F59119514FC300300D15369 /* ABNotifier.h */,
+				5F59119614FC300300D15369 /* ABNotifier.m */,
+				5F59119714FC300300D15369 /* ABNotifierDelegate.h */,
+				5F59119814FC300300D15369 /* ABNotifierFunctions.h */,
+				5F59119914FC300300D15369 /* ABNotifierFunctions.m */,
+				5F59119A14FC300300D15369 /* HTNotifier.strings */,
+			);
+			path = notifier;
 			sourceTree = "<group>";
 		};
 		5F65580B14EA5D6300135422 /* MWPhotoBrowser */ = {
@@ -586,6 +705,7 @@
 		5F7ADDB714C1AE4100A8E955 = {
 			isa = PBXGroup;
 			children = (
+				5F5911AD14FC307800D15369 /* libxml2.dylib */,
 				5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */,
 				5F7ADDC514C1AE4100A8E955 /* Frameworks */,
 				5F7ADDC314C1AE4100A8E955 /* Products */,
@@ -626,6 +746,7 @@
 		5F7ADDCC14C1AE4100A8E955 /* ElectionsWatcher */ = {
 			isa = PBXGroup;
 			children = (
+				5F59117E14FC300300D15369 /* Airbrake */,
 				5F7130C914F438F8007CEAC7 /* TSAlertView */,
 				5F7130B114F2A02B007CEAC7 /* UIImage+Resize */,
 				5FD5978C14EFFA8500E27620 /* Facebook */,
@@ -956,6 +1077,13 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				de,
+				es,
+				fr,
+				nl,
+				ro,
+				ru,
+				"zh-Hant",
 			);
 			mainGroup = 5F7ADDB714C1AE4100A8E955;
 			productRefGroup = 5F7ADDC314C1AE4100A8E955 /* Products */;
@@ -1049,6 +1177,7 @@
 				5F71311D14F732E9007CEAC7 /* WatcherGuide.bundle in Resources */,
 				5FBA87A414FAE59800ADD4EA /* Default@2x.png in Resources */,
 				5FBA87A614FAE5D500ADD4EA /* Default.png in Resources */,
+				5F5911AC14FC300400D15369 /* HTNotifier.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1140,12 +1269,36 @@
 				5F514EE214F97FC10071885F /* SBJsonUTF8Stream.m in Sources */,
 				5F514EE314F97FC10071885F /* SBJsonWriter.m in Sources */,
 				5FCA8E1114FAC5B4008D4A7A /* WatcherInfoHeaderView.m in Sources */,
+				5F5911A314FC300400D15369 /* GCAlertView.m in Sources */,
+				5F5911A414FC300400D15369 /* DDXMLElementAdditions.m in Sources */,
+				5F5911A514FC300400D15369 /* NSString+DDXML.m in Sources */,
+				5F5911A614FC300400D15369 /* DDXMLDocument.m in Sources */,
+				5F5911A714FC300400D15369 /* DDXMLElement.m in Sources */,
+				5F5911A814FC300400D15369 /* DDXMLNode.m in Sources */,
+				5F5911A914FC300400D15369 /* ABNotice.m in Sources */,
+				5F5911AA14FC300400D15369 /* ABNotifier.m in Sources */,
+				5F5911AB14FC300400D15369 /* ABNotifierFunctions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		5F59119A14FC300300D15369 /* HTNotifier.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5F59119B14FC300300D15369 /* de */,
+				5F59119C14FC300300D15369 /* en */,
+				5F59119D14FC300300D15369 /* es */,
+				5F59119E14FC300300D15369 /* fr */,
+				5F59119F14FC300300D15369 /* nl */,
+				5F5911A014FC300300D15369 /* ro */,
+				5F5911A114FC300300D15369 /* ru */,
+				5F5911A214FC300300D15369 /* zh-Hant */,
+			);
+			name = HTNotifier.strings;
+			sourceTree = "<group>";
+		};
 		5F7ADDCF14C1AE4100A8E955 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1222,6 +1375,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1241,6 +1395,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
+				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";

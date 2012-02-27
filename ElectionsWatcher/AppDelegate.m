@@ -49,6 +49,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // AirBrake
+    [ABNotifier startNotifierWithAPIKey: @"3c7330bf96978ade3a481e6473b06399"
+	                    environmentName: ABNotifierAutomaticEnvironment
+	                             useSSL: YES
+	                           delegate: self];    
+    
     // private settings and access keys
     _privateSettings = [[NSDictionary alloc] initWithContentsOfFile: 
                         [[NSBundle mainBundle] pathForResource: @"PrivateSettings" ofType: @"plist"]];

@@ -16,6 +16,10 @@
 #import "WatcherInfoHeaderView.h"
 #import "TSAlertView.h"
 
+#define ELECTIONS_DAY           @"04.03.2012"
+#define DATE_FORMAT             @"dd.MM.yyyy"
+#define TEST_ITEMS_PREDICATE    @"(SELF.timestamp < %@) && (SELF.sectionName != NULL) && (SELF.sectionName != 'sos_report')"
+
 @implementation WatcherChecklistController
 
 @synthesize watcherChecklist;
@@ -44,6 +48,59 @@
     [watcherChecklist release];
     
     [super dealloc];
+}
+
+#pragma mark - Check for test data on elections day
+
+- (void) checkForTestDataOnElectionsDay {
+    NSDateFormatter* df = [[[NSDateFormatter alloc] init] autorelease];
+    [df setFormatterBehavior: NSDateFormatterBehavior10_4];
+    [df setDateFormat: DATE_FORMAT];
+    
+    NSDate *electionsDate = [df dateFromString: ELECTIONS_DAY];
+    NSDate *currentDate   = [NSDate date];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    if ( appDelegate.watcherProfile.currentPollingPlace && ( [currentDate compare: electionsDate] == NSOrderedDescending ) ) {
+        NSLog(@"checking for items before elections date: %@", electionsDate);
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: TEST_ITEMS_PREDICATE, electionsDate];
+        NSSet *testItems = [appDelegate.watcherProfile.currentPollingPlace.checklistItems filteredSetUsingPredicate: predicate];
+        if ( testItems.count > 0 ) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Тестовые данные" 
+                                                                message: @"Для выбранного участка обнаруженые тестовые данные, введенные до начала выборов. Тестовые данные не учитываются в статистике системы и публикуемых отчетах. Удалить тестовые данные?" 
+                                                               delegate: self 
+                                                      cancelButtonTitle: @"Не удалять" 
+                                                      otherButtonTitles: @"Удалить", nil];
+            [alertView setTag: 666];
+            [alertView show];
+            [alertView release];
+        }
+    }
+}
+
+-(void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if ( buttonIndex == 1 && alertView.tag == 666 ) {
+        NSDateFormatter* df = [[[NSDateFormatter alloc] init] autorelease];
+        [df setFormatterBehavior: NSDateFormatterBehavior10_4];
+        [df setDateFormat: DATE_FORMAT];
+        
+        NSDate *electionsDate = [df dateFromString: ELECTIONS_DAY];
+        
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat: TEST_ITEMS_PREDICATE, electionsDate];
+        NSSet *testItems = [appDelegate.watcherProfile.currentPollingPlace.checklistItems filteredSetUsingPredicate: predicate];
+        
+        for ( ChecklistItem *item in testItems )
+            [appDelegate.managedObjectContext deleteObject: item];
+        
+        NSError *error = nil;
+        [appDelegate.managedObjectContext save: &error];
+        if ( error ) 
+            NSLog(@"error removing test data: %@", error.description);
+        
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - View lifecycle
@@ -81,6 +138,8 @@
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ? 
     appDelegate.watcherProfile.currentPollingPlace.titleString : @"Наблюдение";
+    
+    [self checkForTestDataOnElectionsDay];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

@@ -12,10 +12,11 @@
 #import <Accounts/Accounts.h>
 #import <Twitter/Twitter.h>
 #import "Facebook.h"
+#import "ABNotifier.h"
 
 @class PollingPlace, WatcherDataManager, WatcherProfile;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, FBSessionDelegate, FBRequestDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UITabBarControllerDelegate, CLLocationManagerDelegate, UINavigationControllerDelegate, FBSessionDelegate, FBRequestDelegate, ABNotifierDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UITabBarController *tabBarController;

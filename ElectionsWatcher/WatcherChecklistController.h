@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "WatcherPollingPlaceControllerDelegate.h"
 
-@interface WatcherChecklistController : UITableViewController <WatcherPollingPlaceControllerDelegate>
+@interface WatcherChecklistController : UITableViewController <WatcherPollingPlaceControllerDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) NSDictionary *watcherChecklist;
+
+- (void) checkForTestDataOnElectionsDay;
 
 @end
