@@ -30,4 +30,12 @@
             self.filePath.lastPathComponent];
 }
 
+- (BOOL) isReadyToSync {
+    return 
+        // just added
+        ( self.checklistItem != nil && self.checklistItem.serverRecordId.intValue > 0 ) 
+        // just removed
+        || self.checklistItem == nil;
+}
+
 @end

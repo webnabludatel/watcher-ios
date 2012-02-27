@@ -95,7 +95,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     [self.tableView reloadData];
  
     if ( ! appDelegate.watcherProfile.userId.length ) {
-        [appDelegate.dataManager performSelector: @selector(registerCurrentDevice) withObject: nil afterDelay: 1];
+        [appDelegate.dataManager performSelector: @selector(registerCurrentDevice) withObject: nil afterDelay: 10];
         [self.tableView setAllowsSelection: NO];
     } else {
         [self.tableView setAllowsSelection: YES];
@@ -474,12 +474,12 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     
     if ( sender.tag == 1 ) {
         text = @"Вы можете изменить свой статус после того, как программа зарегистрирует устройство на сервере. Если вы - официальный наблюдатель или член избирательной комиссии, укажите это.\n\n";
-        title = @"Статус наблюдателя";
+        title = @"Статус пользователя";
     }
     
     if ( sender.tag == 2 ) {
         text = @"Для того, чтобы мы могли подтвердить ваш статус официального наблюдателя в системе, загрузите фотографию вашего удостоверения.\n\n";
-        title = @"Удостоверение";
+        title = @"Официальные полномочия";
     }
     
     TSAlertView *alertView = [[TSAlertView alloc] initWithTitle: title 
@@ -544,6 +544,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
 }
 
 - (void) statusCancelled: (id) sender {
+    [self.tableView reloadData];
 }
 
 @end

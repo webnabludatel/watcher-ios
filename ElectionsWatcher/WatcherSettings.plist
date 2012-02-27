@@ -29,7 +29,7 @@
 	<key>observer_status</key>
 	<dict>
 		<key>title</key>
-		<string>Статус наблюдателя</string>
+		<string>Статус пользователя</string>
 		<key>items</key>
 		<array>
 			<dict>
@@ -51,7 +51,7 @@
 	<key>observer_info</key>
 	<dict>
 		<key>title</key>
-		<string>Официальный наблюдатель</string>
+		<string>Официальные полномочия</string>
 		<key>items</key>
 		<array>
 			<dict>

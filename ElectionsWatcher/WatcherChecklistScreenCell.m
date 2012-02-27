@@ -529,10 +529,17 @@
             [self mediaItemsOfType: (NSString *) kUTTypeMovie] : nil;
 
     NSError *error = nil;
-    
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate.managedObjectContext deleteObject: [mediaItems objectAtIndex: index]];
+    
+    MediaItem *mediaItem = [mediaItems objectAtIndex: index];
+    [self.checklistItem removeMediaItemsObject: mediaItem];
+    [self.checklistItem setSynchronized: [NSNumber numberWithBool: NO]];
+    [mediaItem setTimestamp: [NSDate date]];
+    [mediaItem setSynchronized: [NSNumber numberWithBool: NO]];
     [appDelegate.managedObjectContext save: &error];
+    
+    if ( error ) 
+        NSLog(@"error removing media item: %@", error);
     
     NSArray *mediaItemsAfterRemoval = 
         controlType == INPUT_PHOTO ?
@@ -540,9 +547,6 @@
         controlType == INPUT_VIDEO ?
             [self mediaItemsOfType: (NSString *) kUTTypeMovie] : nil;
     
-    if ( error ) 
-        NSLog(@"error removing media item: %@", error);
-
     [self.mwBrowserItems removeAllObjects];
     
     if ( mediaItemsAfterRemoval.count ) {

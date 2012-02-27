@@ -88,7 +88,7 @@
                                                               repeats: YES];
         
         
-        NSTimer *mediaItemsTimer = [NSTimer timerWithTimeInterval: 71.0f target: self 
+        NSTimer *mediaItemsTimer = [NSTimer timerWithTimeInterval: 17.0f target: self 
                                                          selector: @selector(processUnsentMediaItems) 
                                                          userInfo: nil 
                                                           repeats: YES];
@@ -107,7 +107,9 @@
     
     @synchronized ( _managedObjectContext ) {
         NSError *error = nil;
-        [_managedObjectContext refreshObject: managedObject mergeChanges: YES];
+        if ( ! managedObject.isDeleted )
+            [_managedObjectContext refreshObject: managedObject mergeChanges: YES];
+        
         [_managedObjectContext save: &error];
         
         if ( error )
@@ -150,6 +152,9 @@
         
         for ( MediaItem *mediaItem in unsentItems ) {
             if ( [_objectsInProgress containsObject: mediaItem] )
+                continue;
+            
+            if ( ! mediaItem.isReadyToSync )
                 continue;
             
             [self enqueueMediaItem: mediaItem];
@@ -347,7 +352,7 @@
                     // TODO: process server-side errors (check spec)
                 }
             } else {
-                NSLog(@"http request error: %@", [request responseStatusMessage]);
+                NSLog(@"request to %@ returned error code %d", request.url, request.responseStatusCode);
                 [_errors addObject: [request responseStatusMessage]];
             }
         }
@@ -361,13 +366,78 @@
         NSLog(@"processing media item [%@]", mediaItem.filePath);
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         
-        if ( mediaItem.serverUrl ) {
-            
+        if ( mediaItem.checklistItem ) {
+            // process media item update/insert
+            if ( mediaItem.serverUrl ) {
+                
+                NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                         mediaItem.objectID.URIRepresentation.absoluteString, @"internal_id",
+                                         mediaItem.checklistItem.objectID.URIRepresentation.absoluteString, @"checklist_item_internal_id",
+                                         mediaItem.serverUrl, @"url", 
+                                         mediaItem.mediaType, @"type",
+                                         [NSNumber numberWithDouble: [mediaItem.timestamp timeIntervalSince1970]], @"timestamp",
+                                         nil];
+                
+                NSString *json = [payload JSONRepresentation];
+                NSString *deviceId = [[UIDevice currentDevice] uniqueIdentifier];
+                NSString *digest = [WatcherTools md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
+                
+                NSURL *url = [NSURL URLWithString: [NSString stringWithFormat: 
+                                                    @"http://webnabludatel.org/api/v1/messages/%@/media_items.json?digest=%@", 
+                                                    mediaItem.checklistItem.serverRecordId, digest]];
+
+                [ASIFormDataRequest setShouldThrottleBandwidthForWWAN: YES];
+                [ASIFormDataRequest throttleBandwidthForWWANUsingLimit: 21600];
+
+                ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
+                [request setShouldCompressRequestBody: NO];
+                [request setTimeOutSeconds: 60];
+                [request setPostValue: deviceId forKey: @"device_id"];
+                [request setPostValue: json forKey: @"payload"];
+                [request startSynchronous];
+                
+                NSError *error = [request error];
+                
+                if ( error ) {
+                    NSLog(@"error sending media item: %@, will retry", error);
+                    [_errors addObject: error];
+                    [_objectsInProgress removeObject: mediaItem];
+//                    [self performSelector: @selector(enqueueMediaItem:) withObject: mediaItem afterDelay: 31];
+                } else {
+                    if ( [request responseStatusCode] == 200 ) {
+                        NSString *response = [request responseString];
+                        NSDictionary *messageInfo = [response JSONValue];
+                        if ( [@"ok" isEqualToString: [messageInfo objectForKey: @"status"]] ) {
+                            NSDictionary *result = [messageInfo objectForKey: @"result"];
+                            mediaItem.serverRecordId = [result objectForKey: @"media_item_id"];
+                            mediaItem.synchronized = [NSNumber numberWithBool: YES];
+                            
+                            [self performSelector: @selector(saveManagedObject:) 
+                                         onThread: _dataManagerThread 
+                                       withObject: mediaItem 
+                                    waitUntilDone: NO];
+                            
+                            NSLog(@"media item [%@] successfully synchronized", mediaItem.filePath);
+                        } else {
+                            // TODO: process server-side errors (check spec)
+                        }
+                    } else {
+                        NSLog(@"request to %@ returned error code %d", request.url, request.responseStatusCode);
+                        [_errors addObject: [request responseStatusMessage]];
+                    }
+                }
+                
+                [_objectsInProgress removeObject: mediaItem];
+            } else {
+                NSLog(@"looks like media item upload has failed, media item [%@] will retry automatically", mediaItem.filePath );
+                [_objectsInProgress removeObject: mediaItem];
+//                [self performSelector: @selector(enqueueMediaItem:) withObject: mediaItem afterDelay: 31];
+            }
+        } else {
+            // process media item removal
             NSDictionary *payload = [NSDictionary dictionaryWithObjectsAndKeys: 
+                                     @"true", @"delete",
                                      mediaItem.objectID.URIRepresentation.absoluteString, @"internal_id",
-                                     mediaItem.checklistItem.objectID.URIRepresentation.absoluteString, @"checklist_item_internal_id",
-                                     mediaItem.serverUrl, @"url", 
-                                     mediaItem.mediaType, @"type",
                                      [NSNumber numberWithDouble: [mediaItem.timestamp timeIntervalSince1970]], @"timestamp",
                                      nil];
             
@@ -375,13 +445,14 @@
             NSString *deviceId = [[UIDevice currentDevice] uniqueIdentifier];
             NSString *digest = [WatcherTools md5: [[deviceId stringByAppendingString: json] stringByAppendingString: appDelegate.watcherProfile.serverSecret]];
             
-            NSURL *url = [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/messages/%@/media_items.json?digest=%@", 
-                                                mediaItem.checklistItem.serverRecordId, digest]];
-
+            NSURL *url = [NSURL URLWithString: [NSString stringWithFormat: @"http://webnabludatel.org/api/v1/media_items/%@.json?digest=%@",
+                                                mediaItem.serverRecordId, digest]];
+            
             [ASIFormDataRequest setShouldThrottleBandwidthForWWAN: YES];
             [ASIFormDataRequest throttleBandwidthForWWANUsingLimit: 21600];
-
+            
             ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL: url];
+            [request setRequestMethod: @"PUT"];
             [request setShouldCompressRequestBody: NO];
             [request setTimeOutSeconds: 60];
             [request setPostValue: deviceId forKey: @"device_id"];
@@ -391,40 +462,45 @@
             NSError *error = [request error];
             
             if ( error ) {
-                NSLog(@"error sending media item: %@, will retry", error);
+                NSLog(@"error removing media item from server: %@, will retry", error);
                 [_errors addObject: error];
-                
                 [_objectsInProgress removeObject: mediaItem];
-                [self performSelector: @selector(enqueueMediaItem:) withObject: mediaItem afterDelay: 31];
+//                [self performSelector: @selector(enqueueMediaItem:) withObject: mediaItem afterDelay: 31];
             } else {
                 if ( [request responseStatusCode] == 200 ) {
                     NSString *response = [request responseString];
                     NSDictionary *messageInfo = [response JSONValue];
                     if ( [@"ok" isEqualToString: [messageInfo objectForKey: @"status"]] ) {
                         NSDictionary *result = [messageInfo objectForKey: @"result"];
-                        mediaItem.serverRecordId = [result objectForKey: @"media_item_id"];
-                        mediaItem.synchronized = [NSNumber numberWithBool: YES];
+                        NSNumber *removedServerRecordId = [result objectForKey: @"media_item_id"];
+
+                        if ( [removedServerRecordId isEqualToNumber: mediaItem.serverRecordId] ) {
+                            if ( ! [[NSFileManager defaultManager] removeItemAtPath: mediaItem.filePath error: &error] )
+                                NSLog(@"error removing physical file on device: %@", error.description);
+                            
+                            [mediaItem.managedObjectContext deleteObject: mediaItem];
+                            [self performSelector: @selector(saveManagedObject:) 
+                                         onThread: _dataManagerThread 
+                                       withObject: mediaItem 
+                                    waitUntilDone: YES];
+                            
+                            NSLog(@"media item [server_id=%@] was successfully removed from server and internal database", removedServerRecordId);
+                        } else {
+                            NSLog(@"removed server record ID %@ doesn't match stored record ID %@!!!", 
+                                  removedServerRecordId, mediaItem.serverRecordId);
+                        }
                         
-                        [self performSelector: @selector(saveManagedObject:) 
-                                     onThread: _dataManagerThread 
-                                   withObject: mediaItem 
-                                waitUntilDone: NO];
-                        
-                        NSLog(@"media item [%@] successfully synchronized", mediaItem.filePath);
                     } else {
                         // TODO: process server-side errors (check spec)
                     }
                 } else {
-                    NSLog(@"http request error: %@", [request responseStatusMessage]);
+                    NSLog(@"request to %@ returned error code %d", request.url, request.responseStatusCode);
                     [_errors addObject: [request responseStatusMessage]];
                 }
             }
             
             [_objectsInProgress removeObject: mediaItem];
-        } else {
-            NSLog(@"looks like media item upload has failed, re-trying media item [%@]", mediaItem.filePath );
-            [_objectsInProgress removeObject: mediaItem];
-            [self performSelector: @selector(enqueueMediaItem:) withObject: mediaItem afterDelay: 31];
+            
         }
     }
 }

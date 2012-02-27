@@ -313,6 +313,13 @@
     [manager stopUpdatingLocation];
 }
 
+-(void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+    UINavigationController *currentNc = (UINavigationController *) self.tabBarController.selectedViewController;
+    
+    if ( [currentNc.visibleViewController isKindOfClass: [WatcherSettingsController class]] )
+        [[(WatcherSettingsController *) currentNc.visibleViewController tableView] reloadData];
+}
+
 #pragma mark -
 #pragma mark Core Data stack
 

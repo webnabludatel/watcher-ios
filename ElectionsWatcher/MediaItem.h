@@ -23,5 +23,6 @@
 @property (nonatomic, retain) PollingPlace *pollingPlace;
 
 - (NSString *) amazonS3FilePath;
+- (BOOL) isReadyToSync;
 
 @end

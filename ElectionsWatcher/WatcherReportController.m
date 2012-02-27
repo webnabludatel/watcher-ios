@@ -14,6 +14,8 @@
 #import "WatcherProfile.h"
 #import "Facebook.h"
 #import "WatcherTools.h"
+#import "WatcherInfoHeaderView.h"
+#import "TSAlertView.h"
 
 @implementation WatcherReportController
 
@@ -118,12 +120,12 @@
         if ( appDelegate.watcherProfile.currentPollingPlace )
             summary = self.badItems.count ?
                 [NSString stringWithFormat: @"Нарушения на %@", appDelegate.watcherProfile.currentPollingPlace.titleString] :
-                [NSString stringWithFormat: @"На %@ не отмечено нарушений", appDelegate.watcherProfile.currentPollingPlace.titleString] ;
+                [NSString stringWithFormat: @"На %@ нет нарушений", appDelegate.watcherProfile.currentPollingPlace.titleString] ;
         else
-            summary = @"Информация появится после заполнения раздела «Наблюдение»";
+            summary = @"Заполните раздел «Наблюдение»";
         
 
-        CGRect headerFrame = CGRectMake(10, 0, tableView.bounds.size.width-10, 60);
+        CGRect headerFrame = CGRectMake(0, 0, tableView.bounds.size.width-10, 60);
         UIView *headerView = [[[UIView alloc] initWithFrame: headerFrame] autorelease];
         
         UIButton *linkButton = [UIButton buttonWithType: UIButtonTypeRoundedRect];
@@ -142,18 +144,17 @@
         summaryLabel.textColor = [UIColor colorWithRed:0.265 green:0.294 blue:0.367 alpha:1.000];
         summaryLabel.shadowColor = [UIColor colorWithWhite: 1 alpha: 1];
         summaryLabel.shadowOffset = CGSizeMake(0, 1);
-        summaryLabel.font = [UIFont boldSystemFontOfSize: 15];
+        summaryLabel.font = [UIFont boldSystemFontOfSize: 17];
         summaryLabel.numberOfLines = 2;
         summaryLabel.lineBreakMode = UILineBreakModeWordWrap;
         
-        linkButton.titleLabel.font = [UIFont boldSystemFontOfSize: 15];
+        linkButton.titleLabel.font = [UIFont boldSystemFontOfSize: 17];
         linkButton.titleLabel.textAlignment = UITextAlignmentLeft;
         
         [headerView addSubview: summaryLabel];
         [headerView addSubview: linkButton];
         [headerView addSubview: facebookButton];
         [headerView addSubview: twitterButton];
-        
         
         linkButton.frame = CGRectMake(10, 0, headerFrame.size.width-90, 30);
         twitterButton.frame = CGRectMake(headerFrame.size.width-70, 0, 30, 30);
@@ -167,7 +168,7 @@
         [twitterButton addTarget: self action: @selector(shareWithTwitter:) forControlEvents: UIControlEventTouchUpInside];
         [facebookButton addTarget: self action: @selector(shareWithFacebook:) forControlEvents: UIControlEventTouchUpInside];
         
-        summaryLabel.frame = CGRectMake(10, 30, headerFrame.size.width, 40);
+        summaryLabel.frame = CGRectMake(20, 30, headerFrame.size.width, 40);
         
         return headerView;
     }
@@ -176,33 +177,15 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return ( section == 2 && self.badItems.count ) ? 100 : 0;
+    return ( section == 2 && self.badItems.count ) ? 34 : 0;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if ( section == 2 && self.badItems.count ) {
-        UIView *footerView = [[[UIView alloc] initWithFrame: CGRectMake(0, 0, tableView.bounds.size.width, 100)] autorelease];
-        
-        CGRect labelFrame = CGRectMake(15, 10, footerView.bounds.size.width-30, 20);
-        UILabel *label1 = [[[UILabel alloc] initWithFrame: labelFrame] autorelease];
-        UILabel *label2 = [[[UILabel alloc] initWithFrame: CGRectOffset(labelFrame, 0, 20)] autorelease];
-        UILabel *label3 = [[[UILabel alloc] initWithFrame: CGRectOffset(labelFrame, 0, 40)] autorelease];
-        UILabel *label4 = [[[UILabel alloc] initWithFrame: CGRectOffset(labelFrame, 0, 60)] autorelease];
-        
-        NSArray *labels = [NSArray arrayWithObjects: label1, label2, label3, label4, nil];
-        for ( UILabel *label in labels ) {
-            label.backgroundColor = [UIColor clearColor];
-            label.font = [UIFont boldSystemFontOfSize: 15];
-            label.textColor = [UIColor colorWithRed:0.265 green:0.294 blue:0.367 alpha:1.000];
-            label.shadowColor = [UIColor colorWithWhite: 1 alpha: 1];
-            label.shadowOffset = CGSizeMake(0, 1);
-            [footerView addSubview: label];
-        }
-        
-        label1.text = @"Чтобы подать жалобу по нарушениям:";
-        label2.text = @"1. Заполните жалобу.";
-        label3.text = @"2. Передайте её председателю.";
-        label4.text = @"3. Оставьте один экземпляр у себя.";
+        WatcherInfoHeaderView *footerView = [[[WatcherInfoHeaderView alloc] initWithFrame: CGRectZero withTitle: @"Как подать жалобу"] autorelease];
+        [footerView.infoButton addTarget: self 
+                                  action: @selector(showComplainHelp:) 
+                        forControlEvents: UIControlEventTouchUpInside];
         
         return footerView;
     }
@@ -356,6 +339,21 @@
         
         [appDelegate.facebook dialog: @"feed" andParams: params andDelegate: self];        
     }
+}
+
+#pragma mark - Complain help
+
+- (void) showComplainHelp: (id) sender {
+    TSAlertView *alertView = [[TSAlertView alloc] initWithTitle: @"Как подать жалобу"
+                                                        message: @"1. Заполните жалобу в двух экземплярах\n2. Передайте один экземпляр председателю\n3. На втором экземпляре попросите поставить запись «Копия верна», расписаться, проставить время и дату принятия жалобы. Этот экземпляр оставьте у себя или передайте в штаб\n4. Если жалобу не принимают, звоните в штаб и переправляйте ее в вышестоящую комиссию с припиской об отказе в принятии жалобы. Если отказывают заверить копию, напишите не ней: «Председатель комиссии заверить копию отказался»\n\n"
+                                                       delegate: nil 
+                                              cancelButtonTitle: @"OK" 
+                                              otherButtonTitles: nil];
+
+    alertView.usesMessageTextView = YES;
+    
+    [alertView show];
+    [alertView release];
 }
 
 @end
