@@ -30,6 +30,7 @@
 @property (nonatomic, retain) Facebook *facebook;
 @property (nonatomic, readonly) WatcherProfile *watcherProfile;
 @property (nonatomic, readonly) NSDictionary *privateSettings;
+@property (nonatomic, readonly) UIImagePickerController *sharedImagePicker;
 
 - (NSArray *) executeFetchRequest: (NSString *) request 
                         forEntity: (NSString *) entity 

@@ -431,9 +431,10 @@
 #pragma mark Action sheet
 
 - (void) actionSheet: (UIActionSheet *) actionSheet clickedButtonAtIndex: (NSInteger) buttonIndex {
+    AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
     if ( buttonIndex == 0 ) {
         if ( [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera] ) {
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            UIImagePickerController *imagePicker = appDelegate.sharedImagePicker;
             imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
             imagePicker.allowsEditing = NO;
             imagePicker.delegate = self;
@@ -449,7 +450,7 @@
     
     if ( buttonIndex == 1 ) {
         if ( [UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypePhotoLibrary] ) {
-            UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+            UIImagePickerController *imagePicker = appDelegate.sharedImagePicker;
             imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
             imagePicker.allowsEditing = NO;
             imagePicker.delegate = self;
@@ -710,7 +711,7 @@
     BOOL saveMediaToLibrary = ( picker.sourceType == UIImagePickerControllerSourceTypeCamera );
     UIViewController *parentController = [self firstAvailableUIViewController];
     [parentController dismissModalViewControllerAnimated: YES];
-    [picker release];
+//    [picker release];
     
     HUD = [[MBProgressHUD alloc] initWithView: [UIApplication sharedApplication].keyWindow];
 	[[UIApplication sharedApplication].keyWindow addSubview: HUD];
@@ -734,7 +735,7 @@
     
     UIViewController *parentController = [self firstAvailableUIViewController];
     [parentController dismissModalViewControllerAnimated: YES];
-    [picker release];
+//    [picker release];
     
     [self setNeedsLayout];
 }

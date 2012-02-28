@@ -273,6 +273,15 @@ static NSString *sosReportSections[] = { @"sos_report" };
     [HUD hide: YES];
     [self.sosItems removeAllObjects];
     [self.tableView reloadData];
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Сообщение отправлено" 
+                                                        message: @"Сообщение будет передано на сервер в течение нескольких минут, если вы находитесь в зоне действия WiFi или GPRS/EDGE/3G. Если вы указали в настройках контактный телефон, мы свяжемся с вами в ближайшее время." 
+                                                       delegate: nil 
+                                              cancelButtonTitle: @"OK" 
+                                              otherButtonTitles: nil];
+    
+    [alertView show];
+    [alertView release];
 }
 
 - (void) hudWasHidden {

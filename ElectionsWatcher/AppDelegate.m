@@ -33,6 +33,7 @@
 @synthesize facebook = _facebook;
 @synthesize watcherProfile = _watcherProfile;
 @synthesize privateSettings = _privateSettings;
+@synthesize sharedImagePicker = _sharedImagePicker;
 
 - (void)dealloc
 {
@@ -43,6 +44,7 @@
     [_facebook release];
     [_watcherProfile release];
     [_privateSettings release];
+    [_sharedImagePicker release];
     
     [super dealloc];
 }
@@ -192,6 +194,10 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+}
+
+-(void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+    [_sharedImagePicker release]; _sharedImagePicker = nil;
 }
 
 #pragma mark -
@@ -677,6 +683,16 @@
         
         completionHandler();
     }
+}
+
+#pragma mark - Shared image picker instance
+
+- (UIImagePickerController *) sharedImagePicker {
+    if ( _sharedImagePicker == nil ) {
+        _sharedImagePicker = [[UIImagePickerController alloc] init];
+    }
+    
+    return _sharedImagePicker;
 }
 
 
