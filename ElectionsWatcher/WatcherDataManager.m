@@ -15,7 +15,6 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 #import "NSObject+SBJSON.h"
-//#import <AWSiOSSDK/S3/AmazonS3Client.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import "WatcherTools.h"
 #import "Reachability.h"
@@ -543,9 +542,6 @@
                 if ( [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString: @"."] objectAtIndex: 0] intValue] < 5 )
                     _adjustRequestTimezone = YES;
             
-            NSLog(@"code: %d", [request error].code);
-            NSLog(@"description: %@", [request error].description);
-            NSLog(@"userinfo: %@", [request error].userInfo);
             [_errors addObject: [request error]];
         } else {
             mediaItem.serverUrl = [@"http://webnabludatel-media.s3.amazonaws.com/" stringByAppendingString: mediaItem.amazonS3FilePath];
