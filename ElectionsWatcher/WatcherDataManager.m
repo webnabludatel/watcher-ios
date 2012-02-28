@@ -136,10 +136,6 @@
 #pragma mark - Processing
 
 - (void) processUnsentMediaItems {
-    if ( [[NSThread currentThread] isCancelled] ) {
-        [NSThread exit];
-    }
-
     @autoreleasepool {
         NSLog(@"checking for unsynchronized media items that are not currently in progress");
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -163,10 +159,6 @@
 }
 
 - (void) processUnsentData {
-    if ( [[NSThread currentThread] isCancelled] ) {
-        [NSThread exit];
-    }
-    
     @autoreleasepool {
         [_errors removeAllObjects];
         
@@ -607,12 +599,6 @@
     [_dataManagerThread start];
 }
 
-- (void) stopProcessing {
-    [_dataManagerThread cancel];
-    [_dataManagerThread release];
-    _dataManagerThread = nil;
-}
-
 #pragma mark - Data manager status
 
 - (BOOL) active {
@@ -621,12 +607,6 @@
 
 - (BOOL) hasErrors {
     return ( _errors.count > 0 );
-}
-
-#pragma mark - Progress delegate
-
--(void)request:(ASIHTTPRequest *)request didSendBytes:(long long)bytes {
-//    NSLog(@"just sent %qu bytes", bytes);
 }
 
 @end

@@ -8,11 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-#import "ASIProgressDelegate.h"
 
 @class ChecklistItem, MediaItem, Reachability;
 
-@interface WatcherDataManager : NSObject <ASIProgressDelegate>
+@interface WatcherDataManager : NSObject
 
 @property (nonatomic, retain) NSThread *dataManagerThread;
 @property (nonatomic, retain) NSOperationQueue *uploadQueue;
@@ -26,7 +25,6 @@
 @property (nonatomic) BOOL adjustRequestTimezone;
 
 - (void) startProcessing;
-- (void) stopProcessing;
 - (void) registerCurrentDevice;
 - (void) sendChecklistItem: (ChecklistItem *) checklistItem;
 - (void) sendMediaItem: (MediaItem *) mediaItem;
