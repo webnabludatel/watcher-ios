@@ -32,6 +32,7 @@
 @synthesize active = _active;
 @synthesize hasErrors = _hasErrors;
 @synthesize wifiReachability = _wifiReachability;
+@synthesize adjustRequestTimezone = _adjustRequestTimezone;
 
 -(void)dealloc {
     [_dataManagerThread release];
@@ -526,6 +527,9 @@
         request.timeOutSeconds  = 60;
         request.uploadProgressDelegate = self;
         
+        if ( _adjustRequestTimezone )
+            [request setDate: [[NSDate date] dateByAddingTimeInterval: -3600]];
+        
         NSLog(@"ASIS3Request upload file size: %dK", [[NSData dataWithContentsOfFile: mediaItem.filePath] length]/1024);
         
         [request startSynchronous];
@@ -534,6 +538,14 @@
         
         if ([request error]) {
             NSLog(@"ASIS3Request error: %@, %@", [request error], [[request error] localizedDescription]);
+            if ( ( request.error.code == 2 && [[request.error.userInfo objectForKey: NSLocalizedDescriptionKey] isEqualToString: @"The difference between the request time and the current time is too large."] ) || 
+                 ( request.error.code == 1 && [[request.error.userInfo objectForKey: NSLocalizedDescriptionKey] isEqualToString: @"A connection failure occurred"] ) )
+                if ( [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString: @"."] objectAtIndex: 0] intValue] < 5 )
+                    _adjustRequestTimezone = YES;
+            
+            NSLog(@"code: %d", [request error].code);
+            NSLog(@"description: %@", [request error].description);
+            NSLog(@"userinfo: %@", [request error].userInfo);
             [_errors addObject: [request error]];
         } else {
             mediaItem.serverUrl = [@"http://webnabludatel-media.s3.amazonaws.com/" stringByAppendingString: mediaItem.amazonS3FilePath];

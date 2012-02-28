@@ -23,6 +23,7 @@
 
 @property (nonatomic) BOOL active;
 @property (nonatomic) BOOL hasErrors;
+@property (nonatomic) BOOL adjustRequestTimezone;
 
 - (void) startProcessing;
 - (void) stopProcessing;

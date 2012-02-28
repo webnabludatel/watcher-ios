@@ -23,19 +23,29 @@
 	<key>observer_status</key>
 	<dict>
 		<key>title</key>
-		<string>Статус наблюдателя</string>
+		<string>Статус пользователя</string>
 		<key>items</key>
 		<array>
 			<dict>
 				<key>name</key>
-				<string>registration_status</string>
+				<string>observer_status</string>
+				<key>possible_values</key>
+				<array>
+					<string>Участник голосования</string>
+					<string>Наблюдатель</string>
+					<string>Член УИК с ПСГ</string>
+					<string>Член УИК с ПРГ</string>
+					<string>Член ТИК с ПСГ</string>
+					<string>Член ТИК с ПРГ</string>
+					<string>Представитель прессы</string>
+				</array>
 			</dict>
 		</array>
 	</dict>
 	<key>observer_info</key>
 	<dict>
 		<key>title</key>
-		<string>Официальный наблюдатель</string>
+		<string>Официальные полномочия</string>
 		<key>items</key>
 		<array>
 			<dict>
