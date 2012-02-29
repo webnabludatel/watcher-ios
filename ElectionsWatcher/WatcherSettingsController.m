@@ -79,23 +79,23 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     
     [appDelegate.watcherProfile addObserver: self 
                                  forKeyPath: @"fbNickname" 
-                                    options: NSKeyValueObservingOptionNew 
+                                    options: NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                     context: nil];
     
     [appDelegate.watcherProfile addObserver: self 
                                  forKeyPath: @"twNickname" 
-                                    options: NSKeyValueObservingOptionNew 
+                                    options: NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                     context: nil];
     
     [appDelegate.watcherProfile addObserver: self 
                                  forKeyPath: @"userId" 
-                                    options: NSKeyValueObservingOptionNew 
+                                    options: NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
                                     context: nil];
     
     [self.tableView reloadData];
  
     if ( ! appDelegate.watcherProfile.userId.length ) {
-        [appDelegate.dataManager performSelector: @selector(registerCurrentDevice) withObject: nil afterDelay: 10];
+        [appDelegate.dataManager performSelector: @selector(registerCurrentDevice) withObject: nil afterDelay: 5];
         [self.tableView setAllowsSelection: NO];
     } else {
         [self.tableView setAllowsSelection: YES];
@@ -460,8 +460,12 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    if ( object == appDelegate.watcherProfile )
+    if ( object == appDelegate.watcherProfile ) {
+        if ( appDelegate.watcherProfile.userId.length > 0 )
+            [self.tableView setAllowsSelection: YES];
+
         [self.tableView reloadData];
+    }
 }
 
 #pragma mark - HUD
