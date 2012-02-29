@@ -45,5 +45,6 @@
 - (void) updateSynchronizationStatus;
 - (void) removeSynchronizationStatus;
 - (void) saveManagedObject: (NSManagedObject *) managedObject;
+- (void) saveManagedObjectContext;
 
 @end

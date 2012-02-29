@@ -238,11 +238,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
         ChecklistItem *sosReportText = [[[sosItems allObjects] filteredArrayUsingPredicate: itemPredicate] lastObject];
         
         if ( sosReportText.value.length > 0 ) {
-            NSError *error = nil;
-            
-            [appDelegate.managedObjectContext save: &error];
-            if ( error ) 
-                NSLog(@"error saving emergency message: %@", error.description);
+            [appDelegate saveManagedObjectContext];
             
             HUD = [[MBProgressHUD alloc] initWithWindow: [UIApplication sharedApplication].keyWindow];
             HUD.delegate = self;

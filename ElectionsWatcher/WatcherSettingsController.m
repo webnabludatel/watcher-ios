@@ -402,11 +402,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
 
 - (void) didSaveAttributeItem:(ChecklistItem *)item {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSError *error = nil;
-    [appDelegate.managedObjectContext save: &error];
-    
-    if ( error ) 
-        NSLog(@"error saving settings attribute: %@", error.description);
+    [appDelegate saveManagedObjectContext];
 }
 
 -(BOOL)isCancelling {
@@ -425,11 +421,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     [self dismissModalViewControllerAnimated: YES];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSError *error = nil;
-    [appDelegate.managedObjectContext save: &error];
-    
-    if ( error ) 
-        NSLog(@"error saving profile attribute: %@", error.description);
+    [appDelegate saveManagedObjectContext];
 }
 
 #pragma mark - Twitter setup delegate
@@ -518,12 +510,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
         statusItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
         
         [appDelegate.watcherProfile addProfileChecklistItemsObject: statusItem];
-        
-        NSError *error = nil;
-        [appDelegate.watcherProfile.managedObjectContext save: &error];
-        
-        if ( error ) 
-            NSLog(@"error saving observer status: %@", error.description);
+        [appDelegate saveManagedObjectContext];
     }
     
     return statusItem;
@@ -540,12 +527,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     statusItem.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
     
     [appDelegate.watcherProfile addProfileChecklistItemsObject: statusItem];
-    
-    NSError *error = nil;
-    [appDelegate.watcherProfile.managedObjectContext save: &error];
-    
-    if ( error ) 
-        NSLog(@"error saving observer status: %@", error.description);
+    [appDelegate saveManagedObjectContext];
     
     [self.tableView reloadData];
 }

@@ -92,10 +92,7 @@
         for ( ChecklistItem *item in testItems )
             [appDelegate.managedObjectContext deleteObject: item];
         
-        NSError *error = nil;
-        [appDelegate.managedObjectContext save: &error];
-        if ( error ) 
-            NSLog(@"error removing test data: %@", error.description);
+        [appDelegate saveManagedObjectContext];
         
         [self.tableView reloadData];
     }
@@ -310,10 +307,8 @@
                                                    withParameters: nil];
         if ( indexPath.row < pollingPlaces.count ) {
             appDelegate.watcherProfile.currentPollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
-            NSError *error = nil;
-            [appDelegate.managedObjectContext save: &error];
-            if ( error ) 
-                NSLog(@"error saving current polling place: %@", error.description);
+            
+            [appDelegate saveManagedObjectContext];
             [self.tableView reloadData];
             
             // update title
@@ -380,11 +375,7 @@
             [alertView release];
         } else {
             [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
-            
-            NSError *error = nil;
-            [appDelegate.managedObjectContext save: &error];
-            if ( error ) 
-                NSLog(@"error removing polling place: %@", error.description);
+            [appDelegate saveManagedObjectContext];
             
             [self.tableView reloadData];
         }
@@ -424,12 +415,7 @@
     if ( ! appDelegate.watcherProfile.currentPollingPlace )
         appDelegate.watcherProfile.currentPollingPlace = controller.pollingPlace;
 
-    NSError *error = nil;
-    [appDelegate.managedObjectContext save: &error];
-    
-    if ( error )
-        NSLog(@"error saving polling place info: %@", error.description);
-    
+    [appDelegate saveManagedObjectContext];
     
     [self dismissModalViewControllerAnimated: YES];
     [self.tableView reloadData];

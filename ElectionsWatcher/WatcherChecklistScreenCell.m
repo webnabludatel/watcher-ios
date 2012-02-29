@@ -539,7 +539,7 @@
     [self.checklistItem setSynchronized: [NSNumber numberWithBool: NO]];
     [mediaItem setTimestamp: [NSDate date]];
     [mediaItem setSynchronized: [NSNumber numberWithBool: NO]];
-    [appDelegate.managedObjectContext save: &error];
+    [appDelegate saveManagedObjectContext];
     
     if ( error ) 
         NSLog(@"error removing media item: %@", error);

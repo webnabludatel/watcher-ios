@@ -202,12 +202,7 @@
     if ( ! [appDelegate.watcherProfile.currentPollingPlace.checklistItems containsObject: item] )
         [appDelegate.watcherProfile.currentPollingPlace addChecklistItemsObject: item];
     
-    NSError *error = nil;
-//    [appDelegate.managedObjectContext refreshObject: item mergeChanges: YES]; // required if it's in sync now
-    [appDelegate.managedObjectContext save: &error];
-    
-    if ( error )
-        NSLog(@"error saving checklist item: %@", error.description);
+    [appDelegate saveManagedObjectContext];
 }
 
 @end

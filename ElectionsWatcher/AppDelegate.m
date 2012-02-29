@@ -128,10 +128,7 @@
         _watcherProfile = [[NSEntityDescription insertNewObjectForEntityForName: @"WatcherProfile" 
                                                          inManagedObjectContext: self.managedObjectContext] retain];
         
-        NSError *error = nil;
-        [_managedObjectContext save: &error];
-        if ( error ) 
-            NSLog(@"error initializing profile: %@", error.description );
+        [self saveManagedObjectContext];
     }
     
     // facebook
@@ -358,6 +355,21 @@
     }
 }
 
+- (void) reallySaveManagedObjectContext {
+    NSError *error = nil;
+    [_managedObjectContext save: &error];
+    if ( error ) NSLog(@"error saving managed object context: %@", error.description);
+}
+
+- (void) saveManagedObjectContext {
+    @synchronized ( _managedObjectContext ) {
+        [self performSelectorOnMainThread: @selector(reallySaveManagedObjectContext) 
+                               withObject: nil
+                            waitUntilDone: YES];
+    }
+}
+
+
 - (NSManagedObjectContext *) managedObjectContext {
     if ( _managedObjectContext != nil ) {
         return _managedObjectContext;
@@ -478,12 +490,7 @@
     
         [_facebook requestWithGraphPath: @"me" andDelegate: self];
     
-    NSError *error = nil;
-    [_managedObjectContext save: &error];
-    if ( error )
-        NSLog(@"Core Data Error: %@", error.description);
-    
-    
+    [self saveManagedObjectContext];
 }
 
 -(void)fbDidLogout {
@@ -491,20 +498,14 @@
     _watcherProfile.fbAccessToken = nil;
     _watcherProfile.fbAccessExpires = nil;
     
-    NSError *error = nil;
-    [_managedObjectContext save: &error];
-    if ( error )
-        NSLog(@"Core Data Error: %@", error.description);
+    [self saveManagedObjectContext];
 }
 
 -(void)fbDidExtendToken:(NSString *)accessToken expiresAt:(NSDate *)expiresAt {
     _watcherProfile.fbAccessToken = accessToken;
     _watcherProfile.fbAccessExpires = expiresAt;
     
-    NSError *error = nil;
-    [_managedObjectContext save: &error];
-    if ( error )
-        NSLog(@"Core Data Error: %@", error.description);
+    [self saveManagedObjectContext];
 }
 
 -(void)fbDidNotLogin:(BOOL)cancelled {
@@ -512,10 +513,7 @@
     _watcherProfile.fbAccessToken = nil;
     _watcherProfile.fbAccessExpires = nil;
     
-    NSError *error = nil;
-    [_managedObjectContext save: &error];
-    if ( error )
-        NSLog(@"Core Data Error: %@", error.description);
+    [self saveManagedObjectContext];
 }
 
 -(void)fbSessionInvalidated {
@@ -523,10 +521,7 @@
     _watcherProfile.fbAccessToken = nil;
     _watcherProfile.fbAccessExpires = nil;
     
-    NSError *error = nil;
-    [_managedObjectContext save: &error];
-    if ( error )
-        NSLog(@"Core Data Error: %@", error.description);
+    [self saveManagedObjectContext];
 }
 
 -(void)request:(FBRequest *)request didLoad:(id)result {
@@ -602,10 +597,7 @@
             emailItem.synchronized = [NSNumber numberWithBool: NO];
         }
         
-        NSError *error = nil;
-        [_managedObjectContext save: &error];
-        if ( error )
-            NSLog(@"Core Data Error: %@", error.description);
+        [self saveManagedObjectContext];
     }
 }
 
@@ -642,10 +634,7 @@
                 [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
                 completionHandler();
                 
-                NSError *error = nil;
-                [_managedObjectContext save: &error];
-                if ( error )
-                    NSLog(@"Core Data Error: %@", error.description);
+                [self saveManagedObjectContext];
                 
 //                [TestFlight passCheckpoint: @"Twitter login"];
             } else {
@@ -702,10 +691,7 @@
         _watcherProfile.twAccessExpires = nil;
         _watcherProfile.twAccessToken = nil;
         
-        NSError *error = nil;
-        [_managedObjectContext save: &error];
-        if ( error )
-            NSLog(@"Core Data Error: %@", error.description);
+        [self saveManagedObjectContext];
         
         completionHandler();
     }
