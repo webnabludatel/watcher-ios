@@ -172,8 +172,10 @@
                                                      capture: 1 
                                                        error: nil];
             if ( htmlTitle.length ) {
+                NSString *strippedTitle = [htmlTitle stringByReplacingOccurrencesOfRegex:@"<[^>]+>" withString:@""];
                 NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys: 
-                                        filepath, @"path", htmlTitle, @"title", nil];
+                                        filepath, @"path", 
+                                        strippedTitle, @"title", nil];
                 [self.searchResults addObject: result];
             }
         }
