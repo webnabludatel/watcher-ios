@@ -44,5 +44,6 @@
 - (void) setupTwitterAccountForUsername: (NSString *) username withCompletionHandler: (void (^)(void)) completionHandler;
 - (void) updateSynchronizationStatus;
 - (void) removeSynchronizationStatus;
+- (void) saveManagedObject: (NSManagedObject *) managedObject;
 
 @end

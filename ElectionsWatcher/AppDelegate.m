@@ -334,6 +334,30 @@
 #pragma mark -
 #pragma mark Core Data stack
 
+- (void) mergeContextChanges: (NSNotification *) notification {
+    [_dataManager.managedObjectContext performSelector: @selector(mergeChangesFromContextDidSaveNotification:) 
+                                              onThread: _dataManager.dataManagerThread 
+                                            withObject: notification 
+                                         waitUntilDone: NO];
+}
+
+- (void) saveManagedObject: (NSManagedObject *) managedObject {
+    if ( [NSThread currentThread] != [NSThread mainThread] )
+        @throw [NSException exceptionWithName: NSInternalInconsistencyException 
+                                       reason: @"this method should be called only on main thread" 
+                                     userInfo: nil];
+    
+    @synchronized ( _managedObjectContext ) {
+        NSError *error = nil;
+        //        if ( ! managedObject.isDeleted )
+        [_managedObjectContext refreshObject: managedObject mergeChanges: YES];
+        [_managedObjectContext save: &error];
+        
+        if ( error )
+            NSLog(@"error saving managed object %@: %@", managedObject.objectID, error.description);
+    }
+}
+
 - (NSManagedObjectContext *) managedObjectContext {
     if ( _managedObjectContext != nil ) {
         return _managedObjectContext;
@@ -343,6 +367,12 @@
     if ( coordinator != nil ) {
         _managedObjectContext = [[NSManagedObjectContext alloc] init];
         [_managedObjectContext setPersistentStoreCoordinator: coordinator];
+
+        [[NSNotificationCenter defaultCenter] addObserver: self 
+                                                 selector: @selector(mergeContextChanges:) 
+                                                     name: NSManagedObjectContextDidSaveNotification 
+                                                   object: _managedObjectContext];
+
     }
     
     return _managedObjectContext;

@@ -63,9 +63,12 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
     self.navigationItem.leftBarButtonItem = nil;
+    self.searchResults = nil;
+    self.watcherGuideView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -79,9 +79,10 @@
     
     NSPredicate *badPredicate   = [NSPredicate predicateWithFormat: @"SELF.sectionName != NIL && SELF.screenIndex >= 0 && SELF.violationFlag == 1"];
     NSPredicate *goodPredicate  = [NSPredicate predicateWithFormat: @"SELF.sectionName != NIL && SELF.screenIndex >= 0 && SELF.violationFlag == 0"];
-    
+
+    NSArray *sortDescriptors = [NSArray arrayWithObject: [[[NSSortDescriptor alloc] initWithKey: @"timestamp" ascending: YES] autorelease]];
     self.goodItems = [checklistItems filteredArrayUsingPredicate: goodPredicate];
-    self.badItems = [checklistItems filteredArrayUsingPredicate: badPredicate];
+    self.badItems = [[checklistItems filteredArrayUsingPredicate: badPredicate] sortedArrayUsingDescriptors: sortDescriptors];
 }
 
 - (void)viewDidAppear:(BOOL)animated

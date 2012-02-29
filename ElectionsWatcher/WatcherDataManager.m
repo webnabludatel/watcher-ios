@@ -69,7 +69,9 @@
         
         [_wifiReachability startNotifier];
         
-        if ( ! _wifiReachability.currentReachabilityStatus ) 
+        if ( _wifiReachability.currentReachabilityStatus ) 
+            _uploadQueue.maxConcurrentOperationCount = 7;
+        else
             _uploadQueue.maxConcurrentOperationCount = 3;
         
         [[NSNotificationCenter defaultCenter] addObserver: self 
@@ -126,7 +128,7 @@
 
 - (void) handleReachabilityChange: (NSNotification *) notification {
     if ( _wifiReachability.currentReachabilityStatus > 0 )
-        _uploadQueue.maxConcurrentOperationCount = NSOperationQueueDefaultMaxConcurrentOperationCount;
+        _uploadQueue.maxConcurrentOperationCount = 7;
     else
         _uploadQueue.maxConcurrentOperationCount = 3;
     

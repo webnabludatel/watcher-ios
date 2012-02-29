@@ -694,17 +694,21 @@
         if ( UIVideoAtPathIsCompatibleWithSavedPhotosAlbum ( moviePath ) && saveMediaToLibrary )
             UISaveVideoAtPathToSavedPhotosAlbum ( moviePath, nil, nil, nil );
         
-        [fm copyItemAtPath: moviePath toPath: videoFilepath error: nil];
-        
-        mediaItem.mediaType = mediaType;
-        mediaItem.filePath = videoFilepath;
+        if ( moviePath != nil ) {
+            [fm copyItemAtPath: moviePath toPath: videoFilepath error: nil];
+            
+            mediaItem.mediaType = mediaType;
+            mediaItem.filePath = videoFilepath;
+        }
     }
     
     mediaItem.timestamp = [NSDate date];
     mediaItem.synchronized = [NSNumber numberWithBool: NO];
     
-    [self.checklistItem addMediaItemsObject: mediaItem];
-    [self saveItem];
+    if ( mediaItem.filePath != nil ) {
+        [self.checklistItem addMediaItemsObject: mediaItem];
+        [self saveItem];
+    }
     
     [self setNeedsLayout];
 }

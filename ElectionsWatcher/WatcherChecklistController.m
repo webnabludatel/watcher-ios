@@ -370,7 +370,6 @@
                                                    withParameters: nil];
         PollingPlace *pollingPlaceToRemove = [pollingPlaces objectAtIndex: indexPath.row];
 
-        /*
         if ( pollingPlaceToRemove == appDelegate.watcherProfile.currentPollingPlace ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
                                                                 message: @"Нельзя удалить активный избирательный участок" 
@@ -380,16 +379,15 @@
             [alertView show];
             [alertView release];
         } else {
-         */
-        [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
-        
-        NSError *error = nil;
-        [appDelegate.managedObjectContext save: &error];
-        if ( error ) 
-            NSLog(@"error removing polling place: %@", error.description);
-        
-        [self.tableView reloadData];
-//        }
+            [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
+            
+            NSError *error = nil;
+            [appDelegate.managedObjectContext save: &error];
+            if ( error ) 
+                NSLog(@"error removing polling place: %@", error.description);
+            
+            [self.tableView reloadData];
+        }
     }
 }
 
