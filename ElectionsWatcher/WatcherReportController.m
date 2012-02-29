@@ -64,6 +64,10 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    
+    self.watcherChecklist = nil;
+    self.goodItems = nil;
+    self.badItems = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated

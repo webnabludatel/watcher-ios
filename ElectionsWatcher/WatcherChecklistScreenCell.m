@@ -163,6 +163,7 @@
                 UIButton *button = (UIButton *) self.control;
                 [button setTitle: [self.itemInfo objectForKey: @"hint"] forState: UIControlStateNormal];
                 [button addTarget: self action: @selector(takePhoto:) forControlEvents: UIControlEventTouchUpInside];
+                [button setTitleColor: [UIColor lightGrayColor] forState: UIControlStateDisabled];
             }
                 break;
                 
@@ -172,6 +173,7 @@
                 UIButton *button = (UIButton *) self.control;
                 [button setTitle: [self.itemInfo objectForKey: @"hint"] forState: UIControlStateNormal];
                 [button addTarget: self action: @selector(takeVideo:) forControlEvents: UIControlEventTouchUpInside];
+                [button setTitleColor: [UIColor lightGrayColor] forState: UIControlStateDisabled];
             }
                 break;
                 
@@ -332,7 +334,7 @@
     }
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    BOOL disableChange = ( self.checklistItem.value.length > 0 ) && [[self.itemInfo objectForKey: @"disable_change"] boolValue];
+    BOOL disableChange = ! self.checklistItem.isInserted && ( self.checklistItem.value.length > 0 ) && [[self.itemInfo objectForKey: @"disable_change"] boolValue];
     self.control.userInteractionEnabled = ( appDelegate.watcherProfile.userId.length > 0 ) && ! disableChange;
 }
 

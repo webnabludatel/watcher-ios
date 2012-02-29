@@ -31,8 +31,6 @@
     if ( self ) {
         self.tabBarItem.image = [UIImage imageNamed:@"checklist"];
         self.tabBarItem.title = @"Наблюдение";
-        self.watcherChecklist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"WatcherChecklist" 
-                                                                                                            ofType: @"plist"]];
     }
     
     return self;
@@ -115,13 +113,16 @@
                                                                              target: nil 
                                                                              action: nil] autorelease];
 
+    self.watcherChecklist = [NSDictionary dictionaryWithContentsOfFile: [[NSBundle mainBundle] pathForResource: @"WatcherChecklist" 
+                                                                                                        ofType: @"plist"]];
 }
 
 - (void)viewDidUnload
 {
     [super viewDidUnload];
-    // Release any retained subviews of the main view.
-    // e.g. self.myOutlet = nil;
+
+    self.navigationItem.backBarButtonItem = nil;
+    self.watcherChecklist = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -216,6 +217,7 @@
 
 - (void) tableView: (UITableView *) tableView willDisplayCell: (UITableViewCell *) cell forRowAtIndexPath: (NSIndexPath *) indexPath {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
     if ( indexPath.section == 1 && appDelegate.watcherProfile.currentPollingPlace ) {
         
         NSDictionary *sectionInfo = [[self sortedAndFilteredSections] objectAtIndex: indexPath.row];
@@ -228,6 +230,32 @@
         cell.textLabel.text = [sectionInfo objectForKey: @"title"];
         cell.detailTextLabel.text = [sectionItems count] ? [WatcherTools countOfMarksString: [sectionItems count]] : @"Отметок нет";
     }
+    
+    if ( indexPath.section == 0 ) {
+        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                        forEntity: @"PollingPlace" 
+                                                   withParameters: nil];
+        
+        if ( indexPath.row < pollingPlaces.count ) {
+            PollingPlace *pollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
+            cell.textLabel.text = pollingPlace.titleString;
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
+            
+            if ( pollingPlace == appDelegate.watcherProfile.currentPollingPlace ) {
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                cell.detailTextLabel.text = @"активен";
+            } else {
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.detailTextLabel.text = nil;
+            }
+        } else {
+            cell.textLabel.text = @"Добавить участок...";
+            cell.textLabel.textAlignment = UITextAlignmentLeft;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.detailTextLabel.text = nil;
+        }
+    }
+
 }
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
@@ -245,29 +273,16 @@
         }
         
         if ( indexPath.row < pollingPlaces.count ) {
-            PollingPlace *pollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
-            cell.textLabel.text = pollingPlace.titleString;
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            
-            if ( pollingPlace == appDelegate.watcherProfile.currentPollingPlace ) {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                cell.detailTextLabel.text = @"активен";
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                cell.detailTextLabel.text = nil;
-            }
-            
             UILongPressGestureRecognizer *gr = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(editPollingPlace:)];
             gr.minimumPressDuration = 0.8f;
             
             [cell.contentView addGestureRecognizer: gr];
             [gr release];
-        } else {
-            cell.textLabel.text = @"Добавить участок...";
-            cell.textLabel.textAlignment = UITextAlignmentLeft;
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.detailTextLabel.text = nil;
         }
+        
+        cell.textLabel.text = nil;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.detailTextLabel.text = nil;
         
         return cell;
     } else {
@@ -303,7 +318,9 @@
             
             // update title
             self.navigationItem.title = appDelegate.watcherProfile.currentPollingPlace ?
-            appDelegate.watcherProfile.currentPollingPlace.titleString : @"Наблюдение";
+                    appDelegate.watcherProfile.currentPollingPlace.titleString : @"Наблюдение";
+            
+            [self checkForTestDataOnElectionsDay];
         } else {
             if ( appDelegate.watcherProfile.userId.length > 0 ) {
                 WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];

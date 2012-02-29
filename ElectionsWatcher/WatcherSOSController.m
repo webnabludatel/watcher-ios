@@ -80,6 +80,9 @@ static NSString *sosReportSections[] = { @"sos_report" };
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    
+    self.sosReport = nil;
+    self.sosItems = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

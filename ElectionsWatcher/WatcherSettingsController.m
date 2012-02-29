@@ -107,6 +107,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.settings = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -222,6 +223,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
         if ( appDelegate.watcherProfile.userId.length == 0 ) {
             cell.textLabel.text = @"Регистрация телефона";
             cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             UIActivityIndicatorView *iv = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleGray];
             cell.accessoryView = iv;
             [iv startAnimating];
@@ -235,6 +237,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
             
             cell.textLabel.text = [statusArray objectAtIndex: [nf numberFromString: observerStatusItem.value].intValue];
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             cell.accessoryView = nil;
             
             [nf release];
