@@ -186,13 +186,8 @@
 }
 
 - (NSInteger) tableView: (UITableView *) tableView numberOfRowsInSection: (NSInteger) section {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    
     if ( section == 0 ) {
-        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                        forEntity: @"PollingPlace" 
-                                                   withParameters: nil];
-        return [pollingPlaces count]+1;
+        return [[self sortedPollingPlaces] count]+1;
     } else {
         return [[self sortedAndFilteredSections] count];
     }
