@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSDictionary *sosReport;
 @property (nonatomic, retain) NSMutableSet *sosItems;
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic, assign) UIResponder *latestActiveResponder;
 @property (nonatomic, assign) MBProgressHUD *HUD;
 

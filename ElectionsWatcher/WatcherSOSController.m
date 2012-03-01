@@ -23,6 +23,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
 @synthesize latestActiveResponder;
 @synthesize HUD;
 @synthesize sosItems;
+@synthesize managedObjectContext = _managedObjectContext;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -51,6 +52,18 @@ static NSString *sosReportSections[] = { @"sos_report" };
     [super dealloc];
 }
 
+- (void) mergeContextChanges: (NSNotification *) notification {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext performSelectorOnMainThread: @selector(mergeChangesFromContextDidSaveNotification:) 
+                                                       withObject: notification 
+                                                    waitUntilDone: YES];
+    
+    [appDelegate.dataManager.managedObjectContext performSelector: @selector(mergeChangesFromContextDidSaveNotification:) 
+                                                         onThread: appDelegate.dataManager.dataManagerThread 
+                                                       withObject: notification 
+                                                    waitUntilDone: NO];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -60,6 +73,16 @@ static NSString *sosReportSections[] = { @"sos_report" };
     NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherSOS" ofType: @"plist"];
     self.sosReport = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
     self.sosItems = [NSMutableSet set];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    _managedObjectContext = [[NSManagedObjectContext alloc] init];
+    [_managedObjectContext setPersistentStoreCoordinator: appDelegate.persistentStoreCoordinator];
+
+    [[NSNotificationCenter defaultCenter] addObserver: self 
+                                             selector: @selector(mergeContextChanges:) 
+                                                 name: NSManagedObjectContextDidSaveNotification 
+                                               object: _managedObjectContext];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -83,6 +106,8 @@ static NSString *sosReportSections[] = { @"sos_report" };
     
     self.sosReport = nil;
     self.sosItems = nil;
+    
+    [_managedObjectContext release]; _managedObjectContext = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -179,7 +204,6 @@ static NSString *sosReportSections[] = { @"sos_report" };
     NSDictionary *sectionInfo   = [self.sosReport objectForKey: sosReportSections[indexPath.section]];
     NSDictionary *itemInfo      = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
-    AppDelegate *appDelegate    = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSPredicate *itemPredicate  = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", [itemInfo objectForKey: @"name"]];
     NSArray *existingItems      = [[self.sosItems allObjects] filteredArrayUsingPredicate: itemPredicate];
     
@@ -187,7 +211,7 @@ static NSString *sosReportSections[] = { @"sos_report" };
         [(WatcherChecklistScreenCell *) cell setChecklistItem: [existingItems lastObject]];
     } else {
         ChecklistItem *checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
-                                                                     inManagedObjectContext: appDelegate.managedObjectContext];
+                                                                     inManagedObjectContext: _managedObjectContext];
         
         [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
     }
@@ -204,7 +228,8 @@ static NSString *sosReportSections[] = { @"sos_report" };
     if ( cell == 0 ) {
         cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
                                                   reuseIdentifier: cellId 
-                                                     withItemInfo: itemInfo] autorelease];
+                                                     withItemInfo: itemInfo 
+                                                        inContext: _managedObjectContext] autorelease];
         [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
         [(WatcherChecklistScreenCell *) cell setChecklistCellDelegate: self];
         [(WatcherChecklistScreenCell *) cell setSectionName: sosReportSections[indexPath.section]];
@@ -217,9 +242,15 @@ static NSString *sosReportSections[] = { @"sos_report" };
 
 -(void)didSaveAttributeItem:(ChecklistItem *)item {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    if ( ! [appDelegate.watcherProfile.currentPollingPlace.checklistItems containsObject: item] )
-        [appDelegate.watcherProfile.currentPollingPlace addChecklistItemsObject: item];
+
+    NSArray *profileResults = [appDelegate executeFetchRequest: @"findProfile" 
+                                                     forEntity: @"WatcherProfile" 
+                                                   withContext: _managedObjectContext 
+                                                withParameters: [NSDictionary dictionary]];
+    WatcherProfile *profile = [profileResults lastObject];
+
+    if ( ! [profile.currentPollingPlace.checklistItems containsObject: item] )
+        [profile.currentPollingPlace addChecklistItemsObject: item];
     
     [self.sosItems addObject: item];
 }
@@ -233,12 +264,22 @@ static NSString *sosReportSections[] = { @"sos_report" };
 - (void) handleSendButton: (id) sender {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
-    if ( appDelegate.watcherProfile.userId != nil ) {
+    NSArray *profileResults = [appDelegate executeFetchRequest: @"findProfile" 
+                                                     forEntity: @"WatcherProfile" 
+                                                   withContext: _managedObjectContext 
+                                                withParameters: [NSDictionary dictionary]];
+    WatcherProfile *profile = [profileResults lastObject];
+    
+    if ( profile.userId != nil ) {
         NSPredicate *itemPredicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", @"sos_report_text"];
         ChecklistItem *sosReportText = [[[sosItems allObjects] filteredArrayUsingPredicate: itemPredicate] lastObject];
         
         if ( sosReportText.value.length > 0 ) {
-            [appDelegate saveManagedObjectContext];
+            NSError *error = nil;
+            [_managedObjectContext refreshObject: profile.currentPollingPlace mergeChanges: YES];
+            [_managedObjectContext save: &error];
+            
+            if ( error ) NSLog(@"error saving sos report: %@", error.description);
             
             HUD = [[MBProgressHUD alloc] initWithWindow: [UIApplication sharedApplication].keyWindow];
             HUD.delegate = self;

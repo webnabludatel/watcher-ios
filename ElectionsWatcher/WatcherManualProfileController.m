@@ -153,9 +153,11 @@ static NSString *settingsSections[] = { @"personal_info" };
     NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
     if ( cell == nil ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
                                                   reuseIdentifier: cellId 
-                                                     withItemInfo: itemInfo] autorelease];
+                                                     withItemInfo: itemInfo
+                                                        inContext: appDelegate.managedObjectContext] autorelease];
         [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
     }
     

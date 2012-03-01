@@ -102,6 +102,24 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     }
 }
 
+-(void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear: animated];
+    
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    [appDelegate.watcherProfile removeObserver: self 
+                                    forKeyPath: @"fbNickname" 
+                                       context: nil];
+    
+    [appDelegate.watcherProfile removeObserver: self 
+                                    forKeyPath: @"twNickname" 
+                                       context: nil];
+    
+    [appDelegate.watcherProfile removeObserver: self 
+                                    forKeyPath: @"userId" 
+                                       context: nil];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];
@@ -278,9 +296,11 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
         NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
         
         if ( cell == nil ) {
+            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
             cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
                                                       reuseIdentifier: cellId 
-                                                         withItemInfo: itemInfo] autorelease];
+                                                         withItemInfo: itemInfo
+                                                            inContext: appDelegate.managedObjectContext] autorelease];
             [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
         }
     }
@@ -412,7 +432,10 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
 #pragma mark - Profile save delegate
 
 - (void) watcherManualProfileControllerDidCancel: (WatcherManualProfileController *) controller {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext refreshObject: appDelegate.watcherProfile mergeChanges: NO];
     [self dismissModalViewControllerAnimated: YES];
+    [self.tableView reloadData];
 }
 
 - (void) watcherManualProfileController: (WatcherManualProfileController *) controller
@@ -422,6 +445,7 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     [appDelegate saveManagedObjectContext];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Twitter setup delegate

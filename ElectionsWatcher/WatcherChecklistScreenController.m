@@ -176,9 +176,11 @@
     UITableViewCell *cell       = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if ( cell == nil ) {
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
                                                   reuseIdentifier: CellIdentifier 
-                                                     withItemInfo: itemInfo] autorelease];
+                                                     withItemInfo: itemInfo
+                                                        inContext: appDelegate.managedObjectContext] autorelease];
         
         WatcherChecklistScreenCell *watcherCell = (WatcherChecklistScreenCell *) cell;
         watcherCell.saveDelegate = self;

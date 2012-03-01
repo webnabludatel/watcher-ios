@@ -410,8 +410,13 @@
 
 #pragma mark - Polling place controller delegate
 
--(void)watcherPollingPlaceController:(WatcherPollingPlaceController *)controller didSavePollingPlace:(PollingPlace *)pollinngPlace {
+-(void)watcherPollingPlaceController:(WatcherPollingPlaceController *)controller didSavePollingPlace:(PollingPlace *)pollingPlace {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    pollingPlace.timestamp = [NSDate date];
+    pollingPlace.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
+    pollingPlace.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
+    
     if ( ! appDelegate.watcherProfile.currentPollingPlace )
         appDelegate.watcherProfile.currentPollingPlace = controller.pollingPlace;
 

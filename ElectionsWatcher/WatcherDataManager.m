@@ -494,7 +494,6 @@
             }
             
             [_objectsInProgress removeObject: mediaItem];
-            
         }
     }
 }

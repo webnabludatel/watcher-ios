@@ -384,7 +384,6 @@
                                                  selector: @selector(mergeContextChanges:) 
                                                      name: NSManagedObjectContextDidSaveNotification 
                                                    object: _managedObjectContext];
-
     }
     
     return _managedObjectContext;

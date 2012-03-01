@@ -34,6 +34,7 @@
 @synthesize saveDelegate;
 @synthesize checklistCellDelegate;
 @synthesize HUD;
+@synthesize managedObjectContext = _managedObjectContext;
 
 -(void)dealloc {
     [sectionName release];
@@ -47,10 +48,16 @@
 #pragma mark -
 #pragma mark Cell implementation
 
-- (id) initWithStyle: (UITableViewCellStyle) style reuseIdentifier: (NSString *) reuseIdentifier withItemInfo: (NSDictionary *) anItemInfo {
+- (id) initWithStyle: (UITableViewCellStyle) style 
+     reuseIdentifier: (NSString *) reuseIdentifier 
+        withItemInfo: (NSDictionary *) anItemInfo 
+           inContext: (NSManagedObjectContext *) managedObjectContext {
+    
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     
     if ( self ) {
+        _managedObjectContext = managedObjectContext;
+        
         self.itemInfo = anItemInfo;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         
@@ -531,18 +538,18 @@
         controlType == INPUT_VIDEO ?
             [self mediaItemsOfType: (NSString *) kUTTypeMovie] : nil;
 
-    NSError *error = nil;
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    
     MediaItem *mediaItem = [mediaItems objectAtIndex: index];
     [self.checklistItem removeMediaItemsObject: mediaItem];
-    [self.checklistItem setSynchronized: [NSNumber numberWithBool: NO]];
-    [mediaItem setTimestamp: [NSDate date]];
-    [mediaItem setSynchronized: [NSNumber numberWithBool: NO]];
-    [appDelegate saveManagedObjectContext];
     
-    if ( error ) 
-        NSLog(@"error removing media item: %@", error);
+    if ( mediaItem.serverRecordId.intValue ) {
+        [mediaItem setTimestamp: [NSDate date]];
+        [mediaItem setSynchronized: [NSNumber numberWithBool: NO]];
+    } else {
+        [mediaItem.managedObjectContext deleteObject: mediaItem];
+    }
+
+    [self.checklistItem setSynchronized: [NSNumber numberWithBool: NO]];
+    [self saveItem];
     
     NSArray *mediaItemsAfterRemoval = 
         controlType == INPUT_PHOTO ?
@@ -633,10 +640,9 @@
     BOOL saveMediaToLibrary = [[data objectForKey: @"saveMediaToLibrary"] boolValue];
     NSDictionary *info = [data objectForKey: @"info"];
     
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSFileManager *fm = [NSFileManager defaultManager];
     MediaItem *mediaItem = [NSEntityDescription insertNewObjectForEntityForName: @"MediaItem" 
-                                                         inManagedObjectContext: [appDelegate managedObjectContext]];
+                                                         inManagedObjectContext: _managedObjectContext];
     
     NSString *docsDirectory = [NSSearchPathForDirectoriesInDomains ( NSDocumentDirectory, NSUserDomainMask, YES ) lastObject];
     NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];

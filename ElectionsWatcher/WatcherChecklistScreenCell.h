@@ -40,9 +40,13 @@
 @property (nonatomic, assign) id<WatcherSaveAttributeDelegate> saveDelegate;
 @property (nonatomic, assign) id<WatcherChecklistScreenCellDelegate> checklistCellDelegate;
 @property (nonatomic, assign) MBProgressHUD *HUD;
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 
 
-- (id) initWithStyle: (UITableViewCellStyle) style reuseIdentifier: (NSString *) reuseIdentifier withItemInfo: (NSDictionary *) anItemInfo;
+- (id) initWithStyle: (UITableViewCellStyle) style 
+     reuseIdentifier: (NSString *) reuseIdentifier 
+        withItemInfo: (NSDictionary *) anItemInfo
+           inContext: (NSManagedObjectContext *) managedObjectContext;
 
 - (UIImage *) imageFromText: (NSString *) text;
 - (void) loadItem;
