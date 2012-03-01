@@ -1393,15 +1393,15 @@
 					"$(ARCHS_STANDARD_32_BIT)",
 				);
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: XMPSoft Ltd.";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ElectionsWatcher/ElectionsWatcher-Prefix.pch";
 				HEADER_SEARCH_PATHS = /usr/include/libxml2;
 				INFOPLIST_FILE = "ElectionsWatcher/ElectionsWatcher-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "59CA42DC-DA94-48DD-B44D-EA1531B4085C";
-				STRIP_INSTALLED_PRODUCT = NO;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "B9D9751C-B22D-4E6F-9F85-2E065512DC3C";
+				STRIP_INSTALLED_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -430,6 +430,8 @@
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     if ( controller.pollingPlace.isInserted )
         [appDelegate.managedObjectContext deleteObject: controller.pollingPlace];
+    if ( controller.pollingPlace.isUpdated )
+        [appDelegate.managedObjectContext refreshObject: controller.pollingPlace mergeChanges: NO];
     [self dismissModalViewControllerAnimated: YES];
     [self.tableView reloadData];
 }

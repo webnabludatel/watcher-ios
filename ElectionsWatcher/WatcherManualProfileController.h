@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSDictionary *settings;
 @property (nonatomic, assign) id<WatcherManualProfileControllerDelegate> profileControllerDelegate;
 @property (nonatomic, assign) UIResponder *latestActiveResponder;
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
 @property (nonatomic) BOOL isCancelling;
 
 @end

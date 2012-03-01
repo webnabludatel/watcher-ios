@@ -108,16 +108,13 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     
     [appDelegate.watcherProfile removeObserver: self 
-                                    forKeyPath: @"fbNickname" 
-                                       context: nil];
+                                    forKeyPath: @"fbNickname"];
     
     [appDelegate.watcherProfile removeObserver: self 
-                                    forKeyPath: @"twNickname" 
-                                       context: nil];
+                                    forKeyPath: @"twNickname"];
     
     [appDelegate.watcherProfile removeObserver: self 
-                                    forKeyPath: @"userId" 
-                                       context: nil];
+                                    forKeyPath: @"userId"];
 }
 
 - (void)viewDidUnload
@@ -432,8 +429,6 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
 #pragma mark - Profile save delegate
 
 - (void) watcherManualProfileControllerDidCancel: (WatcherManualProfileController *) controller {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate.managedObjectContext refreshObject: appDelegate.watcherProfile mergeChanges: NO];
     [self dismissModalViewControllerAnimated: YES];
     [self.tableView reloadData];
 }
@@ -444,7 +439,8 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     [self dismissModalViewControllerAnimated: YES];
     
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    [appDelegate saveManagedObjectContext];
+    [controller.managedObjectContext save: nil];
+    [appDelegate.managedObjectContext refreshObject: appDelegate.watcherProfile mergeChanges: NO];
     [self.tableView reloadData];
 }
 

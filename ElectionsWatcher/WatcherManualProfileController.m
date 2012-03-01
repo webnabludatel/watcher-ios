@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 #import "WatcherChecklistScreenCell.h"
 #import "WatcherProfile.h"
+#import "WatcherDataManager.h"
 
 @implementation WatcherManualProfileController
 
@@ -19,6 +20,7 @@ static NSString *settingsSections[] = { @"personal_info" };
 @synthesize settings;
 @synthesize latestActiveResponder;
 @synthesize isCancelling;
+@synthesize managedObjectContext = _managedObjectContext;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -42,6 +44,18 @@ static NSString *settingsSections[] = { @"personal_info" };
     // Release any cached data, images, etc that aren't in use.
 }
 
+- (void) mergeContextChanges: (NSNotification *) notification {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext performSelectorOnMainThread: @selector(mergeChangesFromContextDidSaveNotification:) 
+                                                       withObject: notification 
+                                                    waitUntilDone: YES];
+    
+    [appDelegate.dataManager.managedObjectContext performSelector: @selector(mergeChangesFromContextDidSaveNotification:) 
+                                                         onThread: appDelegate.dataManager.dataManagerThread 
+                                                       withObject: notification 
+                                                    waitUntilDone: NO];
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -62,6 +76,14 @@ static NSString *settingsSections[] = { @"personal_info" };
                                                                              target: self
                                                                              action: @selector(handleCancelButton:)] autorelease];
 
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    _managedObjectContext = [[NSManagedObjectContext alloc] init];
+    [_managedObjectContext setPersistentStoreCoordinator: appDelegate.persistentStoreCoordinator];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self 
+                                             selector: @selector(mergeContextChanges:) 
+                                                 name: NSManagedObjectContextDidSaveNotification 
+                                               object: _managedObjectContext];
 }
 
 - (void)viewDidUnload
@@ -69,6 +91,7 @@ static NSString *settingsSections[] = { @"personal_info" };
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    [_managedObjectContext release]; _managedObjectContext = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -135,13 +158,14 @@ static NSString *settingsSections[] = { @"personal_info" };
     NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys: [itemInfo objectForKey: @"name"], @"ITEM_NAME", nil];
     NSArray *results = [appDelegate executeFetchRequest: @"findItemByName" 
                                               forEntity: @"ChecklistItem" 
+                                            withContext: _managedObjectContext
                                          withParameters: params];
     
     if ( results.count ) {
         [(WatcherChecklistScreenCell *) cell setChecklistItem: [results lastObject]];
     } else {
         ChecklistItem *checklistItem = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
-                                                                     inManagedObjectContext: appDelegate.managedObjectContext];
+                                                                     inManagedObjectContext: _managedObjectContext];
         [(WatcherChecklistScreenCell *) cell setChecklistItem: checklistItem];
     }
 }
@@ -153,11 +177,10 @@ static NSString *settingsSections[] = { @"personal_info" };
     NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
     if ( cell == nil ) {
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
                                                   reuseIdentifier: cellId 
                                                      withItemInfo: itemInfo
-                                                        inContext: appDelegate.managedObjectContext] autorelease];
+                                                        inContext: _managedObjectContext] autorelease];
         [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
     }
     
@@ -184,16 +207,22 @@ static NSString *settingsSections[] = { @"personal_info" };
 - (void) didSaveAttributeItem:(ChecklistItem *)item {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
 
+    NSArray *profileResults = [appDelegate executeFetchRequest: @"findProfile" 
+                                                     forEntity: @"WatcherProfile" 
+                                                   withContext: _managedObjectContext 
+                                                withParameters: [NSDictionary dictionary]];
+    
+    WatcherProfile *profile = [profileResults lastObject];
     if ( [@"last_name" isEqualToString: item.name] )
-        appDelegate.watcherProfile.lastName = item.value;
+        profile.lastName = item.value;
     
     if ( [@"first_name" isEqualToString: item.name] )
-        appDelegate.watcherProfile.firstName = item.value;
+        profile.firstName = item.value;
     
     if ( [@"email" isEqualToString: item.name] )
-        appDelegate.watcherProfile.email = item.value;
+        profile.email = item.value;
     
-    [appDelegate.watcherProfile addProfileChecklistItemsObject: item];
+    [profile addProfileChecklistItemsObject: item];
 }
 
 @end

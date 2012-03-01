@@ -171,11 +171,14 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF.name LIKE %@", [itemInfo objectForKey: @"name"]];
     NSArray *existingItems = [[self.pollingPlace.checklistItems allObjects] filteredArrayUsingPredicate: predicate];
     
-    if ( existingItems.count )
-        return [existingItems lastObject];
-    else
+    if ( existingItems.count ) {
+        ChecklistItem *item = [existingItems lastObject];
+        [appDelegate.managedObjectContext refreshObject: item mergeChanges: NO];
+        return item;
+    } else {
         return [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
                                              inManagedObjectContext: appDelegate.managedObjectContext];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
