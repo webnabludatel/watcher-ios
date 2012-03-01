@@ -17,7 +17,6 @@
 @synthesize screenIndex;
 @synthesize sectionName;
 @synthesize screenInfo;
-@synthesize isCancelling;
 @synthesize latestActiveResponder;
 
 - (id)initWithStyle:(UITableViewStyle)style

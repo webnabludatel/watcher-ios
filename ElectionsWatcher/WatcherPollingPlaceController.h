@@ -16,9 +16,10 @@
 @interface WatcherPollingPlaceController : UITableViewController <WatcherSaveAttributeDelegate, WatcherChecklistScreenCellDelegate>
 
 @property (nonatomic, assign) id <WatcherPollingPlaceControllerDelegate> pollingPlaceControllerDelegate;
-@property (nonatomic, retain) PollingPlace *pollingPlace;
+@property (nonatomic, readonly) PollingPlace *pollingPlace;
 @property (nonatomic, retain) NSDictionary *settings;
-@property (nonatomic) BOOL isCancelling;
 @property (nonatomic, assign) UIResponder *latestActiveResponder;
+@property (nonatomic, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic) NSInteger pollingPlaceIndex;
 
 @end

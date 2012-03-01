@@ -422,10 +422,6 @@ static NSString *settingsSections[] = { @"auth_selection", @"observer_status", @
     [appDelegate saveManagedObjectContext];
 }
 
--(BOOL)isCancelling {
-    return NO;
-}
-
 #pragma mark - Profile save delegate
 
 - (void) watcherManualProfileControllerDidCancel: (WatcherManualProfileController *) controller {

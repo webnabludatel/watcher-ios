@@ -15,7 +15,6 @@
 @property (nonatomic, retain) NSDictionary *screenInfo;
 @property (nonatomic) NSInteger screenIndex;
 @property (nonatomic, retain) NSString *sectionName;
-@property (nonatomic) BOOL isCancelling;
 @property (nonatomic, assign) UIResponder *latestActiveResponder;
 
 @end

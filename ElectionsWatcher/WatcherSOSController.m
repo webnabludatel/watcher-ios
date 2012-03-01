@@ -255,10 +255,6 @@ static NSString *sosReportSections[] = { @"sos_report" };
     [self.sosItems addObject: item];
 }
 
--(BOOL)isCancelling {
-    return NO;
-}
-
 #pragma mark - Save & send
 
 - (void) handleSendButton: (id) sender {

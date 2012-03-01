@@ -158,6 +158,15 @@
 
 #pragma mark - Helper methods
 
+- (NSArray *) sortedPollingPlaces {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                    forEntity: @"PollingPlace" 
+                                               withParameters: nil];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey: @"nameOrNumber" ascending: YES];
+    return [pollingPlaces sortedArrayUsingDescriptors: [NSArray arrayWithObject: sortDescriptor]];
+}
+
 - (NSArray *) sortedAndFilteredSections {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     NSArray *sortDescriptors = [NSArray arrayWithObject: [NSSortDescriptor sortDescriptorWithKey: @"order" ascending: YES]];
@@ -229,12 +238,8 @@
     }
     
     if ( indexPath.section == 0 ) {
-        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                        forEntity: @"PollingPlace" 
-                                                   withParameters: nil];
-        
-        if ( indexPath.row < pollingPlaces.count ) {
-            PollingPlace *pollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
+        if ( indexPath.row < [self sortedPollingPlaces].count ) {
+            PollingPlace *pollingPlace = [[self sortedPollingPlaces] objectAtIndex: indexPath.row];
             cell.textLabel.text = pollingPlace.titleString;
             cell.textLabel.textAlignment = UITextAlignmentLeft;
             
@@ -257,10 +262,6 @@
 
 - (UITableViewCell *) tableView: (UITableView *) tableView cellForRowAtIndexPath: (NSIndexPath *) indexPath {
     if ( indexPath.section == 0 ) {
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                        forEntity: @"PollingPlace" 
-                                                   withParameters: nil];
         
         NSString *cellId = [NSString stringWithFormat: @"PollingPlaceCell_%d_%d", indexPath.section, indexPath.row];
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier: cellId];
@@ -269,7 +270,7 @@
             cell = [[[UITableViewCell alloc] initWithStyle: UITableViewCellStyleValue1 reuseIdentifier: cellId] autorelease];
         }
         
-        if ( indexPath.row < pollingPlaces.count ) {
+        if ( indexPath.row < [self sortedPollingPlaces].count ) {
             UILongPressGestureRecognizer *gr = [[UILongPressGestureRecognizer alloc] initWithTarget: self action: @selector(editPollingPlace:)];
             gr.minimumPressDuration = 0.8f;
             
@@ -302,11 +303,9 @@
 - (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath {
     if ( indexPath.section == 0 ) {
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                        forEntity: @"PollingPlace" 
-                                                   withParameters: nil];
-        if ( indexPath.row < pollingPlaces.count ) {
-            appDelegate.watcherProfile.currentPollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
+        
+        if ( indexPath.row < [self sortedPollingPlaces].count ) {
+            appDelegate.watcherProfile.currentPollingPlace = [[self sortedPollingPlaces] objectAtIndex: indexPath.row];
             
             [appDelegate saveManagedObjectContext];
             [self.tableView reloadData];
@@ -320,8 +319,7 @@
             if ( appDelegate.watcherProfile.userId.length > 0 ) {
                 WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
                 pollingPlaceController.pollingPlaceControllerDelegate = self;
-                pollingPlaceController.pollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
-                                                                                    inManagedObjectContext: [appDelegate managedObjectContext]];
+                pollingPlaceController.pollingPlaceIndex = -1;
                 
                 UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: pollingPlaceController];
                 nc.navigationBar.tintColor = [UIColor blackColor];
@@ -349,22 +347,15 @@
 }
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                    forEntity: @"PollingPlace" 
-                                               withParameters: nil];
-    
-    return indexPath.section == 0 && indexPath.row < pollingPlaces.count;
+    return indexPath.section == 0 && indexPath.row < [self sortedPollingPlaces].count;
 }
 
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ( editingStyle == UITableViewCellEditingStyleDelete ) {
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                        forEntity: @"PollingPlace" 
-                                                   withParameters: nil];
-        PollingPlace *pollingPlaceToRemove = [pollingPlaces objectAtIndex: indexPath.row];
+        PollingPlace *pollingPlaceToRemove = [[self sortedPollingPlaces] objectAtIndex: indexPath.row];
 
+        /*
         if ( pollingPlaceToRemove == appDelegate.watcherProfile.currentPollingPlace ) {
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
                                                                 message: @"Нельзя удалить активный избирательный участок" 
@@ -374,11 +365,12 @@
             [alertView show];
             [alertView release];
         } else {
-            [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
-            [appDelegate saveManagedObjectContext];
-            
-            [self.tableView reloadData];
-        }
+         */
+        [appDelegate.managedObjectContext deleteObject: pollingPlaceToRemove];
+        [appDelegate saveManagedObjectContext];
+        
+        [self.tableView reloadData];
+//        }
     }
 }
 
@@ -389,14 +381,10 @@
         CGPoint gestureLocation = [sender locationInView: self.tableView];
         NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint: gestureLocation];
         
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
-                                                        forEntity: @"PollingPlace" 
-                                                   withParameters: nil];
-        if ( indexPath.row < pollingPlaces.count ) {
+        if ( indexPath.row < [self sortedPollingPlaces].count ) {
             WatcherPollingPlaceController *pollingPlaceController = [[WatcherPollingPlaceController alloc] initWithNibName: @"WatcherPollingPlaceController" bundle: nil];
             pollingPlaceController.pollingPlaceControllerDelegate = self;
-            pollingPlaceController.pollingPlace = [pollingPlaces objectAtIndex: indexPath.row];
+            pollingPlaceController.pollingPlaceIndex = indexPath.row;
             
             UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController: pollingPlaceController];
             nc.navigationBar.tintColor = [UIColor blackColor];
@@ -417,42 +405,23 @@
     pollingPlace.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
     pollingPlace.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
     
-    if ( ! appDelegate.watcherProfile.currentPollingPlace )
-        appDelegate.watcherProfile.currentPollingPlace = controller.pollingPlace;
-
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@", @"polling_place_attributes"];
     NSSet *existingItems = [controller.pollingPlace.checklistItems filteredSetUsingPredicate: predicate];
     
     for ( ChecklistItem *item in existingItems )
         if ( ! item.value.length )
-            [appDelegate.managedObjectContext deleteObject: item];
+            [controller.managedObjectContext deleteObject: item];
     
-    [appDelegate saveManagedObjectContext];
+    [controller.managedObjectContext save: nil];
+    
+    if ( ! appDelegate.watcherProfile.currentPollingPlace )
+        appDelegate.watcherProfile.currentPollingPlace = [[self sortedPollingPlaces] lastObject];
     
     [self dismissModalViewControllerAnimated: YES];
     [self.tableView reloadData];
 }
 
 -(void)watcherPollingPlaceControllerDidCancel:(WatcherPollingPlaceController *)controller {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    
-    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@", @"polling_place_attributes"];
-    NSSet *existingItems = [controller.pollingPlace.checklistItems filteredSetUsingPredicate: predicate];
-    
-    for ( ChecklistItem *item in existingItems ) {
-        if ( item.isInserted )
-            [appDelegate.managedObjectContext deleteObject: item];
-        
-        if ( item.isUpdated ) 
-            [appDelegate.managedObjectContext refreshObject: item mergeChanges: NO];
-    }
-
-    if ( controller.pollingPlace.isInserted )
-        [appDelegate.managedObjectContext deleteObject: controller.pollingPlace];
-    
-    if ( controller.pollingPlace.isUpdated )
-        [appDelegate.managedObjectContext refreshObject: controller.pollingPlace mergeChanges: NO];
-    
     [self dismissModalViewControllerAnimated: YES];
     [self.tableView reloadData];
 }

@@ -432,7 +432,10 @@
 
 - (NSArray *) mediaItemsOfType: (NSString *) mediaType {
     NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF.mediaType LIKE %@", mediaType];
-    return [[self.checklistItem.mediaItems allObjects] filteredArrayUsingPredicate: predicate];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey: @"timestamp" ascending: YES];
+    NSArray *sortedItems = [self.checklistItem.mediaItems sortedArrayUsingDescriptors: [NSArray arrayWithObject: sortDescriptor]];
+
+    return [sortedItems filteredArrayUsingPredicate: predicate];
 }
                                                         
 

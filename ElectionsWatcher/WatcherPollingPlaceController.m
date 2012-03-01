@@ -10,16 +10,18 @@
 #import "WatcherChecklistScreenCell.h"
 #import "PollingPlace.h"
 #import "AppDelegate.h"
+#import "WatcherDataManager.h"
 
 @implementation WatcherPollingPlaceController
 
 static NSString *settingsSections[] = { @"ballot_district_info" };
 
 @synthesize pollingPlaceControllerDelegate;
-@synthesize pollingPlace;
+@synthesize pollingPlace = _pollingPlace;
 @synthesize settings;
-@synthesize isCancelling;
 @synthesize latestActiveResponder;
+@synthesize managedObjectContext = _managedObjectContext;
+@synthesize pollingPlaceIndex = _pollingPlaceIndex;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -39,10 +41,22 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 }
 
 -(void)dealloc {
-    [pollingPlace release];
     [settings release];
+    [_managedObjectContext release];
     
     [super dealloc];
+}
+
+- (void) mergeContextChanges: (NSNotification *) notification {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    [appDelegate.managedObjectContext performSelectorOnMainThread: @selector(mergeChangesFromContextDidSaveNotification:) 
+                                                       withObject: notification 
+                                                    waitUntilDone: YES];
+    
+    [appDelegate.dataManager.managedObjectContext performSelector: @selector(mergeChangesFromContextDidSaveNotification:) 
+                                                         onThread: appDelegate.dataManager.dataManagerThread 
+                                                       withObject: notification 
+                                                    waitUntilDone: NO];
 }
 
 #pragma mark - View lifecycle
@@ -74,7 +88,33 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     NSString *defaultPath = [[NSBundle mainBundle] pathForResource: @"WatcherPollingPlace" 
                                                             ofType: @"plist"];
     self.settings = [NSDictionary dictionaryWithContentsOfFile: defaultPath];
-    self.isCancelling = NO;
+    
+    // setup managed object context
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    _managedObjectContext = [[NSManagedObjectContext alloc] init];
+    [_managedObjectContext setPersistentStoreCoordinator: appDelegate.persistentStoreCoordinator];
+    
+    [[NSNotificationCenter defaultCenter] addObserver: self 
+                                             selector: @selector(mergeContextChanges:) 
+                                                 name: NSManagedObjectContextDidSaveNotification 
+                                               object: _managedObjectContext];
+    
+    // setup polling place to edit
+    if ( _pollingPlaceIndex == -1 ) {
+        _pollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
+                                                      inManagedObjectContext: _managedObjectContext];
+        
+    } else {
+        NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
+                                                        forEntity: @"PollingPlace" 
+                                                      withContext: _managedObjectContext
+                                                   withParameters: [NSDictionary dictionary]];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey: @"nameOrNumber" ascending: YES];
+        NSArray *sortedPollingPlaces = [pollingPlaces sortedArrayUsingDescriptors: [NSArray arrayWithObject: sortDescriptor]];
+        
+        _pollingPlace = [sortedPollingPlaces objectAtIndex: _pollingPlaceIndex];
+    }
+    
 }
 
 - (void)viewDidUnload
@@ -132,7 +172,6 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 - (void) handleCancelButton: (id) sender {
     [self.latestActiveResponder resignFirstResponder];
     
-    self.isCancelling = YES;
     [pollingPlaceControllerDelegate watcherPollingPlaceControllerDidCancel: self];
 }
 
@@ -172,13 +211,10 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     NSArray *existingItems = [[self.pollingPlace.checklistItems allObjects] filteredArrayUsingPredicate: predicate];
     
     if ( existingItems.count ) {
-        ChecklistItem *item = [existingItems lastObject];
-        if ( item.isUpdated )
-            [appDelegate.managedObjectContext refreshObject: item mergeChanges: YES];
-        return item;
+        return [existingItems lastObject];
     } else {
         ChecklistItem *item = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
-                                                            inManagedObjectContext: appDelegate.managedObjectContext];
+                                                            inManagedObjectContext: _managedObjectContext];
         
         item.name = [itemInfo objectForKey: @"name"];
         item.sectionName = @"polling_place_attributes";
@@ -200,11 +236,10 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     NSDictionary *itemInfo = [[sectionInfo objectForKey: @"items"] objectAtIndex: indexPath.row];
     
     if ( cell == nil ) {
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         cell = [[[WatcherChecklistScreenCell alloc] initWithStyle: UITableViewCellStyleDefault 
                                                   reuseIdentifier: cellId 
                                                      withItemInfo: itemInfo
-                                                        inContext: appDelegate.managedObjectContext] autorelease];
+                                                        inContext: _managedObjectContext] autorelease];
         
         [(WatcherChecklistScreenCell *) cell setSaveDelegate: self];
         [(WatcherChecklistScreenCell *) cell setChecklistCellDelegate: self];
@@ -222,25 +257,25 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];    
     
     if ( [@"district_number" isEqualToString: item.name] )
-        pollingPlace.nameOrNumber = item.value;
+        _pollingPlace.nameOrNumber = item.value;
     
     if ( [@"district_region" isEqualToString: item.name] )
-        pollingPlace.region = [nf numberFromString: item.value];
+        _pollingPlace.region = [nf numberFromString: item.value];
     
     if ( [@"district_type" isEqualToString: item.name] ) 
-        pollingPlace.type = item.value;
+        _pollingPlace.type = item.value;
     
     if ( [@"district_chairman" isEqualToString: item.name] ) 
-        pollingPlace.chairman = item.value;
+        _pollingPlace.chairman = item.value;
     
     if ( [@"district_secretary" isEqualToString: item.name] )
-        pollingPlace.secretary = item.value;
+        _pollingPlace.secretary = item.value;
     
     if ( [@"district_watchers_count" isEqualToString: item.name] )
-        pollingPlace.totalObservers = [nf numberFromString: item.value];
+        _pollingPlace.totalObservers = [nf numberFromString: item.value];
     
     if ( [@"district_banner_photo" isEqualToString: item.name] )
-        pollingPlace.mediaItems = item.mediaItems;
+        _pollingPlace.mediaItems = item.mediaItems;
     
     [nf release];
 }

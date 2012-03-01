@@ -19,7 +19,6 @@ static NSString *settingsSections[] = { @"personal_info" };
 @synthesize profileControllerDelegate;
 @synthesize settings;
 @synthesize latestActiveResponder;
-@synthesize isCancelling;
 @synthesize managedObjectContext = _managedObjectContext;
 
 - (id)initWithStyle:(UITableViewStyle)style
