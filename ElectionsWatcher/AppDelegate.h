@@ -45,6 +45,7 @@
 - (void) updateSynchronizationStatus;
 - (void) removeSynchronizationStatus;
 - (void) saveManagedObject: (NSManagedObject *) managedObject;
+- (void) reloadWatcherProfile;
 - (void) saveManagedObjectContext;
 
 @end

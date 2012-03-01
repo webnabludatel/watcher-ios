@@ -49,6 +49,20 @@
     [super dealloc];
 }
 
+- (void) reloadWatcherProfile {
+    NSArray *profileResults = [self executeFetchRequest: @"findProfile" 
+                                              forEntity: @"WatcherProfile" 
+                                         withParameters: [NSDictionary dictionary]];
+    if ( profileResults.count ) {
+        _watcherProfile = [[profileResults lastObject] retain];
+    } else {
+        _watcherProfile = [[NSEntityDescription insertNewObjectForEntityForName: @"WatcherProfile" 
+                                                         inManagedObjectContext: self.managedObjectContext] retain];
+        
+        [self saveManagedObjectContext];
+    }
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // AirBrake
@@ -119,17 +133,7 @@
     _dataManager = [[WatcherDataManager alloc] init];
     
     // initialize profile
-    NSArray *profileResults = [self executeFetchRequest: @"findProfile" 
-                                              forEntity: @"WatcherProfile" 
-                                         withParameters: [NSDictionary dictionary]];
-    if ( profileResults.count ) {
-        _watcherProfile = [[profileResults lastObject] retain];
-    } else {
-        _watcherProfile = [[NSEntityDescription insertNewObjectForEntityForName: @"WatcherProfile" 
-                                                         inManagedObjectContext: self.managedObjectContext] retain];
-        
-        [self saveManagedObjectContext];
-    }
+    [self reloadWatcherProfile];
     
     // facebook
     _facebook = [[Facebook alloc] initWithAppId: @"308722072498316" andDelegate:self];
