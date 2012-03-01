@@ -18,7 +18,7 @@
 
 #define ELECTIONS_DAY           @"04.03.2012"
 #define DATE_FORMAT             @"dd.MM.yyyy"
-#define TEST_ITEMS_PREDICATE    @"(SELF.timestamp < %@) && (SELF.sectionName != NULL) && (SELF.sectionName != 'sos_report')"
+#define TEST_ITEMS_PREDICATE    @"(SELF.timestamp < %@) && (SELF.sectionName != NULL) && (SELF.sectionName != 'sos_report') && (SELF.sectionName != 'polling_place_attributes')"
 
 @implementation WatcherChecklistController
 
@@ -153,7 +153,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 #pragma mark - Helper methods
@@ -420,6 +420,13 @@
     if ( ! appDelegate.watcherProfile.currentPollingPlace )
         appDelegate.watcherProfile.currentPollingPlace = controller.pollingPlace;
 
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@", @"polling_place_attributes"];
+    NSSet *existingItems = [controller.pollingPlace.checklistItems filteredSetUsingPredicate: predicate];
+    
+    for ( ChecklistItem *item in existingItems )
+        if ( ! item.value.length )
+            [appDelegate.managedObjectContext deleteObject: item];
+    
     [appDelegate saveManagedObjectContext];
     
     [self dismissModalViewControllerAnimated: YES];
@@ -428,10 +435,24 @@
 
 -(void)watcherPollingPlaceControllerDidCancel:(WatcherPollingPlaceController *)controller {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat: @"SELF.sectionName LIKE %@", @"polling_place_attributes"];
+    NSSet *existingItems = [controller.pollingPlace.checklistItems filteredSetUsingPredicate: predicate];
+    
+    for ( ChecklistItem *item in existingItems ) {
+        if ( item.isInserted )
+            [appDelegate.managedObjectContext deleteObject: item];
+        
+        if ( item.isUpdated ) 
+            [appDelegate.managedObjectContext refreshObject: item mergeChanges: NO];
+    }
+
     if ( controller.pollingPlace.isInserted )
         [appDelegate.managedObjectContext deleteObject: controller.pollingPlace];
+    
     if ( controller.pollingPlace.isUpdated )
         [appDelegate.managedObjectContext refreshObject: controller.pollingPlace mergeChanges: NO];
+    
     [self dismissModalViewControllerAnimated: YES];
     [self.tableView reloadData];
 }

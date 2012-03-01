@@ -173,11 +173,22 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     
     if ( existingItems.count ) {
         ChecklistItem *item = [existingItems lastObject];
-        [appDelegate.managedObjectContext refreshObject: item mergeChanges: NO];
+        if ( item.isUpdated )
+            [appDelegate.managedObjectContext refreshObject: item mergeChanges: YES];
         return item;
     } else {
-        return [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
-                                             inManagedObjectContext: appDelegate.managedObjectContext];
+        ChecklistItem *item = [NSEntityDescription insertNewObjectForEntityForName: @"ChecklistItem" 
+                                                            inManagedObjectContext: appDelegate.managedObjectContext];
+        
+        item.name = [itemInfo objectForKey: @"name"];
+        item.sectionName = @"polling_place_attributes";
+        item.lat = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.latitude];
+        item.lng = [NSNumber numberWithDouble: appDelegate.currentLocation.coordinate.longitude];
+        item.synchronized = [NSNumber numberWithBool: NO];
+        
+        [self.pollingPlace addChecklistItemsObject: item];
+        
+        return item;
     }
 }
 
@@ -207,9 +218,6 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 #pragma mark - Save attribute delegate
 
 - (void) didSaveAttributeItem: (ChecklistItem *) item {
-    if ( ! [self.pollingPlace.checklistItems containsObject: item] )
-        [self.pollingPlace addChecklistItemsObject: item];
-    
     NSNumberFormatter * nf = [[NSNumberFormatter alloc] init];
     [nf setNumberStyle:NSNumberFormatterDecimalStyle];    
     

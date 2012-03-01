@@ -26,7 +26,7 @@ static const NSUInteger kDomainSection = 1;
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-	return YES;
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end

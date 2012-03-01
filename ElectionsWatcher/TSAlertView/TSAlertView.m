@@ -88,7 +88,7 @@
 @implementation TSAlertViewController
 - (BOOL) shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-	return YES;
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
 }
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {

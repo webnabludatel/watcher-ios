@@ -500,7 +500,7 @@ navigationBarBackgroundImageLandscapePhone = _navigationBarBackgroundImageLandsc
 #pragma mark - Rotation
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return YES;
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
