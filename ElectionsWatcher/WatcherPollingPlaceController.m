@@ -16,10 +16,10 @@
 
 static NSString *settingsSections[] = { @"ballot_district_info" };
 
-@synthesize pollingPlaceControllerDelegate;
+@synthesize pollingPlaceControllerDelegate = _pollingPlaceControllerDelegate;
 @synthesize pollingPlace = _pollingPlace;
-@synthesize settings;
-@synthesize latestActiveResponder;
+@synthesize settings = _settings;
+@synthesize latestActiveResponder = _latestActiveResponder;
 @synthesize managedObjectContext = _managedObjectContext;
 @synthesize pollingPlaceIndex = _pollingPlaceIndex;
 
@@ -41,7 +41,8 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 }
 
 -(void)dealloc {
-    [settings release];
+    [_settings release];
+    [_pollingPlace release];
     [_managedObjectContext release];
     
     [super dealloc];
@@ -101,8 +102,8 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     
     // setup polling place to edit
     if ( _pollingPlaceIndex == -1 ) {
-        _pollingPlace = [NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
-                                                      inManagedObjectContext: _managedObjectContext];
+        _pollingPlace = [[NSEntityDescription insertNewObjectForEntityForName: @"PollingPlace" 
+                                                       inManagedObjectContext: _managedObjectContext] retain];
         
     } else {
         NSArray *pollingPlaces = [appDelegate executeFetchRequest: @"listPollingPlaces" 
@@ -112,7 +113,7 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey: @"nameOrNumber" ascending: YES];
         NSArray *sortedPollingPlaces = [pollingPlaces sortedArrayUsingDescriptors: [NSArray arrayWithObject: sortDescriptor]];
         
-        _pollingPlace = [sortedPollingPlaces objectAtIndex: _pollingPlaceIndex];
+        _pollingPlace = [[sortedPollingPlaces objectAtIndex: _pollingPlaceIndex] retain];
     }
     
 }
@@ -156,7 +157,7 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
     [self.latestActiveResponder resignFirstResponder];
     
     if ( self.pollingPlace.type.length && self.pollingPlace.nameOrNumber.length && self.pollingPlace.region.intValue ) {
-        [pollingPlaceControllerDelegate watcherPollingPlaceController: self didSavePollingPlace: self.pollingPlace];
+        [_pollingPlaceControllerDelegate watcherPollingPlaceController: self didSavePollingPlace: self.pollingPlace];
     } else {
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle: @"Ошибка" 
                                                             message: @"Не заполнены обязательные поля" 
@@ -172,7 +173,7 @@ static NSString *settingsSections[] = { @"ballot_district_info" };
 - (void) handleCancelButton: (id) sender {
     [self.latestActiveResponder resignFirstResponder];
     
-    [pollingPlaceControllerDelegate watcherPollingPlaceControllerDidCancel: self];
+    [_pollingPlaceControllerDelegate watcherPollingPlaceControllerDidCancel: self];
 }
 
 #pragma mark - Table view data source
